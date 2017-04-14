@@ -1,7 +1,7 @@
 import config     from '../config'
 import {router} from '../routers'
 
-const base_url = `${config.host}/api/admin`
+const base_url = `${config.host}v1`
 
 
 
@@ -20,11 +20,6 @@ const axios = require('axios').create({
       json = {};
     }
 
-    if (json.msg === 'session error') {
-      console.log('session error');
-      router.push('/login');
-    }
-
     return json;
   }],
 });
@@ -32,7 +27,8 @@ const axios = require('axios').create({
 
 // get
 export const _get = (req) => {
-  return axios.get(req.url, {params: req.data})
+  const params = Object.assign({roles: 'dev'}, req.data)
+  return axios.get(req.url, {params})
 }
 
 // put

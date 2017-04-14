@@ -15,10 +15,11 @@ import Comments    from '../views/items/Comments.vue'
 
 import AddArticle  from '../views/add/Article.vue'
 import AddVote     from '../views/add/Vote.vue'
+import config      from '../config'
 
 Vue.use(VueRouter)
 
-const base = 'VMS-'
+const base = config.title
 
 export const router = new VueRouter({
   mode: 'history',
