@@ -1,7 +1,10 @@
 # Logs
 logs
+dist
 *.log
 npm-debug.log*
+
+*config.js
 
 # Runtime data
 pids
