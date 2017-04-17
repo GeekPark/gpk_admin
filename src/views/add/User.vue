@@ -1,49 +1,37 @@
 <template lang="jade">
-#admin-user.admin
-  vsearch(model='User', searchKey='nickname', :start='start')
-  el-dialog(title='新建管理员', v-model='dialogFormVisible' v-if='isAddAdmin')
-    el-form(:model='form')
+#add-user.admin
+  el-form(:model='form')
       el-form-item(label='用户级别', :label-width='formLabelWidth')
         el-select(v-model='form.permission', placeholder='请选择权限', size="large" multiple)
           el-option(v-for='item in options', :key='item.value', :label='item.label', :value='item.value')
-      el-form-item(label='用户名', :label-width='formLabelWidth')
-        el-input(v-model='form.nickname', auto-complete='off', placeholder='必填')
+      el-form-item(label='权重', :label-width='formLabelWidth', placeholder='必填')
+        el-input-number(v-model="form.weight", v-bind:min="0", v-bind:max="10")
+      el-form-item(label='昵称', :label-width='formLabelWidth', placeholder='必填')
+        el-input(v-model='form.nickname', auto-complete='off')
+      el-form-item(label='公司', :label-width='formLabelWidth')
+        el-input(v-model='form.company')
+      el-form-item(label='职位', :label-width='formLabelWidth')
+        el-input(v-model='form.title')
+      el-form-item(label='电话', :label-width='formLabelWidth')
+        el-input(v-model='form.phone.number')
+        el-switch(v-model='form.phone.hidden', on-text='隐藏', off-text='公开')
+      el-form-item(label='微信', :label-width='formLabelWidth')
+        el-input(v-model='form.wechat.number')
+        el-switch(v-model='form.wechat.hidden', on-text='隐藏', off-text='公开')
       el-form-item(label='邮箱', :label-width='formLabelWidth')
-        el-input(v-model='form.email.addr', auto-complete='off', placeholder='必填')
-      el-form-item(label='密码', :label-width='formLabelWidth')
-        el-input(v-model='form.password', placeholder='必填')
+        el-input(v-model='form.email.addr')
+        el-switch(v-model='form.email.hidden', on-text='隐藏', off-text='公开')
+      el-form-item(label='一句话简介', :label-width='formLabelWidth')
+        el-input(v-model='form.sign')
+      el-form-item(label='简介', :label-width='formLabelWidth')
+        el-input(v-model='form.intro', type='textarea')
     .dialog-footer(slot='footer')
       el-button(@click='dialogFormVisible = false') 取 消
       el-button(type='primary', @click='onSubmit') 确 定
-  template
-    el-table(:data='items', border='', style='width: 100%')
-      el-table-column(type="index", width="100")
-      el-table-column(prop='email.addr', label='email')
-      el-table-column(prop='nickname', label='昵称')
-      el-table-column(prop='company', label='公司')
-      el-table-column(prop='title', label='职位')
-      el-table-column(prop='permission', label='权限')
-      el-table-column(prop='code', label='邀请码')
-      el-table-column(prop='status', label='状态')
-      el-table-column(prop='created_at', label='created')
-      el-table-column(label='操作')
-        template(scope='scope')
-          el-button(size='small',
-                    @click='handleEdit(scope.$index, scope.row)') 编辑
-          el-button(size='small',
-                    type='danger',
-                    @click='handleDelete(scope.$index, scope.row)') 删除
 
-  el-pagination(@size-change='handleSizeChange',
-                @current-change='handleCurrentChange',
-                :current-page="1",
-                :page-size='100',
-                layout='total, prev, pager, next',
-                :total='total')
 </template>
 
 <script>
-
 function initialState () {
   return {
     start:             0,
@@ -100,16 +88,8 @@ function initialState () {
   }
 }
 export default {
-  name: 'admin-user',
-  computed: {
-    items () {
-      return this.$store.state.adminItems
-    },
-    total () {
-      return this.$store.state.total.user || 100000
-    }
-  },
-  data: initialState,
+  name: 'add-user',
+   data: initialState,
   methods: {
     fetch (start = 0) {
       const _this = this
@@ -170,14 +150,5 @@ export default {
 }
 </script>
 
-<style lang="stylus"  scoped>
-.el-table, .el-pagination
-  margin-top 20px
-.el-input
-  width 40%
-.add-btn
-  margin-left 30px
-.el-table
-  margin-top 30px
-
+<style lang="stylus" scoped>
 </style>

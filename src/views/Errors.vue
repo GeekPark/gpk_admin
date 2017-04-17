@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #error
   h1 来错地方了吧🐶
 </template>

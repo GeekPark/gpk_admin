@@ -26,22 +26,25 @@ const axios = require('axios').create({
 
 
 // get
-export const _get = (req) => {
-  const params = Object.assign({roles: 'dev'}, req.data)
-  return axios.get(req.url, {params})
-}
+export default {
+  _get : (req) => {
+    const params = Object.assign({roles: 'dev'}, req.data)
+    return axios.get(req.url, {params})
+  },
 
 // put
-export const _put = (req) => {
-  return axios({ method: 'put', url: `/${req.url}`, data: req.data })
-}
+  _put : (req) => {
+    return axios({ method: 'put', url: `/${req.url}`, data: req.data })
+  },
 
 // post
-export const _post = (req) => {
-  return axios({ method: 'post', url: `/${req.url}`, data: req.data })
-}
+  _post : (req) => {
+    return axios({ method: 'post', url: `/${req.url}`, data: req.data })
+  },
 
 // delete
-export const _delete = (req) => {
-  return axios({ method: 'delete', url: `/${req.url}`, data: req.data })
+  _delete : (req) => {
+    return axios({ method: 'delete', url: `/${req.url}`, data: req.data })
+  },
+
 }

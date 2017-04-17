@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #admin-vote.admin
   vsearch(model='Vote', searchKey='title', :start='start')
   router-link(to='/addVote')

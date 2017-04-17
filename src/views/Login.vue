@@ -1,5 +1,5 @@
 
-<template lang="pug">
+<template lang="jade">
 .login
   .logo
     img(src="http://ohusmobs2.bkt.clouddn.com/20170323149024023196292.png")

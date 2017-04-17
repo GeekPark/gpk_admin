@@ -1,5 +1,5 @@
 
-<template lang="pug">
+<template lang="jade">
 .commit-component
   template
     el-form-item(label='提交状态')

@@ -1,6 +1,6 @@
 import Vuex     from 'vuex'
 import Vue      from 'vue'
-import * as api from './api'
+import api      from './api'
 
 Vue.use(Vuex)
 

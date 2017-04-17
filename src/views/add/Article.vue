@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #add-article.admin
   el-form(ref='form', :model='form', label-width='80px')
     el-input(placeholder='请输入标题', v-model='form.title')

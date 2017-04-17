@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #admin-comment.admin
   template
     el-input(placeholder='请输入标题搜索', icon='search', v-model='search', :on-icon-click='handleIconClick')

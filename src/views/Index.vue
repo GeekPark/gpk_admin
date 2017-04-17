@@ -1,10 +1,10 @@
-<template lang="pug">
+<template lang="jade">
 #index.admin
   el-row.new-posts(:gutter="20")
     el-col(:span='9')
       .grid-content.bg-purple
         h1 最新文章
-        p.title(v-for='item in postsData.posts') {{item.title}}
+        p.title(v-for='item in postsData.posts', :key='item.id') {{item.title}}
     el-col(:span='5')
       .grid-content.bg-purple-light
         h1 最新活动
@@ -18,22 +18,21 @@
     el-col(:span='24')
       h1 后台管理中心
   el-row(:gutter="20")
-    el-col(v-for='item in sections', :span='Math.floor((24 / sections.length))')
+    el-col(v-for='item in sections',:key='item.id', :span='Math.floor((24 / sections.length))')
       .grid-content.bg-purple
         h1.center {{item.title}}
   el-row
     el-col(:span='24')
       h1 快速访问
   el-row(:gutter="20")
-    el-col(v-for='item in quickly', :span='Math.floor((24 / sections.length))')
+    el-col(v-for='item in quickly',:key='item.id', :span='Math.floor((24 / sections.length))')
       .grid-content.bg-purple
-        h1.center {{item.title}}
-
+        a(:href='item.url', target='_blank').a-title-text.center {{item.title}}
 </template>
 
 <script>
 
-import * as api from '../stores/api'
+import api from '../stores/api'
 
 export default {
 
@@ -59,16 +58,19 @@ export default {
       }],
       quickly: [{
         title: '极客公园',
-        url: '',
+        url: 'http://geekpark.net',
       },{
-        title: 'teambition',
-        url: '',
+        title: 'Teambition',
+        url: 'https://www.teambition.com/projects',
       },{
         title: '极光推送',
+        url: 'https://www.jiguang.cn/dev/#/app/list#dev',
+      },{
+        title: 'Innoawards',
         url: '',
       },{
-        title: 'innoawards',
-        url: '',
+        title: 'Github',
+        url: 'https://github.com/geekpark/gpk_admin',
       }],
       postsData: {
         posts: [],
@@ -83,11 +85,10 @@ export default {
         url: 'admin/posts',
       }).then((result) => {
         console.log(result);
-        // _this.postsData = result.data
-        _this.$set(_this, 'postsData', result.data)
+        _this.postsData = result.data
       }).catch((err) => {
         console.log(err);
-         // _this.$message.error(err.toString())
+         _this.$message.error(err.toString())
       })
     }
   },
@@ -100,6 +101,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+
 .new-posts
   .grid-content
     min-height 150px
@@ -109,50 +111,4 @@ export default {
   p
     line-height 25px
     font-size 1.7rem
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.el-col {
-  border-radius: 4px;
-  cursor: pointer;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 46px;
-  padding: 10px;
-  position: relative;
-}
-
-.center {
-  position  : absolute;
-  top       : 50%;
-  left      : 50%;
-  transform : translate(-50%,-50%);
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-  // .el-card
-  //   cursor pointer
-  //   position relative
-  //   width calc(20% - 25px)
-  //   margin 30px
-  //   display inline-block
-  //   font-family 'Microsoft YaHei'
-
-  //   span
-  //     font-size 2rem
 </style>

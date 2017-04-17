@@ -1,5 +1,5 @@
 
-<template lang="pug">
+<template lang="jade">
 .profile-wrap.admin
   .ms-profile
     el-form.demo-ruleForm(:model='ruleForm', :rules='rules', ref='ruleForm', label-width='0px')

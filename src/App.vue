@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #app
   vsider
   vheader
@@ -84,16 +84,48 @@ html, body
   -webkit-touch-callout none
   -webkit-user-select none
 
+.a-title-text
+  color #2c3e50
+  font-size 2rem
+  font-weight bold
+
 .border1
   border 1px solid #D3D3D3
 
 .slide-fade-enter-active
-  transition: all .1s ease
+  transition all .1s ease
 .slide-fade-leave-active
-  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0)
+  transition all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0)
 .slide-fade-enter, .slide-fade-leave-active
-  transform: translateX(10px)
-  opacity: 0;
+  transform translateX(10px)
+  opacity 0
+
+.el-row
+  margin-bottom 20px
+  &:last-child
+    margin-bottom 0
+.el-col
+  border-radius 4px
+  cursor pointer
+.bg-purple-dark
+  background #99a9bf
+.bg-purple
+  background #d3dce6
+.bg-purple-light
+  background #e5e9f2
+.grid-content
+  border-radius 4px
+  min-height 46px
+  padding 10px
+  position relative
+.center
+  position   absolute
+  top        50%
+  left       50%
+  transform  translate(-50%,-50%)
+.row-bg
+  padding 10px 0
+  background-color #f9fafc
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,

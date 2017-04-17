@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #veditor
   #editor(style="height:400px;max-height:1000px;")
 </template>
