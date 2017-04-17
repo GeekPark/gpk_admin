@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #admin-timeline.admin
   div(v-loading.fullscreen.lock="fullscreenLoading")
   vsearch(model='Article', searchKey='title', :start='start')

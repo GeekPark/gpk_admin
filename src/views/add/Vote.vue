@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #add-vote.admin
   el-form.demo-dynamic(:model='voteForm', ref='voteForm', label-width='100px')
     el-form-item(label='标题', prop='title')

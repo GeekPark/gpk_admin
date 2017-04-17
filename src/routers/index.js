@@ -13,34 +13,73 @@ import Users       from '../views/items/Users.vue'
 import Votes       from '../views/items/Votes.vue'
 import Comments    from '../views/items/Comments.vue'
 
+import AddUser     from '../views/add/User.vue'
 import AddArticle  from '../views/add/Article.vue'
 import AddVote     from '../views/add/Vote.vue'
+import config      from '../config'
 
 Vue.use(VueRouter)
 
-const base = 'VMS-'
+const base = config.title
 
 export const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/', component: Index,  meta: {title: `${base}首页`} },
+    { path: '/',
+      component: Index,
+      meta: {title: `${base}首页`}
+    },
+    { path: '/profile',
+      component: Profile,
+      meta: {title: `${base}个人资料`}
+    },
+    { path: '/login',
+      component: Login,
+      meta: {title: `${base}登录`}
+    },
+    { path: '/timeline',
+      component: Timeline,
+      meta: {title: `${base}内容`}
+    },
 
-    { path: '/profile', component: Profile, meta: {title: `${base}个人资料`}},
-    { path: '/login', component: Login, meta: {title: `${base}登录`}},
+    { path: '/users',
+      component: Users,
+      meta: {title: `${base}用户`}
+    },
+    { path: '/user/add',
+      component: AddUser,
+      meta: {title: `${base}添加用户`}
+    },
 
-    { path: '/article', component: Article, meta: {title: `${base}预览`}},
+    { path: '/articles',
+      component: Articles,
+      meta: {title: `${base}文章`}
+    },
+    { path: '/article',
+      component: Article,
+      meta: {title: `${base}预览`}
+    },
+    { path: '/article/add',
+      component: AddArticle,
+      meta: {title: `${base}添加文章`}
+    },
+    { path: '/votes',
+      component: Votes,
+      meta: {title: `${base}投票`}
+    },
+    { path: '/addVote',
+      component: AddVote,
+      meta: {title: `${base}添加投票`}
+    },
+    { path: '/comments/:type',
+      component: Comments,
+      meta: {title: `${base}评论`}
+    },
 
-    { path: '/timeline', component: Timeline, meta: {title: `${base}内容`}},
-    { path: '/users', component: Users, meta: {title: `${base}用户`}},
-
-    { path: '/articles', component: Articles, meta: {title: `${base}文章`}},
-    { path: '/addArticle', component: AddArticle, meta: {title: `${base}添加文章`}},
-    { path: '/votes', component: Votes, meta: {title: `${base}投票`}},
-    { path: '/addVote', component: AddVote, meta: {title: `${base}添加投票`}},
-    { path: '/comments/:type', component: Comments, meta: {title: `${base}评论`}},
-
-    { path: '*', component: Errors, meta: {title: `${base}Error`}}
-
+    { path: '*',
+      component: Errors,
+      meta: {title: `${base}Error`}
+    },
   ]
 })
 

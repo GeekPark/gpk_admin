@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #vheader
   el-menu.el-menu-demo(theme='dark',
                        :default-active='activeIndex',

@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang="jade">
 #vsider
   el-row.tac
     router-link(to="/")
@@ -8,9 +8,13 @@
         el-menu-item(index='/')
           i.el-icon-menu
           | 仪表盘 😂
-        el-menu-item(index='/users')
-          i.el-icon-setting
-          | 用户管理
+
+        el-submenu(index='/2')
+          template(slot='title')
+            i.el-icon-setting
+            | 用户管理
+          el-menu-item(index='/users') 用户列表
+          el-menu-item(index='/user/add') 添加用户
         el-submenu(index='/1')
           template(slot='title')
             i.el-icon-document
