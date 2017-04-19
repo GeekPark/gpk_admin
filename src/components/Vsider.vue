@@ -6,26 +6,29 @@
     el-col(:span='8')
       el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="dark")
         el-menu-item(index='/')
-          i.el-icon-menu
+          //- i.el-icon-menu
           | 仪表盘 😂
 
         el-submenu(index='/2')
           template(slot='title')
-            i.el-icon-setting
+            //- i.el-icon-setting
             | 用户管理
           el-menu-item(index='/users') 用户列表
           el-menu-item(index='/user/add') 添加用户
         el-submenu(index='/1')
           template(slot='title')
-            i.el-icon-document
+            //- i.el-icon-document
             | 内容管理
           el-menu-item(index='/timeline') 信息流管理
           el-menu-item-group(title = '文章')
             el-menu-item(index='/posts')  文章管理
-            el-menu-item(index='/post/add') 添加文章
+            el-menu-item(index='/post/add?content_type=markdown') 添加文章
+          el-menu-item-group(title = '评论')
+            el-menu-item(index='/comments?type=posts') 评论列表
+            el-menu-item(index='/comments/blocked') 屏蔽管理
         el-submenu(index='/2')
           template(slot='title')
-            i.el-icon-more
+            //- i.el-icon-more
             | 关于
           el-menu-item(index='/about') 关于
 

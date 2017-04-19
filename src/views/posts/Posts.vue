@@ -1,6 +1,6 @@
 <template lang="jade">
 #admin-posts.admin
-  el-table(:data='postsData.posts',)
+  el-table(:data='listData.posts',)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id', width="100")
     el-table-column(prop='title', label='标题'  )
@@ -19,65 +19,18 @@
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
-                :page-size='postsData.meta.limit_value',
+                :page-size='listData.meta.limit_value',
                 layout='total, prev, pager, next',
-                :total='postsData.meta.total_count')
+                :total='listData.meta.total_count')
 </template>
 
 <script>
 
-import api from '../../stores/api'
-
-export default {
-  name: 'admin-posts',
-  computed: {
-  },
-  data () {
-    return {
-      currentPage: 1,
-      postsData: {
-        meta: {
-          total_count: 0,
-          limit_value: 0,
-        }
-      },
-    }
-  },
-  methods: {
-    fetch (currentPage = 1) {
-      const _this = this
-      api._get({
-        url: 'admin/posts',
-        data: {
-          page: currentPage,
-        }
-      }).then((result) => {
-        console.log(result);
-        _this.postsData = result.data
-      }).catch((err) => {
-        console.log(err);
-         _this.$message.error(err.toString())
-      })
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      this.fetch(val)
-      console.log(`当前页: ${val}`);
-    },
-  },
-  watch:{
-    'postsData.posts': function (val) {
-      val.forEach(el => {
-        if (el.state === 'published') {el.state = '已发布'}
-      })
-    }
-  },
-  beforeMount () {
-    this.fetch()
-  }
-}
+import Base from '../base'
+const vm = Base({
+  url: 'admin/posts'
+});
+export default vm
 </script>
 
 <style lang="stylus" scoped>

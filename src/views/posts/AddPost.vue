@@ -2,23 +2,54 @@
 #add-post.admin
   el-form(ref='form', :model='form', label-width='80px')
     el-input(placeholder='请输入标题 必填', v-model='form.title')
-    el-input(placeholder='短标题，10~14汉字（两个英文字符算一个汉字） 可选', v-model='form.subTitle')
-    el-input(type='textarea', placeholder='请输入摘要 可选', v-model='form.abstract')
-    vmarkdown(v-if='isMarkdownEditor' v-bind:markdown='form.markdown')
+    el-input(placeholder='短标题，10~14汉字（两个英文字符算一个汉字） 可选',
+             v-model='form.subTitle')
+    el-input(type='textarea',
+             placeholder='请输入摘要 可选',
+             v-model='form.abstract')
+    vmarkdown(v-if='$route.query.content_type ==="markdown"'
+              v-bind:markdown='form.markdown')
     veditor#veditor(style="height:400px;max-height:500px;", v-else)
     el-form-item(label='标签')
-      el-tag(:key='tag', v-for='tag in form.tags', :closable='true', :close-transition='false', @close='handleClose(tag)')
-        | {{tag}}
-      el-input.input-new-tag(v-if='inputVisible', v-model='inputValue', ref='saveTagInput', size='mini', @keyup.enter.native='handleInputConfirm', @blur='handleInputConfirm')
-      el-button.button-new-tag(v-else='', size='small', @click='showInput') + New Tag
+      el-tag(:key='tag',
+             v-for='tag in form.tags',
+             :closable='true',
+             :close-transition='false',
+             @close='handleClose(tag)') | {{tag}}
+      el-input.input-new-tag(v-if='inputVisible',
+                             v-model='inputValue',
+                             ref='saveTagInput',
+                             size='mini',
+                             @keyup.enter.native='handleInputConfirm',
+                             @blur='handleInputConfirm')
+      el-button.button-new-tag(v-else='',
+                               size='small',
+                               @click='showInput') + New Tag
     el-form-item(label='合集')
       el-select(v-model='form.column_id', placeholder='请选择')
-        el-option(v-for='item in columns', :label='item.title', :value='item.id')
+        el-option(v-for='item in columns',
+                  :label='item.title',
+                  :value='item.id')
     el-form-item(label='作者')
-      el-autocomplete(v-model='state4', :fetch-suggestions='querySearchAsync', placeholder='请输入内容', @select='handleSelect')
+      el-autocomplete(v-model='state4',
+                      :fetch-suggestions='querySearchAsync',
+                      placeholder='请输入内容',
+                      @select='handleSelect')
     el-form-item(label='共同作者')
-      el-autocomplete(v-model='state4', :fetch-suggestions='querySearchAsync', placeholder='请输入内容', @select='handleSelect')
-
+      el-autocomplete(v-model='state4',
+                      :fetch-suggestions='querySearchAsync',
+                      placeholder='请输入内容',
+                      @select='handleSelect')
+    el-form-item(label='时间')
+      el-date-picker(v-model='form.auto_publish_at',
+                     type='datetime',
+                     placeholder='选择日期时间')
+    el-form-item(label='切换Editor')
+      el-select(v-model='form.content_type', placeholder='请选择')
+        el-option(v-for='item in content_types',
+                  :label='item.title',
+                  :value='item.val')
+      p Tips: 切换不会保存内容
 </template>
 
 <script>
@@ -28,26 +59,21 @@ import api      from '../../stores/api'
 
 export default {
   name: 'add-post',
-  computed: {
-    isMarkdownEditor () {
-     return this.$store.state.isMarkdownEditor
-    },
-    isUpdate () {
-      return this.$route.query.id || undefined
-    },
-  },
   data () {
+    const content_type = this.$route.query.content_type || '';
     return {
       form: {
-        title:     '',
-        subTitle:  '',
-        headerImg: '',
-        sendAt:    '',
-        status:    'send',
-        html:      '',
-        markdown:  '',
-        tags: [],
-        column_id: '',
+        title:           '',
+        abstract:        '',
+        content_type:    content_type,
+        content_source:  '',
+        tags:            [],
+        column_id:       '',
+        picture:         '',
+        author_ids:      [],
+        auto_publish_at: '',
+        state:           'published',
+        meta:            {},
       },
       columns: [],
       inputVisible: false,
@@ -55,38 +81,18 @@ export default {
       editor:       {},
       restaurants: [],
       state4: '',
-      timeout:  null
+      timeout:  null,
+      content_types: [{
+        title: '富文本',
+        val: 'html',
+      },{
+        title: 'markdown',
+        val: 'markdown'
+      }],
     }
   },
   methods: {
     onSubmit() {
-      // let _this    = this,
-      // dispatch     = 'ADD_ADMIN_ITEM',
-      // url          = 'article';
-      // if (!this.form.title ||
-      //     this.form.status === 'schedule' &&
-      //     this.form.sendAt < Date.now()) {
-      //   this.$message.error('内容未填写');
-      //   return;
-      // }
-
-      // if (this.isMarkdownEditor) {
-      //   this.form.markdown = this.$store.state.editor.value();
-      // } else {
-      //   this.form.html = this.$store.state.editor.$txt.html();
-      // }
-
-      // if (this.isUpdate) {
-      //   dispatch = 'UPDATE_ADMIN_ITEM',
-      //   url = `article/${_this.form._id}`
-      // }
-
-      // this.$store.dispatch(dispatch, {
-      //   url: url,
-      //   msg: _this.$message,
-      //   data: _this.form,
-      //   cb: () => {_this.$set(_this, 'dialogVisible', true)}
-      // })
     },
     handleClose(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
@@ -109,7 +115,9 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+      var results = queryString ?
+                    restaurants.filter(this.createStateFilter(queryString)) :
+                    restaurants;
 
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -165,9 +173,20 @@ export default {
     handleSelect(item) {
       console.log(item);
     },
+    changeEditor () {
+
+    },
+  },
+  watch: {
+    'form.content_type': function (val) {
+      // console.log(`${this.$route.path}?content_type=${val}`)
+       this.$router.push(`${this.$route.path}?content_type=${val}`)
+       location.reload()
+    }
   },
   mounted () {
      getColumns(this)
+     console.log(this.$route)
      this.restaurants = this.loadAll();
   }
 }
@@ -187,24 +206,8 @@ function getColumns (_this) {
 
 <style lang="stylus">
 #add-post
-  .el-input, #editor-header, #editor
+  .el-input, #editor-header, #editor, #vmarkdown
     margin 10px 0
-
-  #editor-header
-    height 200px
-    line-height 200px
-    cursor pointer
-    font-size 2rem
-    overflow hidden
-    padding-left 20px
-
-    img
-      position absolute
-      top 0
-      left 0
-
-  .el-switch
-    margin-right 20px
 
 .el-autocomplete-suggestion
   border 1px solid #D7D7D7

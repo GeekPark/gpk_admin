@@ -1,6 +1,6 @@
 <template>
 <div id="vmarkdown">
-  <textarea class="markdown"></textarea>
+  <textarea id="markdown"></textarea>
 </div>
 </template>
 
@@ -15,10 +15,11 @@ export default {
   props:['markdown'],
   mounted () {
     var simplemde = new SimpleMDE({
+      element: document.getElementById("markdown"),
       autofocus: true,
       autosave: {
         enabled: true,
-        uniqueId: "MyUniqueID",
+        uniqueId: "vmarkdown",
         delay: 1000,
       },
       renderingConfig: {
@@ -37,7 +38,7 @@ export default {
 
 <style lang="stylus" scoped>
 #vmarkdown {
-  font-size: 2.2rem;
+  font-size: 2.0rem;
   line-height: 25px;
 }
 
