@@ -3,8 +3,8 @@ import Vuex       from 'vuex'
 
 import App        from './App'
 /* eslint-disable no-new */
-import { router } from './routers'
-import { store }  from './stores'
+import router     from './routers.js'
+import store      from './stores'
 import Element    from 'element-ui'
 import Vsider     from "./components/Vsider.vue"
 import Vheader    from "./components/Vheader.vue"

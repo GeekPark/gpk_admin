@@ -141,8 +141,7 @@ figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video
   margin 0
-  border 0
-  vertical-align baseline
+  padding 0
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section
@@ -165,7 +164,7 @@ table
   border-spacing 0
 
 html
-  font-size 50%
+  font-size 62.5%
 
 a
   text-decoration none

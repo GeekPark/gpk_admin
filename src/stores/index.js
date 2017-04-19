@@ -4,13 +4,9 @@ import api      from './api'
 
 Vue.use(Vuex)
 
-export const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
-    adminItems:       [],
-    uptoken:          '',
-    total:            {},
-    editor:           {},
-    isMarkdownEditor: false,
+    editor: {},
   },
 
   mutations: {

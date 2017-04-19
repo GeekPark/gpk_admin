@@ -21,17 +21,12 @@
             | 内容管理
           el-menu-item(index='/timeline') 信息流管理
           el-menu-item-group(title = '文章')
-            el-menu-item(index='/articles')  文章管理
-            el-menu-item(index='/addArticle') 添加文章
-            el-menu-item(index='/comments/article') 评论管理
-          el-menu-item-group(title = '投票')
-            el-menu-item(index='/votes')  投票管理
-            el-menu-item(index='/addVote') 添加投票
-            el-menu-item(index='/comments/vote') 评论管理
+            el-menu-item(index='/posts')  文章管理
+            el-menu-item(index='/post/add') 添加文章
         el-submenu(index='/2')
           template(slot='title')
             i.el-icon-more
-            | 关于 VMS
+            | 关于
           el-menu-item(index='/about') 关于
 
 </template>

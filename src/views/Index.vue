@@ -104,7 +104,8 @@ export default {
 
 .new-posts
   .grid-content
-    min-height 150px
+    min-height 155px
+    max-height 155px
     overflow hidden
   h1
     margin-bottom 20px

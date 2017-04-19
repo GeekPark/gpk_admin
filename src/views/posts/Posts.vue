@@ -1,5 +1,5 @@
 <template lang="jade">
-#admin-articles.admin
+#admin-posts.admin
   el-table(:data='postsData.posts',)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id', width="100")
@@ -29,7 +29,7 @@
 import api from '../../stores/api'
 
 export default {
-  name: 'admin-articles',
+  name: 'admin-posts',
   computed: {
   },
   data () {
