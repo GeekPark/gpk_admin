@@ -4,7 +4,7 @@ function fetch (_this = {}, currentPage = 1, url = '') {
   api._get({
     url: url,
     data: {
-      page: currentPage,
+      page: currentPage
     }
   }).then((result) => {
     console.log(result);
@@ -25,9 +25,9 @@ export default (options) => {
         listData: {
           meta: {
             total_count: 0,
-            limit_value: 0,
+            limit_value: 0
           }
-        },
+        }
       }
     },
     methods: {
@@ -37,7 +37,7 @@ export default (options) => {
       handleCurrentChange(val) {
         fetch(this, val, options.url)
         console.log(`当前页: ${val}`);
-      },
+      }
     },
     watch:{
       'listData.posts': function (val) {

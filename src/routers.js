@@ -56,7 +56,7 @@ const router = new VueRouter({
     { path: '*',
       component: Errors,
       meta: {title: `${base}Error`}
-    },
+    }
   ]
 })
 
