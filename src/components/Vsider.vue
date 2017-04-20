@@ -9,26 +9,43 @@
           //- i.el-icon-menu
           | 仪表盘 😂
 
-        el-submenu(index='/2')
+        el-submenu(index='/1')
           template(slot='title')
-            //- i.el-icon-setting
             | 用户管理
           el-menu-item(index='/users') 用户列表
           el-menu-item(index='/user/add') 添加用户
-        el-submenu(index='/1')
-          template(slot='title')
-            //- i.el-icon-document
-            | 内容管理
-          el-menu-item(index='/timeline') 信息流管理
-          el-menu-item-group(title = '文章')
-            el-menu-item(index='/posts')  文章管理
-            el-menu-item(index='/post/add?content_type=markdown') 添加文章
-          el-menu-item-group(title = '评论')
-            el-menu-item(index='/comments?type=posts') 评论列表
-            el-menu-item(index='/comments/blocked') 屏蔽管理
         el-submenu(index='/2')
           template(slot='title')
-            //- i.el-icon-more
+            | 文章
+          el-menu-item(index='/posts')  文章列表
+          el-menu-item(index='/post/add?content_type=markdown') 添加文章
+        el-submenu(index='/3')
+          template(slot='title')
+            | 评论
+          el-menu-item(index='/comments?type=posts') 评论列表
+          el-menu-item(index='/comments/blocked') 屏蔽管理
+        el-submenu(index='/4')
+          template(slot='title')
+            | 视频
+          el-menu-item(index='/videos') 视频列表
+          el-menu-item(index='/video/add') 添加视频
+        el-submenu(index='/5')
+          template(slot='title')
+            | 推广
+          el-menu-item(index='/intros') 推广列表
+          el-menu-item(index='/intro/add') 添加推广
+        el-submenu(index='/6')
+          template(slot='title')
+            | 广告
+          el-menu-item(index='/ads') 广告列表
+          el-menu-item(index='/ad/add') 添加广告
+        el-submenu(index='/8')
+          template(slot='title')
+            | 微信
+          el-menu-item(index='/wechats') 微信列表
+          el-menu-item(index='/wechat/add') 添加微信
+        el-submenu(index='/5')
+          template(slot='title')
             | 关于
           el-menu-item(index='/about') 关于
 
