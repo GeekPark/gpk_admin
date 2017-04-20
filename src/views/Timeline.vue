@@ -9,7 +9,7 @@
 
 <script>
 let isFirst = true
-import * as api from '../../stores/api'
+import api from '../stores/api'
 export default {
   name: 'admin-timeline',
   computed: {

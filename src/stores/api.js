@@ -1,5 +1,5 @@
-import config     from '../config'
-import {router} from '../routers'
+import config from '../config'
+import router from '../routers.js'
 
 const base_url = `${config.host}v1`
 
@@ -34,12 +34,17 @@ export default {
 
 // put
   _put : (req) => {
-    return axios({ method: 'put', url: `/${req.url}`, data: req.data })
+    return axios.put(`/${req.url}`,{data: req.data })
   },
 
 // post
   _post : (req) => {
-    return axios({ method: 'post', url: `/${req.url}`, data: req.data })
+    return axios.post(`/${req.url}`,{data: req.data })
+  },
+
+// post
+  _patch : (req) => {
+    return axios.patch(`/${req.url}`,{data: req.data })
   },
 
 // delete
