@@ -1,10 +1,11 @@
 language: node_js
 node_js:
   - "6"
+cache: yarn
 before_script:
   - cd src
   - cp config.example.js config.js
   - cd ..
-  - npm install
+  - yarn install
 script:
   - npm run build

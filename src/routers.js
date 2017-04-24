@@ -3,6 +3,7 @@ import VueRouter   from 'vue-router'
 import config      from './config'
 
 import Index       from './views/Index.vue'
+import Charts      from './views/Charts.vue'
 import Errors      from './views/Errors.vue'
 import Timeline    from './views/Timeline.vue'
 
@@ -24,28 +25,35 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/',
+      name: 'index',
       component: Index,
       meta: {title: `${base}首页`}
     },
-    { path: '/timeline',
-      component: Timeline,
-      meta: {title: `${base}内容`}
+
+    { path: '/charts',
+      name: 'charts',
+      component: Charts,
+      meta: {title: `${base}Charts`}
     },
 
     { path: '/users',
+      name: 'users',
       component: Users,
       meta: {title: `${base}用户`}
     },
-    { path: '/user/add',
+    { path: '/users/new',
+      name: 'users-new',
       component: AddUser,
       meta: {title: `${base}添加用户`}
     },
 
     { path: '/posts',
+      name: 'posts',
       component: Posts,
       meta: {title: `${base}文章`}
     },
-    { path: '/post/add',
+    { path: '/posts/new',
+      name: 'posts-new',
       component: AddPost,
       meta: {title: `${base}添加文章`}
     },

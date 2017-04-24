@@ -58,7 +58,6 @@ import tools    from '../../tools'
 import api      from '../../stores/api'
 
 export default {
-  name: 'add-post',
   data () {
     const content_type = this.$route.query.content_type || '';
     return {

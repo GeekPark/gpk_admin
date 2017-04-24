@@ -7,7 +7,7 @@ function fetch (_this = {}, currentPage = 1, url = '') {
       page: currentPage
     }
   }).then((result) => {
-    console.log(result);
+    // console.log(result);
     _this.listData = result.data
   }).catch((err) => {
     console.log(err);

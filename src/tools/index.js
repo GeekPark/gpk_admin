@@ -1,7 +1,7 @@
 import moment     from 'moment'
 import wangEditor from 'wangeditor'
 import config     from '../config.js'
-console.log(config);
+// console.log(config);
 const domain = config.qiniu
 
 function printLog(title, info) {
