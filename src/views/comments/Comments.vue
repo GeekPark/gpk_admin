@@ -3,17 +3,18 @@
   el-table(:data='listData.comments',)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id', width="100")
-    el-table-column(prop='content', label='内容'  )
-    el-table-column(prop='commentable_type', label=' commentable_type', width="100")
-    el-table-column(prop='state', label=' state')
-    el-table-column(prop='user_id', label='user_id', width="200")
+    el-table-column(prop='content', label='内容')
+    el-table-column(prop='state', label='状态', width="100")
+    el-table-column(label='来源')
+      template(scope='scope')
+        a() {{scope.row.commentable_title}}
     el-table-column(label='操作')
       template(scope='scope')
         el-button(size='small',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(size='small',
                   type='danger',
-                  @click='handleDelete(scope.$index, scope.row)') 删除
+                  @click='handleDestroy(scope.$index, scope.row, listData.comments)') 删除
         el-button(size='small',
                   type='danger',
                   @click='handleFilter(scope.$index, scope.row)') 加入过滤器

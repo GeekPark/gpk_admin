@@ -8,6 +8,9 @@ export default {
   ADD_ITEM: (state, obj) => {
     state[obj.key].unshift(obj.val)
   },
+  LOADING: (state, val) => {
+    state.isLoading = val
+  },
   UPDATE_ARRAY_ITEM: (state, obj) => {
     let array = state[obj.key]
     for (let item in array) {

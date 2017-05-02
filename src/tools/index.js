@@ -103,6 +103,6 @@ export default {
       }
     };
     editor.create();
-    vm.$store.commit('SET_ITEM', { key: 'editor', val: editor })
+    vm.$store.commit('SET_ITEM', { key: 'htmlEditor', val: editor })
   }
 }

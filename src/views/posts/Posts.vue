@@ -15,7 +15,7 @@
                   @click='handlePreview(scope.$index, scope.row)') 预览
         el-button(size='small',
                   type='danger',
-                  @click='handleDelete(scope.$index, scope.row)') 删除
+                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -28,7 +28,19 @@
 
 import Base from '../base'
 const vm = Base({
-  url: 'admin/posts'
+  url: 'admin/posts',
+  methods: {
+    handleEdit (index, row) {
+      this.$router.push(`posts/new?id=${row.id}`)
+    }
+  },
+  watch: {
+    'listData.posts': function (val) {
+      val.forEach(el => {
+        if (el.state === 'published') {el.state = '已发布'}
+      })
+    }
+  }
 });
 export default vm
 </script>

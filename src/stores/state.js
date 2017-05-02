@@ -1,4 +1,5 @@
 export default {
-  editor: {},
-  isLoading: false,
+  markdownEditor: {},
+  htmlEditor:     {},
+  isLoading:      false,
 }

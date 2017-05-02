@@ -29,7 +29,7 @@ export default {
     })
     simplemde.value(this.markdown || '')
     this.$store.commit('SET_ITEM', {
-      key: 'editor',
+      key: 'markdownEditor',
       val: simplemde
     })
   }
