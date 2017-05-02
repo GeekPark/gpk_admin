@@ -26,6 +26,9 @@ export default (options) => {
       fetch(this, {page: index}, options.url)
       console.log(`当前页: ${index}`)
     },
+    handleFilter() {
+
+    },
     handleDestroy(index, val, list) {
       api.delete(`${options.url}/${val.id}`, {}).then((result) => {
          this.$message.success('success')

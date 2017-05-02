@@ -69,10 +69,10 @@ export default {
         content_type:    content_type,
         content_source:  '',
         tags:            [],
-        column_id:       '',
+        column_id:       null,
         picture:         '',
         author_ids:      [],
-        auto_publish_at: '',
+        auto_publish_at: null,
         state:           'published',
         meta:            {},
       },
@@ -239,8 +239,10 @@ function createPost(_this) {
 function getPost(_this) {
   api.get(`admin/posts/${_this.$route.query.id}`)
   .then((result) => {
+    result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
     addContent(_this, _this.form.content_type)
+
   }).catch((err) => {
      _this.$message.error(err.toString())
   })

@@ -1,5 +1,21 @@
 <template lang="jade">
 #admin-comments.admin
+  h2 状态
+  el-radio-group(v-model="filterParams.state")
+    el-radio-button(label="") 所有
+    el-radio-button(label="normal") 正常
+    el-radio-button(label="spam") 已屏蔽
+  &nbsp &nbsp &nbsp
+  el-radio-group(v-model="filterParams.commentable_type")
+    el-radio-button(label="") 所有
+    el-radio-button(label="Post") 文章
+    el-radio-button(label="Ad") 广告
+  br
+  br
+  el-input(placeholder="请输入内容",
+           icon="search",
+           v-model="filterParams.content",
+           :on-icon-click="handleFilter")
   el-table(:data='listData.comments',)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id', width="100")
@@ -28,9 +44,29 @@
 
 <script>
 import Base from '../base'
+import api  from '../../stores/api'
+
 const vm = Base({
-  url: 'admin/comments'
-});
+  url: 'admin/comments',
+  filterUrl: 'admin/comments/filter',
+  data: {
+    filterParams: {
+      content: '',
+      state: '',
+      commentable_type: '',
+    },
+  },
+  methods: {
+  },
+  watch: {
+    'state': function (val) {
+      handleFilter()
+    },
+    'commentable_type': function (val) {
+      handleFilter()
+    }
+  }
+})
 export default vm
 </script>
 
