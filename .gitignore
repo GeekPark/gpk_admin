@@ -1,9 +1,9 @@
 # Logs
 logs
-dist
 *.log
 npm-debug.log*
 
+dist
 *config.js
 
 # Runtime data

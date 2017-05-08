@@ -1,21 +1,23 @@
 <template lang="jade">
 #admin-posts.admin
-  el-table(:data='listData.posts',)
+  el-table(:data='listData.posts' border)
     el-table-column(type="index", width="100")
-    el-table-column(prop='id', label='id', width="100")
-    el-table-column(prop='title', label='标题'  )
+    el-table-column(prop='id', label='id(test)', width="100")
+    el-table-column(prop='title', label='标题')
+    el-table-column(prop='author', label='作者')
+    el-table-column(prop='column_title', label='栏目')
+    el-table-column(prop='published_at', label='发布时间', width="200")
     el-table-column(prop='state', label=' 状态', width="100")
-    el-table-column(prop='column_title', label=' 专栏')
-    el-table-column(prop='published_at', label='发送时间', width="200")
+    el-table-column(prop='pv', label=' PV', width="100")
     el-table-column(label='操作')
       template(scope='scope')
-        el-button(size='small',
+        el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
-        el-button(size='small',
-                  @click='handlePreview(scope.$index, scope.row)') 预览
-        el-button(size='small',
-                  type='danger',
-                  @click='handleDelete(scope.$index, scope.row)') 删除
+        el-button(type='text',
+                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
+    el-table-column(label='加入推荐')
+      template(scope='scope')
+        el-switch(v-model="recommend" on-text="" off-text="")
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -27,8 +29,25 @@
 <script>
 
 import Base from '../base'
+import tool from '../../tools'
 const vm = Base({
-  url: 'admin/posts'
+  url: 'admin/posts',
+  data: {
+    recommend: false
+  },
+  methods: {
+    handleEdit (index, row) {
+      this.$router.push(`posts/new?id=${row.id}`)
+    }
+  },
+  watch: {
+    'listData.posts': function (val) {
+      val.forEach(el => {
+        if (el.state === 'published') {el.state = '已发布'}
+        el.published_at = tool.moment(el.published_at)
+      })
+    }
+  }
 });
 export default vm
 </script>

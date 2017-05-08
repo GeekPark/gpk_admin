@@ -1,5 +1,5 @@
 <template lang="jade">
-#app
+#app(v-loading="isLoading", element-loading-text="拼命加载中")
   vsider
   vheader
   transition(name="slide-fade")
@@ -11,6 +11,11 @@
 
 export default {
   name: 'app',
+  computed: {
+    isLoading () {
+      return this.$store.state.isLoading;
+    }
+  },
   mounted () {
   }
 }
@@ -24,12 +29,14 @@ $headerWidth = 60px
 html, body
   width 100%
   height 100%
+  margin 0
+  padding 0
   overflow-x hidden
 
 #app
   color #2c3e50
   background rgb(248, 248, 248)
-  height 100%
+  height calc(100%)
   width 100%
 
 .admin
@@ -78,7 +85,7 @@ html, body
   left 0
 
 .el-pagination
-  text-align center
+  text-align left
 
 .no-touch-bg
   user-select none

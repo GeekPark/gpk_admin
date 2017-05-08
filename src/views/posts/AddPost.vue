@@ -1,20 +1,27 @@
 <template lang="jade">
 #add-post.admin
   el-form(ref='form', :model='form', label-width='80px')
-    el-input(placeholder='请输入标题 必填', v-model='form.title')
-    el-input(placeholder='短标题，10~14汉字（两个英文字符算一个汉字） 可选',
-             v-model='form.subTitle')
-    el-input(type='textarea',
-             placeholder='请输入摘要 可选',
-             v-model='form.abstract')
-    vmarkdown(v-if='$route.query.content_type ==="markdown"'
+    el-form-item(label='切换')
+      el-select(v-model='form.content_type', placeholder='请选择')
+        el-option(v-for='item in content_types',
+                  :label='item.title',
+                  :value='item.val')
+    el-form-item(label='文章标题')
+      el-input(placeholder='请输入标题 必填', v-model='form.title')
+    el-form-item(label='摘要')
+      el-input(type='textarea',
+               placeholder='请输入摘要 可选',
+               v-model='form.abstract')
+    el-form-item(label='正文')
+      vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
-    veditor#veditor(style="height:400px;max-height:500px;", v-else)
+      veditor#veditor(style="height:400px;max-height:500px;", v-else)
     el-form-item(label='标签')
       el-tag(:key='tag',
              v-for='tag in form.tags',
              :closable='true',
              :close-transition='false',
+             type='primary',
              @close='handleClose(tag)') | {{tag}}
       el-input.input-new-tag(v-if='inputVisible',
                              v-model='inputValue',
@@ -25,31 +32,36 @@
       el-button.button-new-tag(v-else='',
                                size='small',
                                @click='showInput') + New Tag
-    el-form-item(label='合集')
+    el-form-item(label='栏目选择')
       el-select(v-model='form.column_id', placeholder='请选择')
         el-option(v-for='item in columns',
                   :label='item.title',
                   :value='item.id')
+    el-form-item(label='文章头图')
+      el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/posts/', mutiple)
+        i.el-icon-upload
+        .el-upload__text
+          | 将文件拖到此处，或
+          em 点击上传
+        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
     el-form-item(label='作者')
-      el-autocomplete(v-model='state4',
+      el-autocomplete(v-model='state',
                       :fetch-suggestions='querySearchAsync',
                       placeholder='请输入内容',
                       @select='handleSelect')
-    el-form-item(label='共同作者')
-      el-autocomplete(v-model='state4',
-                      :fetch-suggestions='querySearchAsync',
-                      placeholder='请输入内容',
-                      @select='handleSelect')
-    el-form-item(label='时间')
+    //- el-form-item(label='共同作者')
+    //-   el-autocomplete(v-model='state',
+    //-                   :fetch-suggestions='querySearchAsync',
+    //-                   placeholder='请输入内容',
+    //-                   @select='handleSelect')
+    el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
-    el-form-item(label='切换Editor')
-      el-select(v-model='form.content_type', placeholder='请选择')
-        el-option(v-for='item in content_types',
-                  :label='item.title',
-                  :value='item.val')
-      p Tips: 切换不会保存内容
+    el-form-item(label='')
+      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='success', @click='onSubmit') 发布
+      el-button(type='danger', @click='onSubmit') 发布
 </template>
 
 <script>
@@ -58,7 +70,6 @@ import tools    from '../../tools'
 import api      from '../../stores/api'
 
 export default {
-  name: 'add-post',
   data () {
     const content_type = this.$route.query.content_type || '';
     return {
@@ -68,10 +79,10 @@ export default {
         content_type:    content_type,
         content_source:  '',
         tags:            [],
-        column_id:       '',
+        column_id:       null,
         picture:         '',
         author_ids:      [],
-        auto_publish_at: '',
+        auto_publish_at: null,
         state:           'published',
         meta:            {},
       },
@@ -80,7 +91,7 @@ export default {
       inputValue:   '',
       editor:       {},
       restaurants: [],
-      state4: '',
+      state: '',
       timeout:  null,
       content_types: [{
         title: '富文本',
@@ -88,11 +99,19 @@ export default {
       },{
         title: 'markdown',
         val: 'markdown'
+      },{
+        title: 'plain',
+        val: 'plain'
       }],
     }
   },
   methods: {
     onSubmit() {
+      if (this.$route.query.id) {
+        updatePost(this)
+      } else {
+        createPost(this)
+      }
     },
     handleClose(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
@@ -172,33 +191,79 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
-    },
-    changeEditor () {
-
-    },
+    }
   },
   watch: {
     'form.content_type': function (val) {
-      // console.log(`${this.$route.path}?content_type=${val}`)
-       this.$router.push(`${this.$route.path}?content_type=${val}`)
-       location.reload()
+       this.$router.push(`${this.$route.path}?content_type=${val}&id=${this.$route.query.id}`)
+       addContent(this, val)
     }
   },
   mounted () {
      getColumns(this)
-     console.log(this.$route)
      this.restaurants = this.loadAll();
+     if (this.$route.query.id) {
+       getPost(this)
+     }
   }
 }
 
+function getContent(_this) {
+  if (_this.$route.query.content_type === 'html') {
+    _this.form.content_source = _this.$store.state.htmlEditor.$txt.html()
+  } else {
+    _this.form.content_source = _this.$store.state.markdownEditor.value()
+  }
+}
+
+function addContent(_this, val) {
+  setTimeout(() => {
+    if (val === 'html') {
+      _this.$store.state.htmlEditor.$txt.html(_this.form.content_source)
+    } else {
+      _this.$store.state.markdownEditor.value(_this.form.content_source)
+    }
+  },100)
+}
+
+function updatePost(_this) {
+  getContent(_this)
+  api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
+  .then((result) => {
+     _this.$message.success('success')
+  }).catch((err) => {
+     _this.$message.error(err.toString())
+  })
+}
+
+function createPost(_this) {
+  getContent(_this)
+  api.post('admin/posts', _this.form)
+  .then((result) => {
+     _this.$message.success('success')
+  }).catch((err) => {
+     _this.$message.error(err.toString())
+  })
+}
+
+function getPost(_this) {
+  api.get(`admin/posts/${_this.$route.query.id}`)
+  .then((result) => {
+    result.data.post.column_id = result.data.post.column.id
+    _this.form = result.data.post
+    addContent(_this, _this.form.content_type)
+
+  }).catch((err) => {
+     _this.$message.error(err.toString())
+  })
+}
+
+
 function getColumns (_this) {
-  api._get({
-    url: 'admin/columns',
-  }).then((result) => {
-    console.log(result);
+  api.get('admin/columns')
+  .then((result) => {
     _this.columns = result.data.columns
   }).catch((err) => {
-    console.log(err);
      _this.$message.error(err.toString())
   })
 }
@@ -206,8 +271,13 @@ function getColumns (_this) {
 
 <style lang="stylus">
 #add-post
-  .el-input, #editor-header, #editor, #vmarkdown
-    margin 10px 0
+
+  .el-input--mini
+      width 200px !important
+
+  .el-form-item
+    margin-bottom 5px !important
+
 
 .el-autocomplete-suggestion
   border 1px solid #D7D7D7
@@ -216,4 +286,12 @@ function getColumns (_this) {
   overflow-y scroll !important
   li
     padding 10px !important
+    list-style none !important
+
+.upload-demo
+  width 300px
+  border 1px dashed #d9d9d9
+  padding 10px
+  cursor pointer
+
 </style>

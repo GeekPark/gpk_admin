@@ -6,13 +6,13 @@ import App        from './App'
 import router     from './routers.js'
 import store      from './stores'
 import Element    from 'element-ui'
-import Vsider     from "./components/Vsider.vue"
-import Vheader    from "./components/Vheader.vue"
-import Vfooter    from "./components/Vfooter.vue"
-import Veditor    from "./components/Veditor.vue"
-import Commit     from "./components/Commit.vue"
-import Vsearch    from "./components/Vsearch.vue"
-import Vmarkdown  from "./components/Vmarkdown.vue"
+import Vsider     from './components/Vsider.vue'
+import Vheader    from './components/Vheader.vue'
+import Vfooter    from './components/Vfooter.vue'
+import Veditor    from './components/Veditor.vue'
+import Commit     from './components/Commit.vue'
+import Vsearch    from './components/Vsearch.vue'
+import Vmarkdown  from './components/Vmarkdown.vue'
 import hljs       from 'highlight.js'
 import VueDND     from 'awe-dnd'
 

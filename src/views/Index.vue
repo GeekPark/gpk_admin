@@ -18,16 +18,23 @@
     el-col(:span='24')
       h1 后台管理中心
   el-row(:gutter="20")
-    el-col(v-for='item in sections',:key='item.id', :span='Math.floor((24 / sections.length))')
+    el-col(v-for='item in sections',
+           :key='item.id',
+           :span='Math.floor((24 / sections.length))')
       .grid-content.bg-purple
-        h1.center {{item.title}}
+        router-link(:to='item.url').a-title-text.center {{item.title}}
   el-row
     el-col(:span='24')
       h1 快速访问
   el-row(:gutter="20")
-    el-col(v-for='item in quickly',:key='item.id', :span='Math.floor((24 / sections.length))')
+    el-col(v-for='item in quickly',
+           :key='item.id',
+           :span='Math.floor((24 / sections.length))')
       .grid-content.bg-purple
         a(:href='item.url', target='_blank').a-title-text.center {{item.title}}
+  el-row
+    el-col(:span='24')
+      h1 图表
 </template>
 
 <script>
@@ -35,26 +42,20 @@
 import api from '../stores/api'
 
 export default {
-
-  name: 'index',
-
   data () {
     return {
       sections: [{
         title: '文章管理',
-        url: '',
-      },{
-        title: '活动后台',
-        url: '',
+        url: '/posts',
       },{
         title: '用户管理',
-        url: '',
+        url: '/users',
       },{
         title: '广告管理',
-        url: '',
+        url: '/ads',
       },{
         title: '微信管理',
-        url: '',
+        url: '/wechats',
       }],
       quickly: [{
         title: '极客公园',
@@ -80,15 +81,12 @@ export default {
 
   methods: {
     fetch () {
-      const _this = this
-      api._get({
-        url: 'admin/posts',
-      }).then((result) => {
+      api.get('admin/posts').then((result) => {
         console.log(result);
-        _this.postsData = result.data
+        this.postsData = result.data
       }).catch((err) => {
         console.log(err);
-         _this.$message.error(err.toString())
+        this.$message.error(err.toString())
       })
     }
   },
@@ -102,7 +100,11 @@ export default {
 
 <style lang="stylus" scoped>
 
+.el-col
+  margin-bottom 20px
+
 .new-posts
+
   .grid-content
     min-height 155px
     max-height 155px
