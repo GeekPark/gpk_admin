@@ -1,6 +1,5 @@
 <template lang="jade">
 #admin-comments.admin
-  h2 状态
   el-radio-group(v-model="filterParams.state")
     el-radio-button(label="") 所有
     el-radio-button(label="normal") 正常
@@ -43,31 +42,62 @@
 </template>
 
 <script>
-import Base from '../base'
-import api  from '../../stores/api'
+import api from '../../stores/api'
+const url = 'admin/comments'
 
-const vm = Base({
-  url: 'admin/comments',
-  filterUrl: 'admin/comments/filter',
-  data: {
-    filterParams: {
-      content: '',
-      state: '',
-      commentable_type: '',
-    },
+export default {
+  data () {
+    return {
+      filterParams: {
+        commentable_type: "",
+        state: "",
+      },
+      currentPage: 1,
+      listData: {
+        meta: {
+          total_count: 0,
+          limit_value: 0
+        }
+      }
+    }
   },
   methods: {
-  },
-  watch: {
-    'state': function (val) {
-      handleFilter()
+    handleSizeChange(index, val) {
+      console.log(`每页 ${index} 条`)
     },
-    'commentable_type': function (val) {
-      handleFilter()
+    handleCurrentChange(index, val) {
+      this.currentPage = index
+      fetch(this, {page: index}, )
+      console.log(`当前页: ${index}`)
+    },
+    handleFilter() {
+      fetch(this, url, {
+        page: this.currentPage
+      })
+    },
+    handleDestroy(index, val, list) {
+      api.delete(`${options.url}/${val.id}`, {}).then((result) => {
+        this.$message.success('success')
+        list.splice(index, 1)
+      }).catch((err) => {
+        console.log(err)
+        this.$message.error(err.toString())
+      })
     }
+  },
+  mounted () {
+    fetch(this, url, {page: this.currentPage})
   }
-})
-export default vm
+}
+
+function fetch (_this = {}, url = '', params = {}) {
+  api.get(url, {params: params}).then((result) => {
+    _this.listData = result.data
+  }).catch((err) => {
+    console.log(err)
+     _this.$message.error(err.toString())
+  })
+}
 </script>
 
 <style lang="stylus" scoped>

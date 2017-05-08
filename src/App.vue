@@ -85,7 +85,7 @@ html, body
   left 0
 
 .el-pagination
-  text-align center
+  text-align left
 
 .no-touch-bg
   user-select none

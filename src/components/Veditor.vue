@@ -17,7 +17,7 @@ export default {
 
 <style lang="stylus" scoped>
 #veditor
-  font initial
-  margin-top 10px
-  margin-bottom 30px
+//   font initial
+//   margin-top 10px
+  margin-bottom 10px
 </style>

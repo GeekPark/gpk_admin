@@ -1,20 +1,27 @@
 <template lang="jade">
 #add-post.admin
   el-form(ref='form', :model='form', label-width='80px')
-    el-input(placeholder='请输入标题 必填', v-model='form.title')
-    el-input(placeholder='短标题，10~14汉字（两个英文字符算一个汉字） 可选',
-             v-model='form.subTitle')
-    el-input(type='textarea',
-             placeholder='请输入摘要 可选',
-             v-model='form.abstract')
-    vmarkdown(v-if='$route.query.content_type !=="html"'
+    el-form-item(label='切换')
+      el-select(v-model='form.content_type', placeholder='请选择')
+        el-option(v-for='item in content_types',
+                  :label='item.title',
+                  :value='item.val')
+    el-form-item(label='文章标题')
+      el-input(placeholder='请输入标题 必填', v-model='form.title')
+    el-form-item(label='摘要')
+      el-input(type='textarea',
+               placeholder='请输入摘要 可选',
+               v-model='form.abstract')
+    el-form-item(label='正文')
+      vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
-    veditor#veditor(style="height:400px;max-height:500px;", v-else)
+      veditor#veditor(style="height:400px;max-height:500px;", v-else)
     el-form-item(label='标签')
       el-tag(:key='tag',
              v-for='tag in form.tags',
              :closable='true',
              :close-transition='false',
+             type='primary',
              @close='handleClose(tag)') | {{tag}}
       el-input.input-new-tag(v-if='inputVisible',
                              v-model='inputValue',
@@ -25,33 +32,36 @@
       el-button.button-new-tag(v-else='',
                                size='small',
                                @click='showInput') + New Tag
-    el-form-item(label='合集')
+    el-form-item(label='栏目选择')
       el-select(v-model='form.column_id', placeholder='请选择')
         el-option(v-for='item in columns',
                   :label='item.title',
                   :value='item.id')
+    el-form-item(label='文章头图')
+      el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/posts/', mutiple)
+        i.el-icon-upload
+        .el-upload__text
+          | 将文件拖到此处，或
+          em 点击上传
+        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
     el-form-item(label='作者')
       el-autocomplete(v-model='state',
                       :fetch-suggestions='querySearchAsync',
                       placeholder='请输入内容',
                       @select='handleSelect')
-    el-form-item(label='共同作者')
-      el-autocomplete(v-model='state',
-                      :fetch-suggestions='querySearchAsync',
-                      placeholder='请输入内容',
-                      @select='handleSelect')
-    el-form-item(label='时间')
+    //- el-form-item(label='共同作者')
+    //-   el-autocomplete(v-model='state',
+    //-                   :fetch-suggestions='querySearchAsync',
+    //-                   placeholder='请输入内容',
+    //-                   @select='handleSelect')
+    el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
-    el-form-item(label='切换')
-      el-select(v-model='form.content_type', placeholder='请选择')
-        el-option(v-for='item in content_types',
-                  :label='item.title',
-                  :value='item.val')
-      span &nbsp Tips: 切换不会保存内容
-    el-form-item(label='提交')
-      el-button(type='primary', size="large", @click='onSubmit') 提交
+    el-form-item(label='')
+      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='success', @click='onSubmit') 发布
+      el-button(type='danger', @click='onSubmit') 发布
 </template>
 
 <script>
@@ -261,14 +271,12 @@ function getColumns (_this) {
 
 <style lang="stylus">
 #add-post
-  .el-input, #editor-header, #editor, #vmarkdown
-    margin 10px 0
 
   .el-input--mini
-    width 200px !important
+      width 200px !important
 
-.el-form-item
-  margin-bottom 5px !important
+  .el-form-item
+    margin-bottom 5px !important
 
 
 .el-autocomplete-suggestion
@@ -279,5 +287,11 @@ function getColumns (_this) {
   li
     padding 10px !important
     list-style none !important
+
+.upload-demo
+  width 300px
+  border 1px dashed #d9d9d9
+  padding 10px
+  cursor pointer
 
 </style>

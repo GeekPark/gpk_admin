@@ -81,15 +81,12 @@ export default {
 
   methods: {
     fetch () {
-      const _this = this
-      api._get({
-        url: 'admin/posts',
-      }).then((result) => {
+      api.get('admin/posts').then((result) => {
         console.log(result);
-        _this.postsData = result.data
+        this.postsData = result.data
       }).catch((err) => {
         console.log(err);
-         _this.$message.error(err.toString())
+        this.$message.error(err.toString())
       })
     }
   },

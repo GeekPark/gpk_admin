@@ -31,11 +31,11 @@ export default (options) => {
     },
     handleDestroy(index, val, list) {
       api.delete(`${options.url}/${val.id}`, {}).then((result) => {
-         this.$message.success('success')
-         list.splice(index, 1)
+        this.$message.success('success')
+        list.splice(index, 1)
       }).catch((err) => {
         console.log(err)
-         this.$message.error(err.toString())
+        this.$message.error(err.toString())
       })
   }}, methods)
 

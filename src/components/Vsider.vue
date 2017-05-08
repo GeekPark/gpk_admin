@@ -6,17 +6,14 @@
     el-col(:span='8')
       el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="dark")
         el-menu-item(index='/') 仪表盘
-        el-menu-item(index='/charts') 图表
-        el-submenu(index='/1')
-          template(slot='title')
-            | 用户管理
-          el-menu-item(index='/users') 用户列表
-          el-menu-item(index='/users/new') 添加用户
+        //- el-menu-item(index='/charts') 图表
         el-submenu(index='/2')
           template(slot='title')
             | 文章
           el-menu-item(index='/posts')  文章列表
-          el-menu-item(index='/posts/new?content_type=markdown') 添加文章
+          el-menu-item(index='/posts/new?content_type=html') 添加文章
+          el-menu-item(index='/posts/new?content_type=html') 分享统计
+          el-menu-item(index='/posts/new?content_type=html') 栏目管理
         el-submenu(index='/3')
           template(slot='title')
             | 评论
@@ -32,6 +29,11 @@
             | 广告
           el-menu-item(index='/ads') 广告列表
           el-menu-item(index='/ads/new') 添加广告
+        el-submenu(index='/1')
+          template(slot='title')
+            | 用户
+          el-menu-item(index='/users') 用户列表
+          el-menu-item(index='/users/new') 添加用户
         el-submenu(index='/8')
           template(slot='title')
             | 微信
