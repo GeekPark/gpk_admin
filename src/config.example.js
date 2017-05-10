@@ -2,10 +2,10 @@ const isDev = process.env.NODE_ENV === 'development'
 
 const config = {
   'development': {
-    'host': '',
+    'host': ''
   },
   'production': {
-    'host': '',
+    'host': ''
   }
 }
 

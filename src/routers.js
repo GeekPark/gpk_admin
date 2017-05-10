@@ -1,28 +1,31 @@
-import Vue         from 'vue'
-import VueRouter   from 'vue-router'
-import config      from './config'
+import Vue             from 'vue'
+import VueRouter       from 'vue-router'
+import config          from './config'
 
-import Index       from './views/Index.vue'
-import Charts      from './views/Charts.vue'
-import Errors      from './views/Errors.vue'
-import Timeline    from './views/Timeline.vue'
+import Index           from './views/Index.vue'
+import Charts          from './views/Charts.vue'
+import Errors          from './views/Errors.vue'
 
-import Posts       from './views/posts/Posts.vue'
-import AddPost     from './views/posts/AddPost.vue'
-import Share       from './views/posts/Share.vue'
+import Posts           from './views/information/Posts.vue'
+import AddPost         from './views/information/AddPost.vue'
+import Share           from './views/information/Share.vue'
+import Recommendations from './views/information/Recommendations.vue'
+import AddRecommend    from './views/information/AddRecommend.vue'
+import Topics          from './views/information/Topics.vue'
+import AddTopic        from './views/information/AddTopic.vue'
+import Columns         from './views/information/Columns.vue'
+import AddColumn       from './views/information/AddColumn.vue'
 
-import Ads       from './views/ads/Ads.vue'
-import AddAd     from './views/ads/AddAd.vue'
+import Ads             from './views/ads/Ads.vue'
+import AddAd           from './views/ads/AddAd.vue'
 
-import Users       from './views/users/Users.vue'
-import AddUser     from './views/users/AddUser.vue'
+import Users           from './views/users/Users.vue'
+import AddUser         from './views/users/AddUser.vue'
 
-import Comments    from './views/comments/Comments.vue'
+import Comments        from './views/comments/Comments.vue'
 
 
 Vue.use(VueRouter)
-
-const base = config.title
 
 const router = new VueRouter({
   mode: 'history',
@@ -60,10 +63,40 @@ const router = new VueRouter({
       component: AddPost,
       meta: {title: '添加文章'}
     },
-    { path: '/posts/share',
-      name: 'posts-share',
+    { path: '/share',
+      name: 'info-share',
       component:  Share,
       meta: {title: '分享统计'}
+    },
+    { path: '/recommendations',
+      name: 'info-recommendations',
+      component:  Recommendations,
+      meta: {title: '推荐列表'}
+    },
+    { path: '/recommendations/new',
+      name: 'info-recommendation-new',
+      component:  AddRecommend,
+      meta: {title: '推荐列表'}
+    },
+    { path: '/topics',
+      name: 'info-topics',
+      component:  Topics,
+      meta: {title: '专题列表'}
+    },
+    { path: '/topics/new',
+      name: 'info-topic-new',
+      component:  AddTopic,
+      meta: {title: '添加专题'}
+    },
+    { path: '/columns',
+      name: 'info-columns',
+      component:  Columns,
+      meta: {title: '栏目列表'}
+    },
+    { path: '/columns/new',
+      name: 'info-column-new',
+      component:  AddColumn,
+      meta: {title: '添加栏目'}
     },
 
     { path: '/ads',
@@ -78,6 +111,7 @@ const router = new VueRouter({
     },
 
     { path: '/comments',
+      name: 'comments',
       component: Comments,
       meta: {title: '评论'}
     },

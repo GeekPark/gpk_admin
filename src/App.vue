@@ -35,7 +35,7 @@ html, body
 
 #app
   color #2c3e50
-  background rgb(248, 248, 248)
+  background transparent
   height calc(100%)
   width 100%
 
@@ -56,8 +56,8 @@ html, body
   bottom 0
   left 0
   width $siderrWidth
-  height 100%
-  background-color #324157
+  height calc(100% - 60px)
+  background-color #eef1f6
   position fixed
   overflow-y scroll
   z-index 2
@@ -74,15 +74,15 @@ html, body
 
 #vheader
   height $headerWidth
-  width calc(100% - 230px)
-  margin-left $siderrWidth
+  width 100%
   padding-right 30px
-  background #324157
+  background #eef1f6
   position fixed
   z-index 2
   display block
   top 0
   left 0
+  box-shadow 0px 2px 10px 3px rgba(0,0,0,0.15);
 
 .el-pagination
   text-align left

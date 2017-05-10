@@ -1,6 +1,6 @@
 <template lang="jade">
 #add-post.admin
-  el-form(ref='form', :model='form', label-width='80px')
+  el-form(ref='form', :model='form', label-position='top')
     el-form-item(label='切换')
       el-select(v-model='form.content_type', placeholder='请选择')
         el-option(v-for='item in content_types',

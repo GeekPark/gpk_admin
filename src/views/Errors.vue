@@ -1,5 +1,5 @@
 <template lang="jade">
-#error
+#error.admin
   h1 来错地方了吧🐶
 </template>
 
