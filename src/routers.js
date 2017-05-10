@@ -11,6 +11,8 @@ import Posts       from './views/posts/Posts.vue'
 import AddPost     from './views/posts/AddPost.vue'
 import Share       from './views/posts/Share.vue'
 
+import Ads       from './views/ads/Ads.vue'
+import AddAd     from './views/ads/AddAd.vue'
 
 import Users       from './views/users/Users.vue'
 import AddUser     from './views/users/AddUser.vue'
@@ -63,6 +65,18 @@ const router = new VueRouter({
       component:  Share,
       meta: {title: '分享统计'}
     },
+
+    { path: '/ads',
+      name: 'ads',
+      component: Ads,
+      meta: {title: '广告列表'}
+    },
+    { path: '/ads/new',
+      name: 'ads-new',
+      component: AddAd,
+      meta: {title: '添加广告'}
+    },
+
     { path: '/comments',
       component: Comments,
       meta: {title: '评论'}

@@ -6,7 +6,7 @@
         el-option(v-for='item in content_types',
                   :label='item.title',
                   :value='item.val')
-    el-form-item(label='文章标题')
+    el-form-item(label='标题')
       el-input(placeholder='请输入标题 必填', v-model='form.title')
     el-form-item(label='摘要')
       el-input(type='textarea',
@@ -32,12 +32,12 @@
       el-button.button-new-tag(v-else='',
                                size='small',
                                @click='showInput') + New Tag
-    el-form-item(label='栏目选择')
+    el-form-item(label='栏目')
       el-select(v-model='form.column_id', placeholder='请选择')
         el-option(v-for='item in columns',
                   :label='item.title',
                   :value='item.id')
-    el-form-item(label='文章头图')
+    el-form-item(label='头图')
       el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/posts/', mutiple)
         i.el-icon-upload
         .el-upload__text
