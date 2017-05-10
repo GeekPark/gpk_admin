@@ -46,6 +46,7 @@
     "jade": "^1.11.0",
     "json-loader": "^0.5.4",
     "opn": "^5.0.0",
+    "ora": "^1.2.0",
     "shelljs": "^0.7.7",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.4.0",
