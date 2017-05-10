@@ -60,8 +60,8 @@
                      placeholder='选择日期时间')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
-      el-button(type='success', @click='onSubmit') 发布
-      el-button(type='danger', @click='onSubmit') 发布
+      el-button(type='success', @click='onSubmit') 存草稿
+      el-button(type='danger', @click='onSubmit') 取消
 </template>
 
 <script>

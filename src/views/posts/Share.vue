@@ -2,13 +2,7 @@
 #admin-posts.admin
   .title
     h1 {{$route.meta.title}}
-    el-button(type='text', @click="$router.push('/posts/new')") 添加文章
   .filter
-    el-button(type='text', @click='handleEdit()') 全部
-    | /
-    el-button(type='text', @click='handleEdit()') 草稿
-    | /
-    el-button(type='text', @click='handleEdit()') 已删除
     el-input(placeholder="搜索",
              icon="search",
              v-model="input2",
@@ -18,19 +12,11 @@
     el-table-column(prop='id', label='id(test)', width="100")
     el-table-column(prop='title', label='标题')
     el-table-column(prop='author', label='作者')
-    el-table-column(prop='column_title', label='栏目')
     el-table-column(prop='published_at', label='发布时间', width="200")
-    el-table-column(prop='state', label=' 状态', width="100")
-    el-table-column(prop='pv', label=' PV', width="100")
-    el-table-column(label='操作')
-      template(scope='scope')
-        el-button(type='text',
-                  @click='handleEdit(scope.$index, scope.row)') 编辑
-        el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
-    el-table-column(label='加入推荐')
-      template(scope='scope')
-        el-switch(v-model="recommend" on-text="" off-text="")
+    el-table-column(prop='', label='微信分享')
+    el-table-column(prop='', label='Twitter分享')
+    el-table-column(prop='', label='LinkedIn分享')
+    el-table-column(prop='', label='总计')
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',

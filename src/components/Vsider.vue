@@ -12,18 +12,18 @@
             | 文章
           el-menu-item(index='/posts')  文章列表
           el-menu-item(index='/posts/new?content_type=html') 添加文章
-          el-menu-item(index='/posts/new?content_type=html') 分享统计
+          el-menu-item(index='/posts/share') 分享统计
           el-menu-item(index='/posts/new?content_type=html') 栏目管理
         el-submenu(index='/3')
           template(slot='title')
             | 评论
           el-menu-item(index='/comments?type=posts') 评论列表
           el-menu-item(index='/comments/blocked') 屏蔽管理
-        el-submenu(index='/4')
-          template(slot='title')
-            | 视频
-          el-menu-item(index='/videos') 视频列表
-          el-menu-item(index='/videos/new') 添加视频
+        //- el-submenu(index='/4')
+        //-   template(slot='title')
+        //-     | 视频
+        //-   el-menu-item(index='/videos') 视频列表
+        //-   el-menu-item(index='/videos/new') 添加视频
         el-submenu(index='/6')
           template(slot='title')
             | 广告
