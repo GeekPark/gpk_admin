@@ -1,12 +1,12 @@
 <template lang="jade">
 #add-post.admin
-  el-form(ref='form', :model='form', label-width='80px')
+  el-form(ref='form', :model='form', label-position='top')
     el-form-item(label='切换')
       el-select(v-model='form.content_type', placeholder='请选择')
         el-option(v-for='item in content_types',
                   :label='item.title',
                   :value='item.val')
-    el-form-item(label='文章标题')
+    el-form-item(label='标题')
       el-input(placeholder='请输入标题 必填', v-model='form.title')
     el-form-item(label='摘要')
       el-input(type='textarea',
@@ -32,12 +32,12 @@
       el-button.button-new-tag(v-else='',
                                size='small',
                                @click='showInput') + New Tag
-    el-form-item(label='栏目选择')
+    el-form-item(label='栏目')
       el-select(v-model='form.column_id', placeholder='请选择')
         el-option(v-for='item in columns',
                   :label='item.title',
                   :value='item.id')
-    el-form-item(label='文章头图')
+    el-form-item(label='头图')
       el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/posts/', mutiple)
         i.el-icon-upload
         .el-upload__text
@@ -60,8 +60,8 @@
                      placeholder='选择日期时间')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
-      el-button(type='success', @click='onSubmit') 发布
-      el-button(type='danger', @click='onSubmit') 发布
+      el-button(type='success', @click='onSubmit') 存草稿
+      el-button(type='danger', @click='onSubmit') 取消
 </template>
 
 <script>

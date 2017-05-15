@@ -1,10 +1,11 @@
 <template lang="jade">
 #vheader
-  el-menu.el-menu-demo(theme='dark',
+  router-link(to="/")
+      img(src="../assets/imgs/copyright.png")
+  el-menu.el-menu-demo(theme='light',
                        :default-active='activeIndex',
                        mode='horizontal',
                        @select='handleSelect')
-    el-menu-item(index='email') {{email}}
     el-submenu(index='profile')
       template(slot='title') 个人中心
       el-menu-item(index='profile') 账号
@@ -58,5 +59,9 @@ export default {
 <style lang="stylus" scoped>
 .el-menu
   float right
+  margin-right 45px
+img
+  height 30px
+  margin 15px 20px
 </style>
 

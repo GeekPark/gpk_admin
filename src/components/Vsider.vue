@@ -1,29 +1,29 @@
 <template lang="jade">
 #vsider
   el-row.tac
-    router-link(to="/")
-      img(src="../assets/imgs/copyright.png")
     el-col(:span='8')
-      el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="dark")
-        el-menu-item(index='/') 仪表盘
-        //- el-menu-item(index='/charts') 图表
+      el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="light")
         el-submenu(index='/2')
           template(slot='title')
-            | 文章
-          el-menu-item(index='/posts')  文章列表
-          el-menu-item(index='/posts/new?content_type=html') 添加文章
-          el-menu-item(index='/posts/new?content_type=html') 分享统计
-          el-menu-item(index='/posts/new?content_type=html') 栏目管理
+            | 资讯管理
+          el-menu-item-group(title='文章')
+            el-menu-item(index='/posts')  文章列表
+            el-menu-item(index='/posts/new?content_type=html') 添加文章
+          el-menu-item-group(title='栏目')
+            el-menu-item(index='/columns') 栏目列表
+            el-menu-item(index='/columns/new') 添加栏目
+          el-menu-item-group(title='专题')
+            el-menu-item(index='/topics') 专题列表
+            el-menu-item(index='/topics/new') 添加专题
+          el-menu-item-group(title='极客推荐')
+            el-menu-item(index='/recommendations') 推荐列表
+            el-menu-item(index='/recommendations/new') 添加推荐
+          el-menu-item-group(title='分享')
+            el-menu-item(index='/share') 分享统计
         el-submenu(index='/3')
           template(slot='title')
             | 评论
           el-menu-item(index='/comments?type=posts') 评论列表
-          el-menu-item(index='/comments/blocked') 屏蔽管理
-        el-submenu(index='/4')
-          template(slot='title')
-            | 视频
-          el-menu-item(index='/videos') 视频列表
-          el-menu-item(index='/videos/new') 添加视频
         el-submenu(index='/6')
           template(slot='title')
             | 广告
@@ -39,10 +39,6 @@
             | 微信
           el-menu-item(index='/wechats') 微信列表
           el-menu-item(index='/wechats/new') 添加微信
-        el-submenu(index='/5')
-          template(slot='title')
-            | 关于
-          el-menu-item(index='/about') 关于
 
 </template>
 
