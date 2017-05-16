@@ -42,7 +42,7 @@
 <script>
 
 import Base from '../base'
-import tool from '../../tools'
+import tool from 'tools'
 const vm = Base({
   url: 'admin/posts',
   data: {
@@ -70,19 +70,5 @@ export default vm
 </script>
 
 <style lang="stylus" scoped>
-.title
-  float left
-  h1
-    display inline-block
-    margin-right 20px
 
-
-.filter
-  margin-bottom 20px
-  float right
-  .el-button
-    margin-left 0px
-  .el-input
-    margin-left 20px
-    width 200px
 </style>

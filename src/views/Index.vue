@@ -39,7 +39,7 @@
 
 <script>
 
-import api from '../stores/api'
+import api from 'stores/api'
 
 export default {
   data () {

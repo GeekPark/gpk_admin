@@ -23,8 +23,8 @@
 
 <script>
 
-import tools    from '../../tools'
-import api      from '../../stores/api'
+import tools    from 'tools'
+import api      from 'stores/api'
 
 export default {
   data () {

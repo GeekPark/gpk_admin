@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import * as api from '../stores/api'
+import * as api from 'stores/api'
 export default {
   name: 'vsearch',
   data () {

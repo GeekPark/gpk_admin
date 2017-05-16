@@ -8,7 +8,7 @@
 </template>
 
 <script>
-
+import api from 'stores/api'
 export default {
   name: 'app',
   computed: {
@@ -108,6 +108,22 @@ html, body
 .slide-fade-enter, .slide-fade-leave-active
   transform translateX(10px)
   opacity 0
+
+.title
+  float left
+  h1
+    display inline-block
+    margin-right 20px
+
+
+.filter
+  margin-bottom 20px
+  float right
+  .el-button
+    margin-left 0px
+  .el-input
+    margin-left 20px
+    width 200px
 
 .el-row
   margin-bottom 20px

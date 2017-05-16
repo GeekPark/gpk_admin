@@ -21,8 +21,8 @@
 
 <script>
 
-import tools    from '../../tools'
-import api      from '../../stores/api'
+import tools    from 'tools'
+import api      from 'stores/api'
 
 export default {
   data () {
@@ -56,7 +56,7 @@ export default {
 }
 
 function updateAd(_this) {
-  api.put(`admin/columns/${_this.$route.query.id}`, _this.form)
+  api.put(`admin/topics/${_this.$route.query.id}`, _this.form)
   .then((result) => {
      _this.$message.success('success')
   }).catch((err) => {
@@ -65,7 +65,7 @@ function updateAd(_this) {
 }
 
 function createAd(_this) {
-  api.post('admin/columns', _this.form)
+  api.post('admin/topics', _this.form)
   .then((result) => {
      _this.$message.success('success')
   }).catch((err) => {
@@ -74,7 +74,7 @@ function createAd(_this) {
 }
 
 function getAd(_this) {
-  api.get(`admin/columns/${_this.$route.query.id}`)
+  api.get(`admin/topics/${_this.$route.query.id}`)
   .then((result) => {
     result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post

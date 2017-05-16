@@ -1,22 +1,24 @@
 <template lang="jade">
 #add-post.admin
   el-form(ref='form', :model='form', label-position='top')
-    el-form-item(label='切换')
-      el-select(v-model='form.content_type', placeholder='请选择')
-        el-option(v-for='item in content_types',
-                  :label='item.title',
-                  :value='item.val')
     el-form-item(label='标题')
       el-input(placeholder='请输入标题 必填', v-model='form.title')
     el-form-item(label='摘要')
       el-input(type='textarea',
                placeholder='请输入摘要 可选',
                v-model='form.abstract')
+    el-form-item(label='CCID')
+      el-input(placeholder='极客制造栏目专用', v-model='form.title')
+    el-form-item(label='写作模式')
+      el-select(v-model='form.content_type', placeholder='请选择')
+        el-option(v-for='item in content_types',
+                  :label='item.title',
+                  :value='item.val')
     el-form-item(label='正文')
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
       veditor#veditor(style="height:400px;max-height:500px;", v-else)
-    el-form-item(label='标签')
+    el-form-item(label='添加标签')
       el-tag(:key='tag',
              v-for='tag in form.tags',
              :closable='true',
@@ -32,28 +34,17 @@
       el-button.button-new-tag(v-else='',
                                size='small',
                                @click='showInput') + New Tag
-    el-form-item(label='栏目')
+    el-form-item(label='栏目选择')
       el-select(v-model='form.column_id', placeholder='请选择')
         el-option(v-for='item in columns',
                   :label='item.title',
                   :value='item.id')
-    el-form-item(label='头图')
-      el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/posts/', mutiple)
-        i.el-icon-upload
-        .el-upload__text
-          | 将文件拖到此处，或
-          em 点击上传
-        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
+    upload
     el-form-item(label='作者')
       el-autocomplete(v-model='state',
                       :fetch-suggestions='querySearchAsync',
                       placeholder='请输入内容',
                       @select='handleSelect')
-    //- el-form-item(label='共同作者')
-    //-   el-autocomplete(v-model='state',
-    //-                   :fetch-suggestions='querySearchAsync',
-    //-                   placeholder='请输入内容',
-    //-                   @select='handleSelect')
     el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
@@ -66,8 +57,8 @@
 
 <script>
 
-import tools    from '../../tools'
-import api      from '../../stores/api'
+import tools    from 'tools'
+import api      from 'stores/api'
 
 export default {
   data () {
@@ -271,7 +262,6 @@ function getColumns (_this) {
 
 <style lang="stylus">
 #add-post
-
   .el-input--mini
       width 200px !important
 
@@ -287,11 +277,4 @@ function getColumns (_this) {
   li
     padding 10px !important
     list-style none !important
-
-.upload-demo
-  width 300px
-  border 1px dashed #d9d9d9
-  padding 10px
-  cursor pointer
-
 </style>

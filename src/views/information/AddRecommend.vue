@@ -28,7 +28,7 @@
 <script>
 
 import Base from '../base'
-import tool from '../../tools'
+import tool from 'tools'
 const vm = Base({
   url: 'admin/columns',
   data: {

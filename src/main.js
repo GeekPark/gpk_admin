@@ -4,24 +4,23 @@ import Vuex       from 'vuex'
 import App        from './App'
 /* eslint-disable no-new */
 import router     from './routers.js'
-import store      from './stores'
+import store      from 'stores'
 import Element    from 'element-ui'
-import Vsider     from './components/Vsider.vue'
-import Vheader    from './components/Vheader.vue'
-import Vfooter    from './components/Vfooter.vue'
-import Veditor    from './components/Veditor.vue'
-import Vsearch    from './components/Vsearch.vue'
-import Vmarkdown  from './components/Vmarkdown.vue'
+import Vsider     from 'components/Vsider.vue'
+import Vheader    from 'components/Vheader.vue'
+import Vfooter    from 'components/Vfooter.vue'
+import Veditor    from 'components/Veditor.vue'
+import Upload    from 'components/Upload.vue'
+import Vmarkdown  from 'components/Vmarkdown.vue'
 import hljs       from 'highlight.js'
-import VueDND     from 'awe-dnd'
+// import VueDND     from 'awe-dnd'
 
-Vue.use(VueDND)
 Vue.use(Element)
 Vue.component(Vheader.name,   Vheader)
 Vue.component(Vfooter.name,   Vfooter)
 Vue.component(Vsider.name,    Vsider)
 Vue.component(Veditor.name,   Veditor)
-Vue.component(Vsearch.name,   Vsearch)
+Vue.component(Upload.name,    Upload)
 Vue.component(Vmarkdown.name, Vmarkdown)
 
 

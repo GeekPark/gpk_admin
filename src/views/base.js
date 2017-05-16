@@ -1,4 +1,4 @@
-import api from '../stores/api'
+import api from 'stores/api'
 
 function fetch (_this = {}, params = {}, url = '') {
   api.get(url, {params: params}).then((result) => {

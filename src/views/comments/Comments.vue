@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import api  from '../../stores/api'
-import tool from '../../tools'
+import api  from 'stores/api'
+import tool from 'tools'
 
 const url = 'admin/comments'
 

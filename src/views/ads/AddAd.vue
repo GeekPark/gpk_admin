@@ -3,7 +3,7 @@
   el-form(ref='form', :model='form', label-width='80px')
     el-form-item(label='标题')
       el-input(placeholder='请输入标题 必填', v-model='form.title')
-    el-form-item(label='网页链接')
+    el-form-item(label='跳转链接')
       el-input(placeholder='请输入网页链接', v-model='form.link')
     el-form-item(label='视频地址')
       el-input(placeholder='请输入视频地址', v-model='form.link')
@@ -15,7 +15,9 @@
       el-date-picker(v-model='form.active_through',
                      type='datetime',
                      placeholder='选择日期时间')
-    el-form-item(label='头图')
+    el-form-item(label='结束时间')
+    el-form-item(label='广告标识')
+    el-form-item(label='图片')
       el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/ads/', mutiple)
         i.el-icon-upload
         .el-upload__text
@@ -29,8 +31,8 @@
 
 <script>
 
-import tools    from '../../tools'
-import api      from '../../stores/api'
+import tools    from 'tools'
+import api      from 'stores/api'
 
 export default {
   data () {
