@@ -1,5 +1,7 @@
 <template lang="jade">
 #add-post.admin
+  .title
+    h1 {{$route.meta.title}}
   el-form(ref='form', :model='form', label-position='top')
     el-form-item(label='标题')
       el-input(placeholder='请输入标题 必填', v-model='form.title')

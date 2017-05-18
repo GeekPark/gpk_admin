@@ -23,42 +23,38 @@
     br
     h2 操作
     el-form-item(label="编辑权限: ")
-    //- company:null
-    //- created_at:"2017-05-16 17:20:42"
-    //- authorizations:Array[0]
-    //- bio:"fdf"
-    //- avatar_url:"/uploads/user/avatar/f3435f2a-e1d4-4110-93d1-cbf532555288/0f2d8874d20dd104e33276b27cbc1b3d.jpg"
-    //- city:null
-    //- birthday:null
-    //- is_old:false
-    //- gender:"not_sure"
-    //- email:"k****@yahoo.com"
-    //- id:"f3435f2a-e1d4-4110-93d1-cbf532555288"
-    //- mobile:null
-    //- nickname:"kevinwang"
-    //- preference:Object
-    //- realname:null
-    //- roles:Array[1]
-    //- title:null
-    //- two_factor_enable:null
+      el-select(v-model="user.roles",placeholder="请选择", multiple)
+        el-option(v-for="item in roles", :label="item", :value="item")
+    el-form-item(label='')
+      el-button(type='primary', @click='onSubmit') 保存
 </template>
 
 <script>
-const base_url = 'admin/users'
 
 import api from 'stores/api'
 import tools from 'tools'
 
 export default {
   mounted () {
-    fetch(this, `${base_url}/${this.$route.params.id}`, 'user')
+    fetch(this, `admin/users/${this.$route.params.id}`, 'user')
+    fetch(this, 'api/v1/user/possible_roles', 'roles')
+    // fetch(this, 'my/access_key', 'access_token')
   },
   data () {
     return {
-      user: {}
+      user: {},
+      roles: [],
+      access_token: '',
     }
   },
   methods: {
+    onSubmit() {
+      api.account.put(`admin/users/${this.$route.params.id}`, {
+        roles: this.user.roles,
+      }).then(result => {
+        console.log(result)
+      })
+    }
   },
   watch: {
     'user': (val) => {

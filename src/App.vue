@@ -125,6 +125,9 @@ html, body
     margin-left 20px
     width 200px
 
+.el-form
+  clear both
+
 .el-row
   margin-bottom 20px
   &:last-child

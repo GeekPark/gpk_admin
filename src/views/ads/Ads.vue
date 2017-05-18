@@ -13,7 +13,7 @@
              icon="search",
              v-model="input2",
              :on-icon-click="handleIconClick")
-  el-table(:data='listData.posts' border)
+  el-table(:data='listData.ads' border)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id(test)', width="100")
     el-table-column(prop='', label='标题')

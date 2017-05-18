@@ -12,7 +12,7 @@
              icon="search",
              v-model="input",
              :on-icon-click="handleIconClick")
-  el-table(:data='listData.users', @current-change="rowClick" border)
+  el-table(:data='listData.json', @current-change="rowClick" border)
     el-table-column(type="index", width="100")
     el-table-column(prop='', label='注册方式')
     el-table-column(prop='email', label='邮箱')
@@ -24,7 +24,7 @@
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.users)') 删除
+                  @click='handleDestroy(scope.$index, scope.row, listData.json)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='page',
@@ -73,7 +73,7 @@ export default {
     }
   },
   watch: {
-    'listData.users': (val) => {
+    'listData.json': (val) => {
       val.forEach(el => {
         el.created_at = tools.moment(el.created_at)
       })
