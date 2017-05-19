@@ -10,19 +10,20 @@ import Vsider     from 'components/Vsider.vue'
 import Vheader    from 'components/Vheader.vue'
 import Vfooter    from 'components/Vfooter.vue'
 import Veditor    from 'components/Veditor.vue'
-import Upload    from 'components/Upload.vue'
+import Upload     from 'components/Upload.vue'
+import SearchUser from 'components/SearchUser.vue'
 import Vmarkdown  from 'components/Vmarkdown.vue'
 import hljs       from 'highlight.js'
 // import VueDND     from 'awe-dnd'
 
 Vue.use(Element)
-Vue.component(Vheader.name,   Vheader)
-Vue.component(Vfooter.name,   Vfooter)
-Vue.component(Vsider.name,    Vsider)
-Vue.component(Veditor.name,   Veditor)
-Vue.component(Upload.name,    Upload)
-Vue.component(Vmarkdown.name, Vmarkdown)
-
+Vue.component(Vheader.name,    Vheader)
+Vue.component(Vfooter.name,    Vfooter)
+Vue.component(Vsider.name,     Vsider)
+Vue.component(Veditor.name,    Veditor)
+Vue.component(Upload.name,     Upload)
+Vue.component(Vmarkdown.name,  Vmarkdown)
+Vue.component(SearchUser.name, SearchUser)
 
 Vue.directive('highlightjs', el => {
   let blocks = el.querySelectorAll('pre');
