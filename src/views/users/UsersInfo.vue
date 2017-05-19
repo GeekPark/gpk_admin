@@ -25,6 +25,8 @@
     el-form-item(label="编辑权限: ")
       el-select(v-model="user.roles",placeholder="请选择", multiple)
         el-option(v-for="item in roles", :label="item", :value="item")
+    el-form-item(label='是否禁言:')
+      el-switch(v-model="block", on-text="", off-text="", @change='blockChange')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 保存
 </template>
@@ -37,7 +39,7 @@ import tools from 'tools'
 export default {
   mounted () {
     fetch(this, `admin/users/${this.$route.params.id}`, 'user')
-    fetch(this, 'api/v1/user/possible_roles', 'roles')
+    fetch(this, 'api/v1/users/possible_roles', 'roles')
     // fetch(this, 'my/access_key', 'access_token')
   },
   data () {
@@ -45,6 +47,7 @@ export default {
       user: {},
       roles: [],
       access_token: '',
+      block: false
     }
   },
   methods: {
@@ -54,6 +57,10 @@ export default {
       }).then(result => {
         console.log(result)
       })
+    },
+    blockChange(val) {
+      console.log(val);
+      ban(this, val ? 'ban' : 'unban')
     }
   },
   watch: {
@@ -66,6 +73,15 @@ export default {
 function fetch (_this, url, key) {
   api.account.get(url).then(result => {
     _this[key] = result.data
+  })
+}
+
+function ban (_this, action) {
+  api
+  .account
+  .post(`admin/users/${_this.$route.params.id}/${action}`)
+  .then(result => {
+    console.log(result)
   })
 }
 </script>

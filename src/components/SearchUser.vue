@@ -19,6 +19,7 @@ export default {
       states: []
     }
   },
+  props: ['callback'],
   methods: {
      remoteMethod(query) {
         if (query !== '') {
@@ -43,6 +44,11 @@ export default {
           this.searchData = [];
         }
       }
+  },
+  watch: {
+    'select': (val) => {
+
+    }
   },
   mounted () {
     this.list = this.states.map(item => {
