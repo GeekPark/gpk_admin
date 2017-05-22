@@ -9,13 +9,7 @@
       el-input(type='textarea', placeholder='', v-model='form.description')
     el-form-item(label='关联文章')
     el-form-item(label='展品类别')
-    el-form-item(label='背景封面')
-      el-upload.upload-demo(drag="", action='', mutiple)
-        i.el-icon-upload
-        .el-upload__text
-          | 将文件拖到此处，或
-          em 点击上传
-        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
+    upload(:callback='uploadImage')
     el-form-item(label='作者')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
@@ -49,6 +43,9 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
+    },
+    uploadImage(img) {
+      this.form.cover_id = img.id
     }
   },
   mounted () {

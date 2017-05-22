@@ -15,15 +15,13 @@
       el-date-picker(v-model='form.active_through',
                      type='datetime',
                      placeholder='选择日期时间')
-    el-form-item(label='结束时间')
+    el-form-item(label='广告位置')
+      el-select(v-model='form.position', placeholder='请选择')
+        el-option(v-for='item in positions',
+                  :label='item',
+                  :value='item')
     el-form-item(label='广告标识')
-    el-form-item(label='图片')
-      el-upload.upload-demo(drag="", action='//jsonplaceholder.typicode.com/ads/', mutiple)
-        i.el-icon-upload
-        .el-upload__text
-          | 将文件拖到此处，或
-          em 点击上传
-        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
+    upload(:callback='uploadImage')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭
@@ -42,9 +40,10 @@ export default {
         active_through: '',
         picture: '',
         link: '',
-        position: [],
+        position: '',
         title: ''
-      }
+      },
+      positions: ['banner', 'logo', 'top_left', 'top_right']
     }
   },
   methods: {
@@ -57,6 +56,9 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
+    },
+    uploadImage(img) {
+      this.form.cover_id = img.id
     }
   },
   mounted () {

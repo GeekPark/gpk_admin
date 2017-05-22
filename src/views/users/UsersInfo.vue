@@ -17,8 +17,8 @@
     h2 账号状态
     el-form-item(label="邮箱绑定: ") {{user.email ? '是' : '否'}}
     el-form-item(label="手机绑定: ") {{user.mobile ? '是' : '否'}}
-    el-form-item(label="微信绑定: ")
-    el-form-item(label="微博绑定: ")
+    el-form-item(label="微信绑定: ") {{user.wechat_enabled ? '是' : '否'}}
+    el-form-item(label="微博绑定: ") {{user.weibo_enabled ? '是' : '否'}}
     el-form-item(label="两步验证: ") {{user.two_factor_enable ? '是' : '否'}}
     br
     h2 操作
