@@ -17,9 +17,11 @@ export default {
       return `${config.host}v1/admin/images`
     }
   },
+  props: ['callback'],
   methods: {
     onSuccess (response, file, fileList) {
       console.log(response.image)
+      this.callback(response.image)
     }
   }
 }

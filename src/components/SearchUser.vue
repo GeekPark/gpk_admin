@@ -33,13 +33,6 @@ export default {
             });
 
           })
-          // setTimeout(() => {
-          //   this.loading = false;
-          //   this.searchData = this.list.filter(item => {
-          //     return item.label.toLowerCase()
-          //       .indexOf(query.toLowerCase()) > -1;
-          //   });
-          // }, 200);
         } else {
           this.searchData = [];
         }

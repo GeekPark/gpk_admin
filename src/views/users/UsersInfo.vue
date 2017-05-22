@@ -26,7 +26,7 @@
       el-select(v-model="user.roles",placeholder="请选择", multiple)
         el-option(v-for="item in roles", :label="item", :value="item")
     el-form-item(label='是否禁言:')
-      el-switch(v-model="block", on-text="", off-text="", @change='blockChange')
+      el-switch(v-model="user.banned", on-text="", off-text="", @change='blockChange')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 保存
 </template>
@@ -45,9 +45,7 @@ export default {
   data () {
     return {
       user: {},
-      roles: [],
-      access_token: '',
-      block: false
+      roles: []
     }
   },
   methods: {

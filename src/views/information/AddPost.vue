@@ -41,7 +41,7 @@
         el-option(v-for='item in columns',
                   :label='item.title',
                   :value='item.id')
-    upload
+    upload(:callback='uploadImage')
     search-user
     el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
@@ -69,7 +69,7 @@ export default {
         content_source:  '',
         tags:            [],
         column_id:       null,
-        picture:         '',
+        cover_id:        '',
         author_ids:      [],
         auto_publish_at: null,
         state:           'published',
@@ -103,6 +103,10 @@ export default {
     },
     handleClose(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
+    },
+
+    uploadImage(img) {
+      this.form.cover_id = img.id
     },
 
     showInput() {
