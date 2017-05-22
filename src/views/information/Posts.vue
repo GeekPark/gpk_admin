@@ -11,7 +11,7 @@
     el-button(type='text', @click='handleEdit()') 已删除
     el-input(placeholder="搜索",
              icon="search",
-             v-model="input2",
+             v-model="searchText",
              :on-icon-click="handleIconClick")
   el-table(:data='listData.posts' border)
     el-table-column(type="index", width="100")
@@ -35,7 +35,7 @@
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
-                layout='total, prev, pager, next',
+                layout='total, prev, pager, next, jumper',
                 :total='listData.meta.total_count')
 </template>
 
@@ -43,18 +43,25 @@
 
 import Base from '../base'
 import tool from 'tools'
+import api  from 'stores/api'
 const vm = Base({
   url: 'admin/posts',
   data: {
     recommend: false,
-    input2: ''
+    searchText: ''
   },
   methods: {
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)
     },
     handleIconClick () {
-
+      api.get('admin/posts', {params: {title: this.searchText}})
+      .then(result => {
+        console.log(result)
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   },
   watch: {

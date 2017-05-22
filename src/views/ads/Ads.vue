@@ -31,7 +31,7 @@
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
-                layout='total, prev, pager, next',
+                layout='total, prev, pager, next, jumper',
                 :total='listData.meta.total_count')
 </template>
 

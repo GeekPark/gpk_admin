@@ -5,16 +5,22 @@
   .filter
     el-button(type='text', @click='handleEdit()') 全部
     | /
-    el-button(type='text', @click='handleEdit()') 草稿
+    el-button(type='text', @click='handleEdit()') 未验证
     | /
-    el-button(type='text', @click='handleEdit()') 已删除
+    el-button(type='text', @click='handleEdit()') 已验证
+    | /
+    el-button(type='text', @click='handleEdit()') 已禁言
     el-input(placeholder="搜索",
              icon="search",
-             v-model="input",
+             v-model="searchText",
              :on-icon-click="handleIconClick")
+  el-select(v-model="role",placeholder="请选择", @change='rolesChange')
+        el-option(v-for="item in possible_roles", :label="item", :value="item")
   el-table(:data='listData.json', @current-change="rowClick" border)
     el-table-column(type="index", width="100")
     el-table-column(prop='', label='注册方式')
+    el-table-column(prop='nickname', label='nickname')
+    el-table-column(prop='realname', label='realname')
     el-table-column(prop='email', label='邮箱')
     el-table-column(prop='mobile', label='手机号')
     el-table-column(prop='', label='状态')
@@ -28,9 +34,9 @@
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='page',
-                :page-size='limit_value',
-                layout='total, prev, pager, next',
-                :total='listData.meta.total')
+                :page-size='listData.meta.limit_value',
+                layout='total, prev, pager, next, jumper',
+                :total='listData.meta.total_count')
 </template>
 
 <script>
@@ -41,13 +47,15 @@ import tools from 'tools'
 
 export default {
   mounted () {
-    fetch(this)
+    fetchUsers(this)
+    fetch(this, 'api/v1/users/possible_roles', 'possible_roles')
   },
   data () {
     return {
       page: 1,
-      input: '',
-      limit_value: 20,
+      searchText: '',
+      possible_roles: [],
+      role: 'user',
       listData: {
         users: [],
         meta: {
@@ -57,6 +65,9 @@ export default {
     }
   },
   methods: {
+    rolesChange () {
+      fetchUsers(this)
+    },
     rowClick (row) {
       this.$router.push(`/users/info/${row.id}`)
     },
@@ -65,11 +76,11 @@ export default {
     },
     handleCurrentChange(index, val) {
       this.page = index
-      fetch(this, {page: index})
+      fetchUsers(this)
       console.log(`当前页: ${index}`)
     },
     handleIconClick () {
-
+      fetchUsers(this)
     }
   },
   watch: {
@@ -81,11 +92,23 @@ export default {
   }
 }
 
-function fetch (_this, params = {}) {
-  api.account.get(base_url, {params: params}).then(result => {
+function fetchUsers (_this) {
+  api.account.get(base_url, {params: {
+    nickname: _this.searchText ,
+    page: _this.page,
+    role: _this.role,
+    mode: 'filter',
+  }}).then(result => {
     _this.listData = result.data
   }).catch(err => {
     // console.log(err)
+  })
+}
+
+
+function fetch (_this, url, key) {
+  api.account.get(url).then(result => {
+    _this[key] = result.data
   })
 }
 </script>
