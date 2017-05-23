@@ -20,29 +20,10 @@
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
       veditor#veditor(style="height:400px;max-height:500px;", v-else)
-    el-form-item(label='添加标签')
-      el-tag(:key='tag',
-             v-for='tag in form.tags',
-             :closable='true',
-             :close-transition='false',
-             type='primary',
-             @close='handleClose(tag)') | {{tag}}
-      el-input.input-new-tag(v-if='inputVisible',
-                             v-model='inputValue',
-                             ref='saveTagInput',
-                             size='mini',
-                             @keyup.enter.native='handleInputConfirm',
-                             @blur='handleInputConfirm')
-      el-button.button-new-tag(v-else='',
-                               size='small',
-                               @click='showInput') + New Tag
-    el-form-item(label='栏目选择')
-      el-select(v-model='form.column_id', placeholder='请选择')
-        el-option(v-for='item in columns',
-                  :label='item.title',
-                  :value='item.id')
+    search-tag
     upload(:callback='uploadImage')
     search-user
+    search-column
     el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
@@ -75,12 +56,6 @@ export default {
         state:           'published',
         meta:            {},
       },
-      columns: [],
-      inputVisible: false,
-      inputValue:   '',
-      editor:       {},
-      state: '',
-      timeout:  null,
       content_types: [{
         title: '富文本',
         val: 'html',
@@ -101,19 +76,8 @@ export default {
         createPost(this)
       }
     },
-    handleClose(tag) {
-      this.form.tags.splice(this.form.tags.indexOf(tag), 1);
-    },
-
     uploadImage(img) {
       this.form.cover_id = img.id
-    },
-
-    showInput() {
-      this.inputVisible = true;
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
     }
   },
   watch: {
@@ -123,7 +87,6 @@ export default {
     }
   },
   mounted () {
-     getColumns(this)
      if (this.$route.query.id) {
        getPost(this)
      }
@@ -179,33 +142,10 @@ function getPost(_this) {
      _this.$message.error(err.toString())
   })
 }
-
-
-function getColumns (_this) {
-  api.get('admin/columns')
-  .then((result) => {
-    _this.columns = result.data.columns
-  }).catch((err) => {
-     _this.$message.error(err.toString())
-  })
-}
 </script>
 
 <style lang="stylus">
 #add-post
-  .el-input--mini
-      width 200px !important
-
-  .el-form-item
-    margin-bottom 5px !important
-
-
-.el-autocomplete-suggestion
-  border 1px solid #D7D7D7
-  background white !important
-  height 250px !important
-  overflow-y scroll !important
-  li
-    padding 10px !important
-    list-style none !important
+  .el-select
+    width 50%
 </style>
