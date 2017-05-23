@@ -4,15 +4,15 @@
     h1 {{$route.meta.title}}
     el-button(type='text', @click="$router.push('/posts/new')") 添加文章
   .filter
-    el-button(type='text', @click='handleEdit()') 全部
+    el-button(type='text', @click='currentState = "published"') 全部
     | /
-    el-button(type='text', @click='handleEdit()') 草稿
+    el-button(type='text', @click='currentState = "unpublished"') 草稿
     | /
-    el-button(type='text', @click='handleEdit()') 已删除
+    el-button(type='text', @click='currentState = "closed"') 已删除
     el-input(placeholder="搜索",
              icon="search",
              v-model="searchText",
-             :on-icon-click="handleIconClick")
+             :on-icon-click="search")
   el-table(:data='listData.posts' border)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id(test)', width="100")
@@ -48,15 +48,18 @@ const vm = Base({
   url: 'admin/posts',
   data: {
     recommend: false,
-    searchText: ''
+    searchText: '',
+    currentState: 'published',
   },
   methods: {
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)
     },
-    handleIconClick () {
-      api.get('admin/posts', {params: {title: this.searchText}})
-      .then(result => {
+    search () {
+      api.get('admin/posts', {params: {
+        title: this.searchText,
+        state: this.currentState
+      }}).then(result => {
         console.log(result)
         this.listData = result.data
       }).catch((err) => {
@@ -70,6 +73,9 @@ const vm = Base({
         if (el.state === 'published') {el.state = '已发布'}
         el.published_at = tool.moment(el.published_at)
       })
+    },
+    'currentState': function () {
+      this.search()
     }
   }
 });
