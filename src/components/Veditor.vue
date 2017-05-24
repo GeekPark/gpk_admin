@@ -4,8 +4,7 @@
 </template>
 
 <script>
-import tools from '../tools'
-import * as api from '../stores/api'
+import tools from 'tools'
 
 export default {
   name: 'veditor',

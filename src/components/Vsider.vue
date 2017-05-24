@@ -33,7 +33,7 @@
           template(slot='title')
             | 用户
           el-menu-item(index='/users') 用户列表
-          el-menu-item(index='/users/new') 添加用户
+          //- el-menu-item(index='/users/new') 添加用户
         el-submenu(index='/8')
           template(slot='title')
             | 微信

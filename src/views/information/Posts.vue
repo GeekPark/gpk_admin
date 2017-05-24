@@ -4,15 +4,15 @@
     h1 {{$route.meta.title}}
     el-button(type='text', @click="$router.push('/posts/new')") 添加文章
   .filter
-    el-button(type='text', @click='handleEdit()') 全部
+    el-button(type='text', @click='currentState = "published"') 全部
     | /
-    el-button(type='text', @click='handleEdit()') 草稿
+    el-button(type='text', @click='currentState = "unpublished"') 草稿
     | /
-    el-button(type='text', @click='handleEdit()') 已删除
+    el-button(type='text', @click='currentState = "closed"') 已删除
     el-input(placeholder="搜索",
              icon="search",
-             v-model="input2",
-             :on-icon-click="handleIconClick")
+             v-model="searchText",
+             :on-icon-click="search")
   el-table(:data='listData.posts' border)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id(test)', width="100")
@@ -35,26 +35,36 @@
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
-                layout='total, prev, pager, next',
+                layout='total, prev, pager, next, jumper',
                 :total='listData.meta.total_count')
 </template>
 
 <script>
 
 import Base from '../base'
-import tool from '../../tools'
+import tool from 'tools'
+import api  from 'stores/api'
 const vm = Base({
   url: 'admin/posts',
   data: {
     recommend: false,
-    input2: ''
+    searchText: '',
+    currentState: 'published',
   },
   methods: {
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)
     },
-    handleIconClick () {
-
+    search () {
+      api.get('admin/posts', {params: {
+        title: this.searchText,
+        state: this.currentState
+      }}).then(result => {
+        console.log(result)
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   },
   watch: {
@@ -63,6 +73,9 @@ const vm = Base({
         if (el.state === 'published') {el.state = '已发布'}
         el.published_at = tool.moment(el.published_at)
       })
+    },
+    'currentState': function () {
+      this.search()
     }
   }
 });
@@ -70,19 +83,5 @@ export default vm
 </script>
 
 <style lang="stylus" scoped>
-.title
-  float left
-  h1
-    display inline-block
-    margin-right 20px
 
-
-.filter
-  margin-bottom 20px
-  float right
-  .el-button
-    margin-left 0px
-  .el-input
-    margin-left 20px
-    width 200px
 </style>

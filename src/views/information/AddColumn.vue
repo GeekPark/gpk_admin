@@ -7,13 +7,7 @@
       el-input(placeholder='请输入标题 必填', v-model='form.title')
     el-form-item(label='描述')
       el-input(type='textarea', placeholder='描述', v-model='form.description')
-    el-form-item(label='背景封面')
-      el-upload.upload-demo(drag="", action='', mutiple)
-        i.el-icon-upload
-        .el-upload__text
-          | 将文件拖到此处，或
-          em 点击上传
-        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
+    upload(:callback='uploadImage')
     el-form-item(label='文章是否显示在首页')
       el-switch(v-model="form.is", on-text="", off-text="")
     el-form-item(label='')
@@ -23,8 +17,8 @@
 
 <script>
 
-import tools    from '../../tools'
-import api      from '../../stores/api'
+import tools    from 'tools'
+import api      from 'stores/api'
 
 export default {
   data () {
@@ -48,7 +42,10 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
-    }
+    },
+    uploadImage(img) {
+      this.form.cover_id = img.id
+    },
   },
   mounted () {
      if (this.$route.query.id) {

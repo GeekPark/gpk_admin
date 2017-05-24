@@ -13,7 +13,7 @@
              icon="search",
              v-model="input2",
              :on-icon-click="handleIconClick")
-  el-table(:data='listData.posts' border)
+  el-table(:data='listData.ads' border)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id(test)', width="100")
     el-table-column(prop='', label='标题')
@@ -31,14 +31,14 @@
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
-                layout='total, prev, pager, next',
+                layout='total, prev, pager, next, jumper',
                 :total='listData.meta.total_count')
 </template>
 
 <script>
 
 import Base from '../base'
-import tool from '../../tools'
+import tool from 'tools'
 const vm = Base({
   url: 'admin/ads',
   data: {
@@ -66,19 +66,5 @@ export default vm
 </script>
 
 <style lang="stylus" scoped>
-.title
-  float left
-  h1
-    display inline-block
-    margin-right 20px
 
-
-.filter
-  margin-bottom 20px
-  float right
-  .el-button
-    margin-left 0px
-  .el-input
-    margin-left 20px
-    width 200px
 </style>

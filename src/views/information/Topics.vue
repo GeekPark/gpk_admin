@@ -9,12 +9,10 @@
              :on-icon-click="handleIconClick")
   el-table(:data='listData.topics' border)
     el-table-column(type="index", width="100")
-    el-table-column(prop='id', label='id(test)', width="100")
-    el-table-column(prop='title', label='标题')
-    el-table-column(prop='description', label='描述', width="300")
-    el-table-column(prop='published_at', label='发布时间', width="200")
-    el-table-column(prop='', label='类型')
-    el-table-column(prop='', label='文章是否显示在首页')
+    el-table-column(prop='title', label='专题名称')
+    el-table-column(prop='description', label='专题描述', width="300")
+    el-table-column(prop='', label='文章数量')
+    el-table-column(prop='', label='添加时间', width="200")
     el-table-column(label='操作')
         template(scope='scope')
           el-button(type='text',
@@ -25,14 +23,14 @@
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
-                layout='total, prev, pager, next',
+                layout='total, prev, pager, next, jumper',
                 :total='listData.meta.total_count')
 </template>
 
 <script>
 
 import Base from '../base'
-import tool from '../../tools'
+import tool from 'tools'
 const vm = Base({
   url: 'admin/topics',
   data: {
@@ -60,19 +58,5 @@ export default vm
 </script>
 
 <style lang="stylus" scoped>
-.title
-  float left
-  h1
-    display inline-block
-    margin-right 20px
 
-
-.filter
-  margin-bottom 20px
-  float right
-  .el-button
-    margin-left 0px
-  .el-input
-    margin-left 20px
-    width 200px
 </style>

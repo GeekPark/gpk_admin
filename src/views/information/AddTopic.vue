@@ -7,13 +7,7 @@
       el-input(placeholder='请输入标题 必填', v-model='form.title')
     el-form-item(label='描述')
       el-input(type='textarea', placeholder='描述', v-model='form.description')
-    el-form-item(label='背景封面')
-      el-upload.upload-demo(drag="", action='', mutiple)
-        i.el-icon-upload
-        .el-upload__text
-          | 将文件拖到此处，或
-          em 点击上传
-        .el-upload__tip(slot='tip') 只能上传jpg/png文件，且不超过500kb
+    upload(:callback='uploadImage')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭
@@ -21,8 +15,8 @@
 
 <script>
 
-import tools    from '../../tools'
-import api      from '../../stores/api'
+import tools    from 'tools'
+import api      from 'stores/api'
 
 export default {
   data () {
@@ -46,6 +40,9 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
+    },
+    uploadImage(img) {
+      this.form.cover_id = img.id
     }
   },
   mounted () {
@@ -56,7 +53,7 @@ export default {
 }
 
 function updateAd(_this) {
-  api.put(`admin/columns/${_this.$route.query.id}`, _this.form)
+  api.put(`admin/topics/${_this.$route.query.id}`, _this.form)
   .then((result) => {
      _this.$message.success('success')
   }).catch((err) => {
@@ -65,7 +62,7 @@ function updateAd(_this) {
 }
 
 function createAd(_this) {
-  api.post('admin/columns', _this.form)
+  api.post('admin/topics', _this.form)
   .then((result) => {
      _this.$message.success('success')
   }).catch((err) => {
@@ -74,7 +71,7 @@ function createAd(_this) {
 }
 
 function getAd(_this) {
-  api.get(`admin/columns/${_this.$route.query.id}`)
+  api.get(`admin/topics/${_this.$route.query.id}`)
   .then((result) => {
     result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
