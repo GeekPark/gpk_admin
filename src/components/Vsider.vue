@@ -1,11 +1,13 @@
 <template lang="jade">
 #vsider
   el-row.tac
+    router-link(to="/")
+      img(src="../assets/imgs/copyright.png")
     el-col(:span='8')
       el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="light")
         el-submenu(index='/2')
           template(slot='title')
-            | 资讯管理
+            | 资讯
           el-menu-item-group(title='文章')
             el-menu-item(index='/posts')  文章列表
             el-menu-item(index='/posts/new?content_type=html') 添加文章
@@ -72,8 +74,8 @@ export default {
 
 <style lang="stylus" scoped>
 img
-  width calc(100% - 40px)
-  margin 20px
+  height 30px
+  margin 15px 20px
 #vsider
   texta-align left
 

@@ -12,21 +12,9 @@ export default {
     return moment(obj).format(format)
   },
   editor: function (vm) {
-    let __this = this;
-    let uploadInit = function () {
-      let token = vm.$store.state.uptoken;
-      let editor = this;
-      let btnId = editor.customUploadBtnId;
-      let containerId = editor.customUploadContainerId;
-      __this.qiniu(vm, btnId, 'editor-container', 'article', (sourceLink) => {
-        const el = `<img src="${sourceLink}" style="max-width:100%;"/>`
-        editor.command(null, 'insertHtml', el)
-      })
-    };
-
     let editor = new wangEditor('editor');
     editor.config.customUpload = true;
-    editor.config.customUploadInit = uploadInit;
+    // editor.config.menuFixed = 200,
     wangEditor.config.printLog = false;
     editor.config.emotions = {
       'default': {
@@ -36,5 +24,6 @@ export default {
     };
     editor.create();
     vm.$store.commit('SET_ITEM', { key: 'htmlEditor', val: editor })
+    return editor;
   }
 }

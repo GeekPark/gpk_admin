@@ -2,8 +2,8 @@
 #add-post.admin
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='form', :model='form', label-position='top')
-    el-form-item(label='标题')
+  el-form(ref='add-post-form', :model='form', label-position='top', :rules="rules")
+    el-form-item(label='标题', prop='title', required)
       el-input(placeholder='请输入标题 必填', v-model='form.title')
     el-form-item(label='摘要')
       el-input(type='textarea',
@@ -11,7 +11,7 @@
                v-model='form.abstract')
     el-form-item(label='CCID')
       el-input(placeholder='极客制造栏目专用', v-model='form.title')
-    el-form-item(label='写作模式')
+    el-form-item(label='写作模式', required)
       el-select(v-model='form.content_type', placeholder='请选择')
         el-option(v-for='item in content_types',
                   :label='item.title',
@@ -20,18 +20,18 @@
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
       veditor#veditor(style="height:400px;max-height:500px;", v-else)
-    search-tag
+    search-tag(:callback='searchTag')
     upload(:callback='uploadImage')
-    search-user
-    search-column
+    search-user(:callback='searchUser')
+    search-column(:callback='searchColumn')
     el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 发布
-      el-button(type='success', @click='onSubmit') 存草稿
-      el-button(type='danger', @click='onSubmit') 取消
+      el-button(type='primary', @click='submitForm') 发布
+      el-button(type='success', @click='submitForm') 存草稿
+      el-button(type='danger', @click='submitForm') 取消
 </template>
 
 <script>
@@ -49,12 +49,27 @@ export default {
         content_type:    content_type,
         content_source:  '',
         tags:            [],
-        column_id:       null,
+        column_id:       [],
         cover_id:        '',
         author_ids:      [],
         auto_publish_at: null,
         state:           'published',
         meta:            {},
+      },
+      rules: {
+        title: [
+          { required: true, message: '请输入文章标题', trigger: 'blur' },
+          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+        ],
+        date: [
+          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        type: [
+          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+        ],
+        resource: [
+          { required: true, message: '请选择活动资源', trigger: 'change' }
+        ]
       },
       content_types: [{
         title: '富文本',
@@ -69,20 +84,40 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      if (this.$route.query.id) {
-        updatePost(this)
-      } else {
-        createPost(this)
-      }
+    submitForm() {
+      this.$refs['add-post-form'].validate((valid) => {
+        if (valid) {
+          if (this.$route.query.id) {
+            updatePost(this)
+          } else {
+            createPost(this)
+          }
+        } else {
+          this.$message.error('参数错误!')
+          return false;
+        }
+      });
+    },
+    resetForm() {
+      this.$refs['add-post-form'].resetFields();
     },
     uploadImage(img) {
       this.form.cover_id = img.id
+    },
+    searchUser(user) {
+
+    },
+    searchTag(tags) {
+      this.form.tags = tags;
+    },
+    searchColumn(column) {
+
     }
   },
   watch: {
     'form.content_type': function (val) {
-       this.$router.push(`${this.$route.path}?content_type=${val}&id=${this.$route.query.id}`)
+        const id = this.$route.query.id ? `&id=${this.$route.query.id}` : ''
+       this.$router.push(`${this.$route.path}?content_type=${val}${id}`)
        addContent(this, val)
     }
   },

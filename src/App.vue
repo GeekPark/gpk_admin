@@ -15,20 +15,20 @@ export default {
     isLoading () {
       return this.$store.state.isLoading;
     }
-  },
-  mounted () {
   }
 }
-
 </script>
 
 <style lang="stylus">
 $siderrWidth = 200px
-$headerWidth = 60px
+$headerHeight = 60px
+
+.fixed-top
+  color pink
+
 
 html, body
   width 100%
-  height 100%
   margin 0
   padding 0
   overflow-x hidden
@@ -36,7 +36,6 @@ html, body
 #app
   color #2c3e50
   background transparent
-  height calc(100%)
   width 100%
 
 .admin
@@ -45,7 +44,7 @@ html, body
   height calc(100% - 120px)
   background white
   padding 30px
-  padding-top 90px
+  padding-top 30px
 
   .form-inline
     top 12px
@@ -56,7 +55,7 @@ html, body
   bottom 0
   left 0
   width $siderrWidth
-  height calc(100% - 60px)
+  height 100%
   background-color #eef1f6
   position fixed
   overflow-y scroll
@@ -73,13 +72,11 @@ html, body
 
 
 #vheader
-  height $headerWidth
-  width 100%
+  height $headerHeight
+  width calc(100% - 200px)
+  margin-left $siderrWidth
   padding-right 30px
   background #eef1f6
-  position fixed
-  z-index 2
-  display block
   top 0
   left 0
   box-shadow 0px 2px 10px 3px rgba(0,0,0,0.15);

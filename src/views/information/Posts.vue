@@ -4,25 +4,25 @@
     h1 {{$route.meta.title}}
     el-button(type='text', @click="$router.push('/posts/new')") 添加文章
   .filter
-    el-button(type='text', @click='currentState = "published"') 全部
+    el-button(type='text', @click='params.state = "published"') 全部
     | /
-    el-button(type='text', @click='currentState = "unpublished"') 草稿
+    el-button(type='text', @click='params.state = "unpublished"') 草稿
     | /
-    el-button(type='text', @click='currentState = "closed"') 已删除
+    el-button(type='text', @click='params.state = "closed"') 已删除
     el-input(placeholder="搜索",
              icon="search",
-             v-model="searchText",
+             v-model="params.title",
              :on-icon-click="search")
   el-table(:data='listData.posts' border)
     el-table-column(type="index", width="100")
     el-table-column(prop='id', label='id(test)', width="100")
-    el-table-column(prop='title', label='标题')
+    el-table-column(prop='title', label='标题', width="200")
     el-table-column(prop='author', label='作者')
-    el-table-column(prop='column_title', label='栏目')
+    el-table-column(prop='column_title', label='栏目', width="200")
     el-table-column(prop='published_at', label='发布时间', width="200")
     el-table-column(prop='state', label=' 状态', width="100")
     el-table-column(prop='pv', label=' PV', width="100")
-    el-table-column(label='操作')
+    el-table-column(label='操作', width="150")
       template(scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
@@ -48,18 +48,17 @@ const vm = Base({
   url: 'admin/posts',
   data: {
     recommend: false,
-    searchText: '',
-    currentState: 'published',
+    params: {
+      title: '',
+      state: 'published',
+    }
   },
   methods: {
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)
     },
     search () {
-      api.get('admin/posts', {params: {
-        title: this.searchText,
-        state: this.currentState
-      }}).then(result => {
+      api.get('admin/posts', {params: this.params}).then(result => {
         console.log(result)
         this.listData = result.data
       }).catch((err) => {
@@ -74,7 +73,7 @@ const vm = Base({
         el.published_at = tool.moment(el.published_at)
       })
     },
-    'currentState': function () {
+    'params.state': function () {
       this.search()
     }
   }
