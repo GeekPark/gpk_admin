@@ -6,17 +6,17 @@
     el-input(placeholder="搜索",
              icon="search",
              v-model="input2",
-             :on-icon-click="handleIconClick")
+             :on-icon-click="handleFilter")
   el-table(:data='listData.comments',)
     el-table-column(type="index", width="100")
     el-table-column(prop='id(test)', label='id', width="100")
     el-table-column(prop='', label='用户名')
-    el-table-column(prop='content', label='内容')
-    el-table-column(label='来源')
+    el-table-column(prop='content', label='内容', width="200")
+    el-table-column(label='来源', width="200")
       template(scope='scope')
         a() {{scope.row.commentable_title}}
-    el-table-column(prop='created_at', label='创建时间')
-    el-table-column(label='操作')
+    el-table-column(prop='created_at', label='创建时间', width="200")
+    el-table-column(label='操作', width="150")
       template(scope='scope')
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row, listData.comments)') 删除
@@ -43,6 +43,7 @@ export default {
         commentable_type: "",
         state: "",
       },
+      input2: '',
       currentPage: 1,
       listData: {
         meta: {
@@ -78,6 +79,17 @@ export default {
   },
   mounted () {
     fetch(this, url, {page: this.currentPage})
+  },
+  watch: {
+    'listData.comments': function (val) {
+      val.forEach(el => {
+        if (el.state === 'published') {el.state = '已发布'}
+        if (el.content.length >= 30) {
+          el.content = `${el.content.slice(0, 30)}...`
+        }
+        el.created_at = tool.moment(el.created_at)
+      })
+    }
   }
 }
 

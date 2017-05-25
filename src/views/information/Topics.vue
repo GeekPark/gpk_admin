@@ -2,6 +2,7 @@
 #admin-topics.admin
   .title
     h1 {{$route.meta.title}}
+    el-button(type='text', @click="$router.push('/topics/new')") 添加专题
   .filter
     el-input(placeholder="搜索",
              icon="search",
@@ -13,7 +14,7 @@
     el-table-column(prop='description', label='专题描述', width="300")
     el-table-column(prop='', label='文章数量')
     el-table-column(prop='', label='添加时间', width="200")
-    el-table-column(label='操作')
+    el-table-column(label='操作', width="150")
         template(scope='scope')
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑

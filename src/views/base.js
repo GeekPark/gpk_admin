@@ -1,14 +1,5 @@
 import api from 'stores/api'
 
-function fetch (_this = {}, params = {}, url = '') {
-  api.get(url, {params: params}).then((result) => {
-    _this.listData = result.data
-  }).catch((err) => {
-    console.log(err)
-     _this.$message.error(err.toString())
-  })
-}
-
 export default (options) => {
 
   let {
@@ -23,11 +14,17 @@ export default (options) => {
     },
     handleCurrentChange(index, val) {
       this.currentPage = index
-      fetch(this, {page: index}, options.url)
+      this.fetch()
       console.log(`当前页: ${index}`)
     },
-    handleFilter() {
-
+    fetch (url = '') {
+      const params = Object.assign({page: this.currentPage}, this.params)
+      api.get(options.url, {params: params}).then((result) => {
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
+         this.$message.error(err.toString())
+      })
     },
     handleDestroy(index, val, list) {
       api.delete(`${options.url}/${val.id}`, {}).then((result) => {
@@ -58,7 +55,7 @@ export default (options) => {
     methods: methods,
     watch: watch,
     beforeMount () {
-      fetch(this, {page: this.currentPage}, options.url)
+      this.fetch()
     }
   }
   return base

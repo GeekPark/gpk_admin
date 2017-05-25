@@ -40,7 +40,7 @@ export default {
   },
   watch: {
     'select': (val) => {
-
+      this.callback(val)
     }
   },
   mounted () {

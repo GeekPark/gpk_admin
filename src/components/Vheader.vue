@@ -1,7 +1,6 @@
 <template lang="jade">
 #vheader
-  router-link(to="/")
-      img(src="../assets/imgs/copyright.png")
+
   el-menu.el-menu-demo(theme='light',
                        :default-active='activeIndex',
                        mode='horizontal',
@@ -60,8 +59,6 @@ export default {
 .el-menu
   float right
   margin-right 45px
-img
-  height 30px
-  margin 15px 20px
+
 </style>
 

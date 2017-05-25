@@ -21,7 +21,7 @@
     el-table-column(prop='', label='位置')
     el-table-column(prop='', label='开始时间', width="200")
     el-table-column(prop='', label='结束时间', width="200")
-    el-table-column(label='操作')
+    el-table-column(label='操作', width="150")
       template(scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
