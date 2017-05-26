@@ -9,15 +9,13 @@
              v-model="input2",
              :on-icon-click="handleIconClick")
   el-table(:data='listData.columns' border)
-    el-table-column(type="index", width="100")
-    el-table-column(prop='id', label='id(test)', width="100")
     el-table-column(prop='title', label='标题', width="200")
-    el-table-column(prop='author', label='作者')
+    el-table-column(prop='author', label='作者', width="100")
     el-table-column(prop='published_at', label='发布时间', width="200")
-    el-table-column(prop='', label='微信分享')
-    el-table-column(prop='', label='Twitter分享')
-    el-table-column(prop='', label='LinkedIn分享')
-    el-table-column(prop='', label='总计')
+    el-table-column(prop='', label='微信分享', width="100")
+    el-table-column(prop='', label='Twitter分享', width="100")
+    el-table-column(prop='', label='LinkedIn分享', width="100")
+    el-table-column(prop='', label='总计', width="100")
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',

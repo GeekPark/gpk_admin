@@ -9,14 +9,12 @@
              v-model="params.title",
              :on-icon-click="search")
   el-table(:data='listData.columns' border)
-    el-table-column(type="index", width="100")
-    el-table-column(prop='id', label='id(test)', width="100")
     el-table-column(prop='title', label='标题', width="200")
     el-table-column(prop='description', label='描述', width="300")
     el-table-column(prop='published_at', label='发布时间', width="200")
-    el-table-column(prop='', label='类型')
-    el-table-column(prop='', label='文章是否显示在首页')
-    el-table-column(label='操作', width="150")
+    el-table-column(prop='', label='类型', width="100")
+    el-table-column(prop='', label='首页', width="80")
+    el-table-column(label='操作', width="120")
         template(scope='scope')
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑

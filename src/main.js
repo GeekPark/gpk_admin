@@ -1,3 +1,4 @@
+// import 'assets/css/theme/index.css'
 import Vue        from 'vue'
 import Vuex       from 'vuex'
 
@@ -17,7 +18,6 @@ import SearchColumn from 'components/SearchColumn.vue'
 import Vmarkdown    from 'components/Vmarkdown.vue'
 import hljs         from 'highlight.js'
 // import VueDND     from 'awe-dnd'
-
 Vue.use(Element)
 Vue.component(Vheader.name,      Vheader)
 Vue.component(Vfooter.name,      Vfooter)

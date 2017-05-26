@@ -21,7 +21,7 @@
                   :label='item',
                   :value='item')
     el-form-item(label='广告标识')
-    upload(:callback='uploadImage')
+    upload(:callback='uploadImage', title='图片')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭

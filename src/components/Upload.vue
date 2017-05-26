@@ -1,5 +1,5 @@
 <template lang="jade">
-el-form-item#upload-component(label='头图')
+el-form-item#upload-component(:label='title')
   el-upload.avatar-uploader(
                    :action='uploadUrl',
                    name='upload_file',
@@ -8,6 +8,7 @@ el-form-item#upload-component(label='头图')
                    :before-upload="beforeAvatarUpload")
     img.avatar(v-if="imageUrl", :src="imageUrl")
     i.avatar-uploader-icon.el-icon-plus(v-else)
+  i.avatar-delete-icon.el-icon-delete(v-if="imageUrl != ''", @click="imageUrl = ''")
 </template>
 
 <script>
@@ -24,23 +25,18 @@ export default {
       imageUrl: '',
     }
   },
-  props: ['callback'],
+  props: ['callback', 'title'],
   methods: {
     handleAvatarScucess (response, file, fileList) {
       this.imageUrl = URL.createObjectURL(file.raw);
       this.callback(response.image)
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
-      return isJPG && isLt2M;
+      return isLt2M;
     }
   }
 }
@@ -53,6 +49,10 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  text-align: center;
+  width: 200px;
+
+
 }
 .avatar-uploader .el-upload:hover {
   border-color: #20a0ff;
@@ -69,5 +69,10 @@ export default {
   width: auto;
   height: 178px;
   display: block;
+}
+.avatar-delete-icon {
+  z-index: 10;
+  right: 10px;
+  top: 10px;
 }
 </style>

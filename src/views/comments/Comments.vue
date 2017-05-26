@@ -8,11 +8,9 @@
              v-model="input2",
              :on-icon-click="handleFilter")
   el-table(:data='listData.comments',)
-    el-table-column(type="index", width="100")
-    el-table-column(prop='id(test)', label='id', width="100")
-    el-table-column(prop='', label='用户名')
+    el-table-column(prop='', label='用户名', width="100")
     el-table-column(prop='content', label='内容', width="200")
-    el-table-column(label='来源', width="200")
+    el-table-column(label='来源', width="150")
       template(scope='scope')
         a() {{scope.row.commentable_title}}
     el-table-column(prop='created_at', label='创建时间', width="200")

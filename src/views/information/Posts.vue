@@ -14,21 +14,19 @@
              v-model="params.title",
              :on-icon-click="search")
   el-table(:data='listData.posts' border)
-    el-table-column(type="index", width="100")
-    el-table-column(prop='id', label='id(test)', width="100")
     el-table-column(prop='title', label='标题', width="200")
-    el-table-column(prop='author', label='作者')
-    el-table-column(prop='column_title', label='栏目', width="200")
-    el-table-column(prop='published_at', label='发布时间', width="200")
-    el-table-column(prop='state', label=' 状态', width="100")
+    el-table-column(prop='author', label='作者', width="100")
+    el-table-column(prop='column_title', label='栏目', width="150")
+    el-table-column(prop='published_at', label='发布时间', width="180")
+    el-table-column(prop='state', label=' 状态', width="80")
     el-table-column(prop='pv', label=' PV', width="100")
-    el-table-column(label='操作', width="150")
+    el-table-column(label='操作', width="110")
       template(scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
-    el-table-column(label='加入推荐')
+    el-table-column(label='加入推荐', width="90")
       template(scope='scope')
         el-switch(v-model="recommend" on-text="" off-text="")
   el-pagination(@size-change='handleSizeChange',

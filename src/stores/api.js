@@ -27,19 +27,19 @@ function create(url = base_url) {
 // Add a request interceptor
 request.interceptors.request.use(function (config) {
   config.params = Object.assign({roles: 'dev'}, config.params)
-  store.commit('LOADING', true)
+  // store.commit('LOADING', true)
   return config
 }, function (error) {
-  store.commit('LOADING', false)
+  // store.commit('LOADING', false)
   return Promise.reject(error)
 })
 
 // Add a response interceptor
 request.interceptors.response.use(function (response) {
-  store.commit('LOADING', false)
+  // store.commit('LOADING', false)
   return response
 }, function (error) {
-  store.commit('LOADING', false)
+  // store.commit('LOADING', false)
   return Promise.reject(error)
 })
 

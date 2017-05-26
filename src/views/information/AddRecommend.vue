@@ -8,9 +8,9 @@
     el-form-item(label='推荐语')
       el-input(type='textarea', placeholder='', v-model='form.description')
     el-form-item(label='关联文章')
-    el-form-item(label='展品类别')
-    upload(:callback='uploadImage')
-    el-form-item(label='作者')
+    el-form-item(label='产品类别')
+    upload(:callback='uploadImage', title='头图')
+    search-user(:callback='searchUser', title='作者')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭
@@ -46,6 +46,9 @@ export default {
     },
     uploadImage(img) {
       this.form.cover_id = img.id
+    },
+    searchUser () {
+
     }
   },
   mounted () {
