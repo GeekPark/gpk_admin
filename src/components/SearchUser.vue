@@ -1,6 +1,6 @@
 <template lang="jade">
 #search-user
-  el-form-item(label='作者')
+  el-form-item(:label='title')
     el-select(v-model='select', multiple='', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
       el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
 
@@ -19,7 +19,7 @@ export default {
       states: []
     }
   },
-  props: ['callback'],
+  props: ['callback', 'title'],
   methods: {
      remoteMethod(query) {
         if (query !== '') {

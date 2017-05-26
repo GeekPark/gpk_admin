@@ -20,10 +20,10 @@
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
       veditor#veditor(style="height:400px;max-height:500px;", v-else)
-    search-tag(:callback='searchTag')
-    upload(:callback='uploadImage')
-    search-user(:callback='searchUser')
-    search-column(:callback='searchColumn')
+    search-tag(:callback='searchTag', title="添加标签")
+    search-column(:callback='searchColumn', title="栏目选择")
+    upload(:callback='uploadImage', title="文章头图")
+    search-user(:callback='searchUser', title="作者")
     el-form-item(label='定时发送')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',

@@ -1,6 +1,6 @@
 <template lang="jade">
 #search-column
-  el-form-item(label='栏目', required)
+  el-form-item(:label='title', required)
     el-select(v-model='select', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
       el-option(v-for='item in searchData', :key='item.id', :label='item.title', :value='item.id')
 
@@ -19,7 +19,7 @@ export default {
       states: []
     }
   },
-  props: ['callback'],
+  props: ['callback', 'title'],
   methods: {
   },
   watch: {

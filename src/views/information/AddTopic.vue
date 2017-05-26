@@ -3,11 +3,11 @@
   .title
     h1 {{$route.meta.title}}
   el-form(ref='form', :model='form', label-width='150px', label-position='top')
-    el-form-item(label='标题')
-      el-input(placeholder='请输入标题 必填', v-model='form.title')
+    el-form-item(label='专题名称')
+      el-input(placeholder='', v-model='form.title')
     el-form-item(label='描述')
-      el-input(type='textarea', placeholder='描述', v-model='form.description')
-    upload(:callback='uploadImage')
+      el-input(type='textarea', placeholder='', v-model='form.description')
+    upload(:callback='uploadImage', title='背景封面')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭

@@ -1,5 +1,5 @@
 <template lang="jade">
-el-form-item#upload-component(label='头图')
+el-form-item#upload-component(:label='title')
   el-upload.avatar-uploader(
                    :action='uploadUrl',
                    name='upload_file',
@@ -25,7 +25,7 @@ export default {
       imageUrl: '',
     }
   },
-  props: ['callback'],
+  props: ['callback', 'title'],
   methods: {
     handleAvatarScucess (response, file, fileList) {
       this.imageUrl = URL.createObjectURL(file.raw);
