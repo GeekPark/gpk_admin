@@ -25,11 +25,14 @@ yarn install
 npm run dev
 ```
 
+### Notice
+[Backend docs](https://github.com/GeekPark/gpk_admin/blob/master/BACKEDN.md)
+It's very important!
+
 ### Deploy
 ```bash
 npm run build
 ```
-
 
 ### LICENSE
 GNU General Public License v3.0

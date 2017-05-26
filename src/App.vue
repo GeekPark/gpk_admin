@@ -97,6 +97,9 @@ html, body
   .is-active {
     color: #fff
   }
+  .el-menu-item-group__title {
+    color: #E1E1E1
+  }
 
 .el-submenu__title:hover
   background-color rgb(0, 172, 193)
