@@ -26,7 +26,7 @@ npm run dev
 ```
 
 ### Notice
-[Backend docs](https://github.com/GeekPark/gpk_admin/blob/master/BACKEDN.md)
+[Backend docs](https://github.com/GeekPark/gpk_admin/blob/master/BACKEND.md)
 It's very important!
 
 ### Deploy
