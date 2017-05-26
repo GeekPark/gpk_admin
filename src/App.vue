@@ -20,12 +20,9 @@ export default {
 </script>
 
 <style lang="stylus">
+
 $siderrWidth = 200px
 $headerHeight = 60px
-
-.fixed-top
-  color pink
-
 
 html, body
   width 100%
@@ -39,10 +36,11 @@ html, body
   width 100%
 
 .admin
+  box-shadow 3px 2px 10px 0px #B0B0B0;
   width calc(100% - $siderrWidth)
   margin-left $siderrWidth
   height calc(100% - 120px)
-  background white
+  background rgb(250, 250, 250)
   padding 30px
   padding-top 30px
 
@@ -56,7 +54,7 @@ html, body
   left 0
   width $siderrWidth
   height 100%
-  background-color #eef1f6
+  background-color rgb(0, 188, 212)
   position fixed
   overflow-y scroll
   z-index 2
@@ -76,13 +74,39 @@ html, body
   width calc(100% - 200px)
   margin-left $siderrWidth
   padding-right 30px
-  background #eef1f6
+  background #fff
   top 0
   left 0
-  box-shadow 0px 2px 10px 3px rgba(0,0,0,0.15);
 
+// element -ui
 .el-pagination
   text-align left
+
+.el-submenu, .el-menu
+  background-color rgb(0, 188, 212)
+
+  .el-menu-item-group, .el-menu-item
+    background-color rgb(23, 183, 204)
+
+  .el-menu-item:hover
+    background-color rgb(0, 172, 193)
+
+  * {
+    color: #fff
+  }
+  .is-active {
+    color: #fff
+  }
+
+.el-submenu__title:hover
+  background-color rgb(0, 172, 193)
+
+
+.el-form
+  clear both
+
+
+//  public css
 
 .no-touch-bg
   user-select none
@@ -112,7 +136,6 @@ html, body
     display inline-block
     margin-right 20px
 
-
 .filter
   margin-bottom 20px
   float right
@@ -122,16 +145,6 @@ html, body
     margin-left 20px
     width 200px
 
-.el-form
-  clear both
-
-.el-row
-  margin-bottom 20px
-  &:last-child
-    margin-bottom 0
-.el-col
-  border-radius 4px
-  cursor pointer
 .bg-purple-dark
   background #99a9bf
 .bg-purple
@@ -148,9 +161,6 @@ html, body
   top        50%
   left       50%
   transform  translate(-50%,-50%)
-.row-bg
-  padding 10px 0
-  background-color #f9fafc
 
 
 article, aside, details, figcaption, figure,

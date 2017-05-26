@@ -2,12 +2,13 @@
 #vsider
   el-row.tac
     router-link(to="/")
-      img(src="../assets/imgs/copyright.png")
+      img.sider-logo(src="../assets/imgs/copyright.png")
     el-col(:span='8')
       el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="light")
         el-submenu(index='/2')
           template(slot='title')
-            | 资讯
+            img(src='../assets/imgs/sider_info.svg')
+            span 资讯
           el-menu-item-group(title='文章')
             el-menu-item(index='/posts')  文章列表
             el-menu-item(index='/posts/new?content_type=html') 添加文章
@@ -24,21 +25,25 @@
             el-menu-item(index='/share') 分享统计
         el-submenu(index='/3')
           template(slot='title')
-            | 评论
+            img(src='../assets/imgs/sider_comment.svg')
+            span 评论
           el-menu-item(index='/comments?type=posts') 评论列表
         el-submenu(index='/6')
           template(slot='title')
-            | 广告
+            img(src='../assets/imgs/sider_ad.svg')
+            span 广告
           el-menu-item(index='/ads') 广告列表
           el-menu-item(index='/ads/new') 添加广告
         el-submenu(index='/1')
           template(slot='title')
-            | 用户
+            img(src='../assets/imgs/sider_user.svg')
+            span 用户
           el-menu-item(index='/users') 用户列表
           //- el-menu-item(index='/users/new') 添加用户
         el-submenu(index='/8')
           template(slot='title')
-            | 微信
+            img(src='../assets/imgs/sider_wechat.svg')
+            span 微信
           el-menu-item(index='/wechats') 微信列表
           el-menu-item(index='/wechats/new') 添加微信
 
@@ -73,13 +78,23 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-img
-  height 30px
-  margin 15px 20px
+
 #vsider
   texta-align left
-
   &
     text-align left
+  .sider-logo
+    height 30px
+    margin 13px 20px
+  .el-col
+    border-top 2px solid rgb(0, 164, 186)
+    img
+      width 15px
+      vertical-align: baseline;
+      margin-top: 10px;
+      position: absolute;
+      top: 10px;
+    span
+      margin-left 25px
 </style>
 

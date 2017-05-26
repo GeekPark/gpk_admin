@@ -5,10 +5,10 @@
                        :default-active='activeIndex',
                        mode='horizontal',
                        @select='handleSelect')
-    el-submenu(index='profile')
-      template(slot='title') 个人中心
-      el-menu-item(index='profile') 账号
-      el-menu-item(index='logout') 登出
+    //- el-submenu(index='profile')
+    //-   template(slot='title') 个人中心
+    //-   el-menu-item(index='profile') 账号
+    //-   el-menu-item(index='logout') 登出
 </template>
 
 <script>

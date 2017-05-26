@@ -1,7 +1,7 @@
 <template lang="jade">
 #veditor
   #editor(style="height:400px;max-height:1000px;")
-  p.count words: {{this.count}}
+  p.count 字数: {{this.count}}
 </template>
 
 <script>
@@ -27,8 +27,10 @@ export default {
 <style lang="stylus" scoped>
 #veditor
 
-  font-size 20px
+  font-size 16px
   padding-bottom 30px
+  line-height 35px
+  letter-spacing 1px
 
   .count
     text-align right
