@@ -1,8 +1,7 @@
 <template lang="jade">
 #search-user
-  el-form-item(:label='title')
-    el-select(v-model='select', multiple='', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
-      el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
+  el-select(v-model='select', multiple='', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
+    el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
 
 </template>
 
@@ -19,7 +18,7 @@ export default {
       states: []
     }
   },
-  props: ['callback', 'title'],
+  props: ['callback'],
   methods: {
      remoteMethod(query) {
         if (query !== '') {
@@ -39,8 +38,8 @@ export default {
       }
   },
   watch: {
-    'select': (val) => {
-
+    'select': function(val) {
+      this.callback(val)
     }
   },
   mounted () {

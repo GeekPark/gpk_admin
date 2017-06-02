@@ -2,10 +2,10 @@
 #vsider
   el-row.tac
     router-link(to="/")
-      img.sider-logo(src="../assets/imgs/copyright.png")
+      img.sider-logo(src="../assets/imgs/sider_logo.svg")
     el-col(:span='8')
       el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="light")
-        el-submenu(index='/2')
+        el-submenu(index='/info')
           template(slot='title')
             img(src='../assets/imgs/sider_info.svg')
             span 资讯
@@ -23,24 +23,30 @@
             el-menu-item(index='/recommendations/new') 添加推荐
           el-menu-item-group(title='分享')
             el-menu-item(index='/share') 分享统计
-        el-submenu(index='/3')
+         el-submenu(index='/push')
+          template(slot='title')
+            img(src='../assets/imgs/sider_push.svg')
+            span 推送
+          el-menu-item(index='/push') 推送列表
+          el-menu-item(index='/push/new') 添加推送
+        el-submenu(index='/comment')
           template(slot='title')
             img(src='../assets/imgs/sider_comment.svg')
             span 评论
           el-menu-item(index='/comments?type=posts') 评论列表
-        el-submenu(index='/6')
+        el-submenu(index='/ad')
           template(slot='title')
             img(src='../assets/imgs/sider_ad.svg')
             span 广告
           el-menu-item(index='/ads') 广告列表
           el-menu-item(index='/ads/new') 添加广告
-        el-submenu(index='/1')
+        el-submenu(index='/user')
           template(slot='title')
             img(src='../assets/imgs/sider_user.svg')
             span 用户
           el-menu-item(index='/users') 用户列表
           //- el-menu-item(index='/users/new') 添加用户
-        el-submenu(index='/8')
+        el-submenu(index='/wechat')
           template(slot='title')
             img(src='../assets/imgs/sider_wechat.svg')
             span 微信
@@ -84,10 +90,10 @@ export default {
   &
     text-align left
   .sider-logo
-    height 30px
-    margin 13px 20px
+    width calc(100% - 40px)
+    padding 20px
   .el-col
-    border-top 2px solid rgb(0, 164, 186)
+    // border-top 2px solid rgb(0, 164, 186)
     img
       width 15px
       vertical-align: baseline;

@@ -16,6 +16,8 @@ import AddTopic        from 'views/information/AddTopic.vue'
 import Columns         from 'views/information/Columns.vue'
 import AddColumn       from 'views/information/AddColumn.vue'
 
+import Push            from 'views/push/Push.vue'
+import AddPush         from 'views/push/AddPush.vue'
 import Ads             from 'views/ads/Ads.vue'
 import AddAd           from 'views/ads/AddAd.vue'
 
@@ -114,6 +116,16 @@ const router = new VueRouter({
       name: 'ads-new',
       component: AddAd,
       meta: {title: '添加广告'}
+    },
+    { path: '/push',
+      name: 'push',
+      component: Push,
+      meta: {title: '推送列表'}
+    },
+    { path: '/push/new',
+      name: 'push-new',
+      component: AddPush,
+      meta: {title: '添加推送'}
     },
 
     { path: '/comments',
