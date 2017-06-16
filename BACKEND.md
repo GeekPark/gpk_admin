@@ -43,6 +43,8 @@ config.middleware.insert_before 0, 'Rack::Cors' do
             headers: :any,
             methods: [:get, :post, :patch, :options],
             credentials: true
+  end
+end
 ```
 
 OK, 以上除了用户站之外, 其他数据都有了, 用户站涉及到数据安全, 暂时不开放, 嗯, 就这样😀
