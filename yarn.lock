@@ -1407,6 +1407,10 @@ element-resize-event@latest:
   version "2.0.9"
   resolved "http://registry.npm.taobao.org/element-resize-event/download/element-resize-event-2.0.9.tgz#2f5e1581a296eb5275210c141bc56342e218f876"
 
+element-theme-default@^1.3.4:
+  version "1.3.7"
+  resolved "http://registry.npm.taobao.org/element-theme-default/download/element-theme-default-1.3.7.tgz#71a2fc6b743a1c66b26c493014a613959bbcca0e"
+
 element-ui@^1.2.4:
   version "1.3.1"
   resolved "http://registry.npm.taobao.org/element-ui/download/element-ui-1.3.1.tgz#d1fccf8bde776323d734134ff5814a26b333c0f7"
@@ -2168,10 +2172,6 @@ jodid25519@^1.0.0:
   resolved "http://registry.npm.taobao.org/jodid25519/download/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
   dependencies:
     jsbn "~0.1.0"
-
-jquery@^2.2.3:
-  version "2.2.4"
-  resolved "http://registry.npm.taobao.org/jquery/download/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
 js-base64@^2.1.9:
   version "2.1.9"
@@ -4042,11 +4042,9 @@ vuex@^2.0.0:
   version "2.3.1"
   resolved "http://registry.npm.taobao.org/vuex/download/vuex-2.3.1.tgz#cde8e997c1f9957719bc7dea154f9aa691d981a6"
 
-wangeditor@^2.1.22:
-  version "2.1.23"
-  resolved "http://registry.npm.taobao.org/wangeditor/download/wangeditor-2.1.23.tgz#59ba6d224cb216ebc9d40ce92732690d9987fb7a"
-  dependencies:
-    jquery "^2.2.3"
+wangeditor@^3.0.2:
+  version "3.0.2"
+  resolved "http://registry.npm.taobao.org/wangeditor/download/wangeditor-3.0.2.tgz#58533329de6890e138a39ee0a3c17fe9b74606d8"
 
 watchpack@^0.2.1:
   version "0.2.9"

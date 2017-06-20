@@ -10,16 +10,14 @@
     "test": ""
   },
   "dependencies": {
-    "awe-dnd": "^0.3.0",
     "axios": "^0.15.3",
     "element-ui": "^1.2.4",
     "highlight.js": "^9.9.0",
     "moment": "^2.18.1",
     "vue": "^2.1.10",
-    "vue-echarts-v3": "^1.0.3",
     "vue-router": "^2.4.0",
     "vuex": "^2.0.0",
-    "wangeditor": "^2.1.22"
+    "wangeditor": "^3.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

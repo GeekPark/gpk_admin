@@ -17,6 +17,7 @@
     el-table-column(prop='', label='标题', width="150")
     el-table-column(prop='', label='添加人', width="100")
     el-table-column(prop='', label='位置', width="100")
+    el-table-column(prop='', label='点击量', width="100")
     el-table-column(prop='', label='开始时间', width="200")
     el-table-column(prop='', label='结束时间', width="200")
     el-table-column(label='操作', width="150")
