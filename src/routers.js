@@ -3,7 +3,6 @@ import VueRouter       from 'vue-router'
 import config          from './config.js'
 
 import Index           from 'views/Index.vue'
-import Charts          from 'views/Charts.vue'
 import Errors          from 'views/Errors.vue'
 
 import Posts           from 'views/information/Posts.vue'
@@ -37,12 +36,6 @@ const router = new VueRouter({
       name: 'index',
       component: Index,
       meta: {title: '首页'}
-    },
-
-    { path: '/charts',
-      name: 'charts',
-      component: Charts,
-      meta: {title: 'Charts'}
     },
 
     { path: '/users',
