@@ -24,7 +24,7 @@
     h2 操作
     el-form-item(label="编辑权限: ")
       el-select(v-model="user.roles",placeholder="请选择", multiple)
-        el-option(v-for="item in roles", :label="item", :value="item")
+        el-option(v-for="item in roles", :label="item", :value="item", :key='item')
     el-form-item(label='是否禁言:')
       el-switch(v-model="user.banned", on-text="", off-text="", @change='blockChange')
     el-form-item(label='')

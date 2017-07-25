@@ -9,11 +9,10 @@
              v-model="params.title",
              :on-icon-click="search")
   el-table(:data='listData.columns' border)
-    el-table-column(prop='title', label='标题', width="200")
+    el-table-column(prop='title', label='栏目名称', width="200")
     el-table-column(prop='description', label='描述', width="300")
-    el-table-column(prop='published_at', label='发布时间', width="200")
-    el-table-column(prop='', label='类型', width="100")
-    el-table-column(prop='', label='首页', width="80")
+    el-table-column(prop='', label='是否显示在首页', width="150")
+    el-table-column(prop='published_at', label='添加时间', width="200")
     el-table-column(label='操作', width="120")
         template(scope='scope')
           el-button(type='text',
@@ -53,9 +52,6 @@ const vm = Base({
     'listData.columns': function (val) {
       val.forEach(el => {
         if (el.state === 'published') {el.state = '已发布'}
-        if (el.description.length >= 30) {
-          el.description = `${el.description.slice(0, 30)}...`
-        }
         el.published_at = tool.moment(el.published_at)
       })
     }

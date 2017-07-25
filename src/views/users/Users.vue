@@ -16,7 +16,7 @@
              :on-icon-click="handleIconClick")
   .roles
     el-select(v-model="role",placeholder="请选择", @change='rolesChange')
-      el-option(v-for="item in possible_roles", :label="item", :value="item")
+      el-option(v-for="item in possible_roles", :label="item", :value="item", :key="item")
   el-table(:data='listData.json', @current-change="rowClick" border)
     el-table-column(prop='', label='注册方式', width="100")
     el-table-column(prop='nickname', label='nickname', width="120")

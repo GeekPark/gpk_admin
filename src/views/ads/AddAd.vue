@@ -21,7 +21,8 @@
       el-select(v-model='form.position', placeholder='请选择')
         el-option(v-for='item in positions',
                   :label='item',
-                  :value='item')
+                  :value='item',
+                  :key='item')
     el-form-item(label='广告标识')
     upload(:callback='uploadImage', title='图片')
     el-form-item(label='')

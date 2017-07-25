@@ -46,12 +46,12 @@
             span 用户
           el-menu-item(index='/users') 用户列表
           //- el-menu-item(index='/users/new') 添加用户
-        el-submenu(index='/wechat')
-          template(slot='title')
-            img(src='../assets/imgs/sider_wechat.svg')
-            span 微信
-          el-menu-item(index='/wechats') 微信列表
-          el-menu-item(index='/wechats/new') 添加微信
+        //- el-submenu(index='/wechat')
+        //-   template(slot='title')
+        //-     img(src='../assets/imgs/sider_wechat.svg')
+        //-     span 微信
+        //-   el-menu-item(index='/wechats') 微信列表
+        //-   el-menu-item(index='/wechats/new') 添加微信
 
 </template>
 

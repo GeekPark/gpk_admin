@@ -79,6 +79,8 @@ html, body
   left 0
 
 // element -ui
+.el-table
+  font-size 40%
 .el-pagination
   text-align left
 

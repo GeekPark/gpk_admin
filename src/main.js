@@ -16,7 +16,7 @@ import SearchUser   from 'components/SearchUser.vue'
 import SearchTag    from 'components/SearchTag.vue'
 import SearchColumn from 'components/SearchColumn.vue'
 import Vmarkdown    from 'components/Vmarkdown.vue'
-import hljs         from 'highlight.js'
+// import hljs         from 'highlight.js'
 // import VueDND     from 'awe-dnd'
 Vue.use(Element)
 Vue.component(Vheader.name,      Vheader)
@@ -30,8 +30,8 @@ Vue.component(SearchTag.name,    SearchTag)
 Vue.component(SearchColumn.name, SearchColumn)
 
 Vue.directive('highlightjs', el => {
-  let blocks = el.querySelectorAll('pre');
-  Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+  // let blocks = el.querySelectorAll('pre');
+  // Array.prototype.forEach.call(blocks, hljs.highlightBlock);
 })
 
 new Vue({

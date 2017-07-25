@@ -26,11 +26,11 @@ export default {
           api.account.get('admin/users',{params: {nickname: query}})
           .then(result => {
             this.loading = false;
+            console.log(result.data)
             this.searchData = result.data.json.filter(item => {
               const regex = new RegExp(query, "g");
               return item.nickname.match(regex);
             });
-
           })
         } else {
           this.searchData = [];

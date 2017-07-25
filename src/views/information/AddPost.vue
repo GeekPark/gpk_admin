@@ -13,7 +13,8 @@
       el-select(v-model='form.content_type', placeholder='请选择')
         el-option(v-for='item in content_types',
                   :label='item.title',
-                  :value='item.val')
+                  :value='item.val',
+                  :key='item.val',)
     el-form-item(label='正文', prop='content')
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
@@ -210,7 +211,11 @@ function getPost(_this) {
 </script>
 
 <style lang="stylus">
+.el-select-dropdown
+  z-index 99999 !important
+
 #add-post
   .el-select
     width 50%
+
 </style>

@@ -7,8 +7,8 @@
              icon="search",
              v-model="input2",
              :on-icon-click="handleFilter")
-  el-table(:data='listData.comments',)
-    el-table-column(prop='', label='用户名', width="100")
+  el-table(:data='listData.comments',border)
+    el-table-column(prop='commenter_info.nickname', label='用户名', width="100")
     el-table-column(prop='content', label='内容', width="200")
     el-table-column(label='来源', width="150")
       template(scope='scope')
