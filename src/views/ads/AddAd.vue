@@ -24,7 +24,8 @@
                   :value='item',
                   :key='item')
     el-form-item(label='广告标识')
-    upload(:callback='uploadImage', title='图片')
+    el-form-item(label='图片')
+      upload(:callback='uploadImage')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭
@@ -72,6 +73,7 @@ export default {
 function updateAd (_this) {
   api.put(`admin/ads/${_this.$route.query.id}`, _this.form)
   .then((result) => {
+    window.close()
     _this.$message.success('success')
   }).catch((err) => {
     _this.$message.error(err.toString())
@@ -81,6 +83,7 @@ function updateAd (_this) {
 function createAd (_this) {
   api.post('admin/ads', _this.form)
   .then((result) => {
+    window.close()
     _this.$message.success('success')
   }).catch((err) => {
     _this.$message.error(err.toString())
@@ -90,7 +93,6 @@ function createAd (_this) {
 function getAd (_this) {
   api.get(`admin/ads/${_this.$route.query.id}`)
   .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
   }).catch((err) => {
     _this.$message.error(err.toString())

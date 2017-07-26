@@ -1,14 +1,15 @@
 <template lang="jade">
 #admin-posts.admin
-  .title
-    h1 {{$route.meta.title}}
-  .filter
-    el-input(placeholder="搜索",
-             icon="search",
-             v-model="input2",
-             :on-icon-click="handleIconClick")
+  .admin-header
+    .title
+      h1 {{$route.meta.title}}
+    .filter
+      el-input(placeholder="搜索",
+               icon="search",
+               v-model="input2",
+               :on-icon-click="handleIconClick")
   el-table(:data='listData.posts' border)
-    el-table-column(prop='title', label='标题', width="200")
+    el-table-column(prop='title', label='标题')
     el-table-column(prop='author', label='作者', width="100")
     el-table-column(prop='published_at', label='发布时间', width="180")
     el-table-column(prop='', label='微信分享', width="100")

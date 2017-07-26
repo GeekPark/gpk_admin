@@ -1,20 +1,21 @@
 <template lang="jade">
 #admin-posts.admin
-  .title
-    h1 {{$route.meta.title}}
-    el-button(type='text', @click="$router.push('/ads/new')") 添加广告
-  .filter
-    el-button(type='text', @click='handleEdit()') 全部
-    | /
-    el-button(type='text', @click='handleEdit()') 草稿
-    | /
-    el-button(type='text', @click='handleEdit()') 已删除
-    el-input(placeholder="搜索",
-             icon="search",
-             v-model="input2",
-             :on-icon-click="handleIconClick")
+  .admin-header
+    .title
+      h1 {{$route.meta.title}}
+      el-button(type='text', @click="addAD") 添加广告
+    .filter
+      el-button(type='text', @click='handleEdit()') 全部
+      | /
+      el-button(type='text', @click='handleEdit()') 草稿
+      | /
+      el-button(type='text', @click='handleEdit()') 已删除
+      el-input(placeholder="搜索",
+               icon="search",
+               v-model="input2",
+               :on-icon-click="handleIconClick")
   el-table(:data='listData.ads' border)
-    el-table-column(prop='', label='标题', width="150")
+    el-table-column(prop='', label='标题')
     el-table-column(prop='', label='添加人', width="100")
     el-table-column(prop='', label='位置', width="100")
     el-table-column(prop='', label='点击量', width="100")
@@ -48,6 +49,9 @@ const vm = Base({
       this.$router.push(`posts/new?id=${row.id}`)
     },
     handleIconClick () {
+    },
+    addAD () {
+      window.open('/ads/new')
     }
   },
   watch: {

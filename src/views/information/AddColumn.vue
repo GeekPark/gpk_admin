@@ -7,12 +7,14 @@
       el-input(placeholder='', v-model='form.title')
     el-form-item(label='描述')
       el-input(type='textarea', placeholder='描述', v-model='form.description')
-    upload(:callback='uploadImage', title='背景封面')
-    el-form-item(label='文章是否显示在首页')
-      el-switch(v-model="form.is", on-text="", off-text="")
+    el-form-item(label='背景封面')
+      upload(:callback='uploadImage')
+    el-form-item.column_visible(label='文章是否显示在首页')
+      el-radio.radio(v-model='form.column_visible', :label="true") 是
+      el-radio.radio(v-model='form.column_visible', :label="false") 否
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
-      el-button(type='danger', @click='onSubmit') 关闭
+      el-button(type='danger', @click='close') 关闭
 </template>
 
 <script>
@@ -26,16 +28,16 @@ export default {
         description: '',
         picture: '',
         content_type: 'normal',
-        is: false
+        column_visible: false
       }
     }
   },
   methods: {
     onSubmit () {
       if (this.$route.query.id) {
-        updateAd(this)
+        updateColumn(this)
       } else {
-        createAd(this)
+        createColumn(this)
       }
     },
     handleSelect (item) {
@@ -43,38 +45,42 @@ export default {
     },
     uploadImage (img) {
       this.form.cover_id = img.id
+    },
+    close () {
+      window.close()
     }
   },
   mounted () {
     if (this.$route.query.id) {
-      getAd(this)
+      getColumn(this)
     }
   }
 }
 
-function updateAd (_this) {
+function updateColumn (_this) {
   api.put(`admin/columns/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
+    window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
 }
 
-function createAd (_this) {
+function createColumn (_this) {
   api.post('admin/columns', _this.form)
   .then((result) => {
     _this.$message.success('success')
+    window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
 }
 
-function getAd (_this) {
+function getColumn (_this) {
   api.get(`admin/columns/${_this.$route.query.id}`)
   .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
-    _this.form = result.data.post
+    console.log(_this.form)
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
@@ -84,5 +90,8 @@ function getAd (_this) {
 <style lang="stylus" scoped>
 .el-input, .el-textarea
   width 50%
+
+.column_visible
+  margin-top 20px
 
 </style>

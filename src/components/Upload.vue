@@ -74,5 +74,6 @@ export default {
   z-index: 10;
   right: 10px;
   top: 10px;
+  cursor: pointer;
 }
 </style>

@@ -20,11 +20,12 @@ export default {
 
 <style lang="stylus">
 
-$siderrWidth = 200px
+$siderrWidth = 140px
 $headerHeight = 60px
 
 html, body
   width 100%
+  height 100%
   margin 0
   padding 0
   overflow-x hidden
@@ -33,12 +34,13 @@ html, body
   color #2c3e50
   background transparent
   width 100%
+  height 100%
 
 .admin
   box-shadow 3px 2px 10px 0px #B0B0B0;
-  width calc(100% - $siderrWidth)
   margin-left $siderrWidth
-  height calc(100% - 120px)
+  height auto
+  min-height calc(100% - 120px)
   background rgb(250, 250, 250)
   padding 30px
   padding-top 30px
@@ -77,11 +79,19 @@ html, body
   top 0
   left 0
 
+.admin-header
+  display flex
+  justify-content space-between
+  align-items center
+  margin-bottom 10px
+
 // element -ui
 .el-table
   font-size 40%
 .el-pagination
   text-align left
+  margin-top 20px
+
 
 .el-submenu, .el-menu
   background-color rgb(0, 188, 212)
@@ -135,14 +145,11 @@ html, body
   opacity 0
 
 .title
-  float left
   h1
     display inline-block
     margin-right 20px
 
 .filter
-  margin-bottom 20px
-  float right
   .el-button
     margin-left 0px
   .el-input

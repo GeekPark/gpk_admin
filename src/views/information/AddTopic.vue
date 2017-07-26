@@ -7,10 +7,11 @@
       el-input(placeholder='', v-model='form.title')
     el-form-item(label='描述')
       el-input(type='textarea', placeholder='', v-model='form.description')
-    upload(:callback='uploadImage', title='背景封面')
-    el-form-item(label='')
+    el-form-item(label='背景封面')
+      upload(:callback='uploadImage')
+    el-form-item.actions(label='')
       el-button(type='primary', @click='onSubmit') 发布
-      el-button(type='danger', @click='onSubmit') 关闭
+      el-button(type='danger', @click='close') 关闭
 </template>
 
 <script>
@@ -31,9 +32,9 @@ export default {
   methods: {
     onSubmit () {
       if (this.$route.query.id) {
-        updateAd(this)
+        updateTopic(this)
       } else {
-        createAd(this)
+        createTopic(this)
       }
     },
     handleSelect (item) {
@@ -41,37 +42,41 @@ export default {
     },
     uploadImage (img) {
       this.form.cover_id = img.id
+    },
+    close () {
+      window.close()
     }
   },
   mounted () {
     if (this.$route.query.id) {
-      getAd(this)
+      getTopic(this)
     }
   }
 }
 
-function updateAd (_this) {
+function updateTopic (_this) {
   api.put(`admin/topics/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
+    window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
 }
 
-function createAd (_this) {
+function createTopic (_this) {
   api.post('admin/topics', _this.form)
   .then((result) => {
     _this.$message.success('success')
+    window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
 }
 
-function getAd (_this) {
+function getTopic (_this) {
   api.get(`admin/topics/${_this.$route.query.id}`)
   .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
   }).catch((err) => {
     _this.$message.error(err.toString())

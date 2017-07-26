@@ -1,5 +1,5 @@
 <template lang="jade">
-#add-post.admin
+.admin#add-post
   .title
     h1 {{$route.meta.title}}
   el-form(ref='add-post-form', :model='form', label-position='top', :rules="rules")
@@ -18,7 +18,7 @@
     el-form-item(label='正文', prop='content')
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
-      veditor#veditor(style="height:400px;max-height:500px;", v-else)
+      veditor(v-else)
     el-form-item(label='添加标签', prop='tags')
       search-tag(:callback='searchTag')
     el-form-item(label='栏目选择', prop='column_id')
@@ -105,9 +105,6 @@ export default {
       }, {
         title: 'markdown',
         val: 'markdown'
-      }, {
-        title: 'plain',
-        val: 'plain'
       }]
     }
   },
@@ -149,9 +146,7 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.query.id) {
-      getPost(this)
-    }
+    if (this.$route.query.id) { getPost(this) }
   }
 }
 
@@ -210,6 +205,7 @@ function getPost (_this) {
   z-index 99999 !important
 
 #add-post
+  hegiht auto !important
   .el-select
     width 50%
 

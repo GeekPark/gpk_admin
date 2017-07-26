@@ -1,38 +1,44 @@
 <template lang="jade">
 #admin-posts.admin
-  .title
-    h1 {{$route.meta.title}}
-    el-button(type='text', @click="$router.push('/posts/new')") 添加文章
-  .filter
-
-    el-button(type='text', @click='params.state = "all"') 全部
-    | /
-    el-button(type='text', @click='params.state = " published"') 已发布
-    | /
-    el-button(type='text', @click='params.state = "unpublished"') 草稿
-    | /
-    el-button(type='text', @click='params.state = "closed"') 已删除
-    el-input(placeholder="搜索",
-             icon="search",
-             v-model="params.title",
-             :on-icon-click="search")
+  .admin-header
+    .title
+      h1 {{$route.meta.title}}
+      el-button(type='text', @click="addPost") 添加文章
+    .filter
+      el-button(type='text',
+                @click='params.state = "all"',
+                v-bind:class='{active: params.state === "all"}') 全部
+      | /
+      el-button(type='text',
+                @click='params.state = "published"',
+                v-bind:class='{active: params.state === "published"}') 已发布
+      | /
+      el-button(type='text',
+                @click='params.state = "unpublished"',
+                v-bind:class='{active: params.state === "unpublished"}') 草稿
+      | /
+      el-button(type='text',
+                @click='params.state = "closed"',
+                v-bind:class='{active: params.state === "closed"}') 已删除
+      el-input(placeholder="搜索",
+               icon="search",
+               v-model="params.title",
+               :on-icon-click="search")
   el-table(:data='listData.posts' border)
-    el-table-column(prop='title', label='标题', width="200")
+    el-table-column(prop='title', label='标题')
     el-table-column(prop='authors.nickname', label='作者', width="100")
     el-table-column(prop='column_title', label='栏目', width="150")
     el-table-column(prop='published_at', label='发布时间', width="180")
     el-table-column(prop='state', label=' 状态', width="80")
     el-table-column(prop='views', label=' PV', width="100")
-    el-table-column(label='操作', width="110")
+    el-table-column(label='操作', width="170")
       template(scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
-    el-table-column(label='加入推荐', width="90")
-      template(scope='scope')
-        el-switch(v-model="scope.row.recommended", @change='recommendPost(scope.row)', on-text="",
-  off-text="")
+                  @click='handleDestroy(scope.$index, scope.row)') 删除
+        el-button(type='text',
+                  @click='recommendPost(scope.row)') {{scope.row.recommended === true ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -97,7 +103,7 @@ export default {
     handleDestroy (index, val, list) {
       api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
         this.$message.success('success')
-        list.splice(index, 1)
+        this.fetch()
       }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
@@ -108,6 +114,9 @@ export default {
         this.fetch()
         console.log(result)
       })
+    },
+    addPost () {
+      window.open('/posts/new?content_type=html')
     }
   },
   watch: {
@@ -129,6 +138,9 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+.active
+  color #7F7F7F
+
 
 </style>
