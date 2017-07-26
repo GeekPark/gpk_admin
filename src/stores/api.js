@@ -1,12 +1,10 @@
 import config from '../config'
-import router from '../routers.js'
-import store  from './index.js'
-import axios  from 'axios'
-const base_url = `${config.host}v1`
+import axios from 'axios'
+const baseUrl = `${config.host}v1`
 
-const request = create();
+const request = create()
 
-function create(url = base_url) {
+function create (url = baseUrl) {
   return axios.create({
     baseURL: url,
     timeout: 10000,
@@ -21,7 +19,7 @@ function create(url = base_url) {
       }
       return json
     }]
-  });
+  })
 }
 
 // Add a request interceptor
@@ -43,6 +41,6 @@ request.interceptors.response.use(function (response) {
   return Promise.reject(error)
 })
 
-request.account = create(`${config.account}`);
+request.account = create(`${config.account}`)
 
 export default request

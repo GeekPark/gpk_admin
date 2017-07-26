@@ -16,27 +16,27 @@ import config from '../config.js'
 export default {
   name: 'upload',
   computed: {
-    uploadUrl() {
+    uploadUrl () {
       return `${config.host}v1/admin/images`
     }
   },
   data () {
     return {
-      imageUrl: '',
+      imageUrl: ''
     }
   },
   props: ['callback'],
   methods: {
     handleAvatarScucess (response, file, fileList) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = URL.createObjectURL(file.raw)
       this.callback(response.image)
     },
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    beforeAvatarUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isLt2M;
+      return isLt2M
     }
   }
 }

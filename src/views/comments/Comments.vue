@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import api  from 'stores/api'
+import api from 'stores/api'
 import tool from 'tools'
 
 const url = 'admin/comments'
@@ -38,8 +38,8 @@ export default {
   data () {
     return {
       filterParams: {
-        commentable_type: "",
-        state: "",
+        commentable_type: '',
+        state: ''
       },
       input2: '',
       currentPage: 1,
@@ -52,21 +52,21 @@ export default {
     }
   },
   methods: {
-    handleSizeChange(index, val) {
+    handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
-    handleCurrentChange(index, val) {
+    handleCurrentChange (index, val) {
       this.currentPage = index
-      fetch(this, {page: index}, )
+      fetch(this, {page: index})
       console.log(`当前页: ${index}`)
     },
-    handleFilter() {
+    handleFilter () {
       fetch(this, url, {
         page: this.currentPage
       })
     },
-    handleDestroy(index, val, list) {
-      api.delete(`${options.url}/${val.id}`, {}).then((result) => {
+    handleDestroy (index, val, list) {
+      api.delete(`${url}/${val.id}`, {}).then((result) => {
         this.$message.success('success')
         list.splice(index, 1)
       }).catch((err) => {
@@ -81,7 +81,7 @@ export default {
   watch: {
     'listData.comments': function (val) {
       val.forEach(el => {
-        if (el.state === 'published') {el.state = '已发布'}
+        if (el.state === 'published') { el.state = '已发布' }
         if (el.content.length >= 30) {
           el.content = `${el.content.slice(0, 30)}...`
         }
@@ -96,7 +96,7 @@ function fetch (_this = {}, url = '', params = {}) {
     _this.listData = result.data
   }).catch((err) => {
     console.log(err)
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 </script>

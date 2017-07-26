@@ -38,50 +38,47 @@
 </template>
 
 <script>
-
-import tools    from 'tools'
-import api      from 'stores/api'
+import api from 'stores/api'
 
 export default {
   data () {
-    var validateContent = (rule, value, callback) => {
-      getContent(this);
-
+    const validateContent = (rule, value, callback) => {
+      getContent(this)
       if (this.form.content_source === '') {
-        callback(new Error('请输入内容'));
+        callback(new Error('请输入内容'))
       } else {
-        callback();
+        callback()
       }
-    };
-    var validateArray = (rule, value, callback) => {
-      if (value.length === 0 ) {
-        callback(new Error('请输入内容'));
+    }
+    const validateArray = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error('请输入内容'))
       } else {
-        callback();
+        callback()
       }
-    };
-    const content_type = this.$route.query.content_type || '';
+    }
+    const contentType = this.$route.query.content_type || ''
     return {
       form: {
-        title:           '',
-        abstract:        '',
-        content_type:    content_type,
-        content_source:  '',
-        tags:            [],
-        column_id:       [],
-        cover_id:        '',
-        author_ids:      [],
+        title: '',
+        abstract: '',
+        content_type: contentType,
+        content_source: '',
+        tags: [],
+        column_id: [],
+        cover_id: '',
+        author_ids: [],
         auto_publish_at: null,
-        state:           'published',
-        meta:            {},
-        ccid:            ''
+        state: 'published',
+        meta: {},
+        ccid: ''
       },
       rules: {
         title: [
-          { required: true, message: '请输入文章标题', trigger: 'blur',  min: 0}
+          { required: true, message: '请输入文章标题', trigger: 'blur', min: 0 }
         ],
         abstract: [
-          { required: true, message: '请输入文章摘要', trigger: 'blur',  min: 0}
+          { required: true, message: '请输入文章摘要', trigger: 'blur', min: 0 }
         ],
         content: [
           { required: true, validator: validateContent, trigger: 'blur' }
@@ -104,18 +101,18 @@ export default {
       },
       content_types: [{
         title: '富文本',
-        val: 'html',
-      },{
+        val: 'html'
+      }, {
         title: 'markdown',
         val: 'markdown'
-      },{
+      }, {
         title: 'plain',
         val: 'plain'
-      }],
+      }]
     }
   },
   methods: {
-    submitForm() {
+    submitForm () {
       this.$refs['add-post-form'].validate((valid) => {
         if (valid) {
           if (this.$route.query.id) {
@@ -125,41 +122,40 @@ export default {
           }
         } else {
           this.$message.error('内容信息不完整, 请完善后再提交!')
-          return false;
+          return false
         }
-      });
+      })
     },
-    resetForm() {
-      this.$refs['add-post-form'].resetFields();
+    resetForm () {
+      this.$refs['add-post-form'].resetFields()
     },
-    uploadImage(img) {
+    uploadImage (img) {
       this.form.cover_id = img.id
     },
-    searchUser(user) {
-
+    searchUser (user) {
     },
-    searchTag(tags) {
-      this.form.tags = tags;
+    searchTag (tags) {
+      this.form.tags = tags
     },
-    searchColumn(column) {
-      this.form.column_id = column;
+    searchColumn (column) {
+      this.form.column_id = column
     }
   },
   watch: {
     'form.content_type': function (val) {
-        const id = this.$route.query.id ? `&id=${this.$route.query.id}` : ''
-       this.$router.push(`${this.$route.path}?content_type=${val}${id}`)
-       addContent(this, val)
+      const id = this.$route.query.id ? `&id=${this.$route.query.id}` : ''
+      this.$router.push(`${this.$route.path}?content_type=${val}${id}`)
+      addContent(this, val)
     }
   },
   mounted () {
-     if (this.$route.query.id) {
-       getPost(this)
-     }
+    if (this.$route.query.id) {
+      getPost(this)
+    }
   }
 }
 
-function getContent(_this) {
+function getContent (_this) {
   if (_this.$route.query.content_type === 'html') {
     _this.form.content_source = _this.$store.state.htmlEditor.$txt.html()
   } else {
@@ -167,45 +163,44 @@ function getContent(_this) {
   }
 }
 
-function addContent(_this, val) {
+function addContent (_this, val) {
   setTimeout(() => {
     if (val === 'html') {
       _this.$store.state.htmlEditor.$txt.html(_this.form.content_source)
     } else {
       _this.$store.state.markdownEditor.value(_this.form.content_source)
     }
-  },100)
+  }, 100)
 }
 
-function updatePost(_this) {
+function updatePost (_this) {
   getContent(_this)
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function createPost(_this) {
+function createPost (_this) {
   getContent(_this)
   api.post('admin/posts', _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function getPost(_this) {
+function getPost (_this) {
   api.get(`admin/posts/${_this.$route.query.id}`)
   .then((result) => {
     result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
     addContent(_this, _this.form.content_type)
-
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 </script>

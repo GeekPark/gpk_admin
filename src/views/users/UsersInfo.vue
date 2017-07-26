@@ -32,7 +32,6 @@
 </template>
 
 <script>
-
 import api from 'stores/api'
 import tools from 'tools'
 
@@ -49,15 +48,15 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    onSubmit () {
       api.account.put(`admin/users/${this.$route.params.id}`, {
-        roles: this.user.roles,
+        roles: this.user.roles
       }).then(result => {
         console.log(result)
       })
     },
-    blockChange(val) {
-      console.log(val);
+    blockChange (val) {
+      console.log(val)
       ban(this, val ? 'ban' : 'unban')
     }
   },

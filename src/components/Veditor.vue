@@ -11,14 +11,14 @@ export default {
   name: 'veditor',
   data () {
     return {
-      count: 0,
+      count: 0
     }
   },
   mounted () {
     tools.editor(this)
     const _this = this
     this.$store.state.htmlEditor.onchange = function () {
-        _this.count = this.$txt.text().length
+      _this.count = this.$txt.text().length
     }
   }
 }

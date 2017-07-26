@@ -38,7 +38,6 @@
 </template>
 
 <script>
-
 import api from 'stores/api'
 
 export default {
@@ -46,51 +45,50 @@ export default {
     return {
       sections: [{
         title: '文章管理',
-        url: '/posts',
-      },{
+        url: '/posts'
+      }, {
         title: '用户管理',
-        url: '/users',
-      },{
+        url: '/users'
+      }, {
         title: '广告管理',
-        url: '/ads',
-      },{
+        url: '/ads'
+      }, {
         title: '微信管理',
-        url: '/wechats',
+        url: '/wechats'
       }],
       quickly: [{
         title: '极客公园',
-        url: 'http://geekpark.net',
-      },{
+        url: 'http://geekpark.net'
+      }, {
         title: 'Teambition',
-        url: 'https://www.teambition.com/projects',
-      },{
+        url: 'https://www.teambition.com/projects'
+      }, {
         title: '极光推送',
-        url: 'https://www.jiguang.cn/dev/#/app/list#dev',
-      },{
+        url: 'https://www.jiguang.cn/dev/#/app/list#dev'
+      }, {
         title: 'Innoawards',
-        url: '',
-      },{
+        url: ''
+      }, {
         title: 'Github',
-        url: 'https://github.com/geekpark/gpk_admin',
+        url: 'https://github.com/geekpark/gpk_admin'
       }],
       postsData: {
-        posts: [],
-      },
+        posts: []
+      }
     }
   },
 
   methods: {
     fetch () {
       api.get('admin/posts').then((result) => {
-        console.log(result);
+        console.log(result)
         this.postsData = result.data
       }).catch((err) => {
-        console.log(err);
+        console.log(err)
         this.$message.error(err.toString())
       })
     }
   },
-
   beforeMount () {
     this.fetch()
   }

@@ -20,36 +20,36 @@ export default {
   },
   computed: {
     canAdd () {
-      return this.searchData.length === 0 &&  this.query.length > 0
+      return this.searchData.length === 0 && this.query.length > 0
     }
   },
   props: {callback: Function},
   methods: {
-    addTag() {
+    addTag () {
       api.post('admin/tags', {name: this.query})
       .then(result => {
-        console.log(result);
+        console.log(result)
       })
     },
-    remoteMethod(query) {
+    remoteMethod (query) {
       this.query = query
       if (query !== '') {
-        this.loading = true;
+        this.loading = true
         api.get(`admin/tags?name=${query}`)
         .then(result => {
-          this.loading = false;
+          this.loading = false
           this.searchData = result.data.length === undefined ? [] : result.data.filter(item => {
-            const regex = new RegExp(query, "g");
-            return item.match(regex);
-          });
+            const regex = new RegExp(query, 'g')
+            return item.match(regex)
+          })
         })
       } else {
-        this.searchData = [];
+        this.searchData = []
       }
     }
   },
   watch: {
-    'select': function(val) {
+    'select': function (val) {
       this.callback(val)
     }
   }

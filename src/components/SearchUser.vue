@@ -20,32 +20,32 @@ export default {
   },
   props: ['callback'],
   methods: {
-     remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true;
-          api.account.get('admin/users',{params: {nickname: query}})
-          .then(result => {
-            this.loading = false;
-            console.log(result.data)
-            this.searchData = result.data.json.filter(item => {
-              const regex = new RegExp(query, "g");
-              return item.nickname.match(regex);
-            });
+    remoteMethod (query) {
+      if (query !== '') {
+        this.loading = true
+        api.account.get('admin/users', { params: {nickname: query} })
+        .then(result => {
+          this.loading = false
+          console.log(result.data)
+          this.searchData = result.data.json.filter(item => {
+            const regex = new RegExp(query, 'g')
+            return item.nickname.match(regex)
           })
-        } else {
-          this.searchData = [];
-        }
+        })
+      } else {
+        this.searchData = []
       }
+    }
   },
   watch: {
-    'select': function(val) {
+    'select': function (val) {
       this.callback(val)
     }
   },
   mounted () {
     this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
+      return { value: item, label: item }
+    })
   }
 }
 </script>

@@ -17,9 +17,7 @@
 </template>
 
 <script>
-
-import tools    from 'tools'
-import api      from 'stores/api'
+import api from 'stores/api'
 
 export default {
   data () {
@@ -34,57 +32,55 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    onSubmit () {
       if (this.$route.query.id) {
         updateRecommend(this)
       } else {
         createRecommend(this)
       }
     },
-    handleSelect(item) {
-      console.log(item);
+    handleSelect (item) {
+      console.log(item)
     },
-    uploadImage(img) {
+    uploadImage (img) {
       this.form.cover_id = img.id
     },
     searchUser () {
-
     }
   },
   mounted () {
-     if (this.$route.query.id) {
-       getRecommend(this)
-     }
+    if (this.$route.query.id) {
+      getRecommend(this)
+    }
   }
 }
 
-function updateRecommend(_this) {
+function updateRecommend (_this) {
   api.put(`admin/topics/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function createRecommend(_this) {
+function createRecommend (_this) {
   api.post('admin/topics', _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function getRecommend(_this) {
+function getRecommend (_this) {
   api.get(`admin/topics/${_this.$route.query.id}`)
   .then((result) => {
     result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
-    addContent(_this, _this.form.content_type)
-
+    // addContent(_this, _this.form.content_type)
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 </script>

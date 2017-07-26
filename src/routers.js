@@ -1,31 +1,30 @@
-import Vue             from 'vue'
-import VueRouter       from 'vue-router'
-import config          from './config.js'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+// import config from './config.js'
 
-import Index           from 'views/Index.vue'
-import Errors          from 'views/Errors.vue'
+import Index from 'views/Index.vue'
+import Errors from 'views/Errors.vue'
 
-import Posts           from 'views/information/Posts.vue'
-import AddPost         from 'views/information/AddPost.vue'
-import Share           from 'views/information/Share.vue'
+import Posts from 'views/information/Posts.vue'
+import AddPost from 'views/information/AddPost.vue'
+import Share from 'views/information/Share.vue'
 import Recommendations from 'views/information/Recommendations.vue'
-import AddRecommend    from 'views/information/AddRecommend.vue'
-import Topics          from 'views/information/Topics.vue'
-import AddTopic        from 'views/information/AddTopic.vue'
-import Columns         from 'views/information/Columns.vue'
-import AddColumn       from 'views/information/AddColumn.vue'
+import AddRecommend from 'views/information/AddRecommend.vue'
+import Topics from 'views/information/Topics.vue'
+import AddTopic from 'views/information/AddTopic.vue'
+import Columns from 'views/information/Columns.vue'
+import AddColumn from 'views/information/AddColumn.vue'
 
-import Push            from 'views/push/Push.vue'
-import AddPush         from 'views/push/AddPush.vue'
-import Ads             from 'views/ads/Ads.vue'
-import AddAd           from 'views/ads/AddAd.vue'
+import Push from 'views/push/Push.vue'
+import AddPush from 'views/push/AddPush.vue'
+import Ads from 'views/ads/Ads.vue'
+import AddAd from 'views/ads/AddAd.vue'
 
-import UsersInfo       from 'views/users/UsersInfo.vue'
-import Users           from 'views/users/Users.vue'
-import AddUser         from 'views/users/AddUser.vue'
+import UsersInfo from 'views/users/UsersInfo.vue'
+import Users from 'views/users/Users.vue'
+import AddUser from 'views/users/AddUser.vue'
 
-import Comments        from 'views/comments/Comments.vue'
-
+import Comments from 'views/comments/Comments.vue'
 
 Vue.use(VueRouter)
 
@@ -66,37 +65,37 @@ const router = new VueRouter({
     },
     { path: '/share',
       name: 'info-share',
-      component:  Share,
+      component: Share,
       meta: {title: '分享统计'}
     },
     { path: '/recommendations',
       name: 'info-recommendations',
-      component:  Recommendations,
+      component: Recommendations,
       meta: {title: '推荐列表'}
     },
     { path: '/recommendations/new',
       name: 'info-recommendation-new',
-      component:  AddRecommend,
+      component: AddRecommend,
       meta: {title: '推荐列表'}
     },
     { path: '/topics',
       name: 'info-topics',
-      component:  Topics,
+      component: Topics,
       meta: {title: '专题列表'}
     },
     { path: '/topics/new',
       name: 'info-topic-new',
-      component:  AddTopic,
+      component: AddTopic,
       meta: {title: '添加专题'}
     },
     { path: '/columns',
       name: 'info-columns',
-      component:  Columns,
+      component: Columns,
       meta: {title: '栏目列表'}
     },
     { path: '/columns/new',
       name: 'info-column-new',
-      component:  AddColumn,
+      component: AddColumn,
       meta: {title: '添加栏目'}
     },
 

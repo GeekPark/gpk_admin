@@ -31,9 +31,7 @@
 </template>
 
 <script>
-
-import tools    from 'tools'
-import api      from 'stores/api'
+import api from 'stores/api'
 
 export default {
   data () {
@@ -50,56 +48,52 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    onSubmit () {
       if (this.$route.query.id) {
         updateAd(this)
       } else {
         createAd(this)
       }
     },
-    handleSelect(item) {
-      console.log(item);
+    handleSelect (item) {
+      console.log(item)
     },
-    uploadImage(img) {
+    uploadImage (img) {
       this.form.cover_id = img.id
     }
   },
   mounted () {
-     if (this.$route.query.id) {
-       getAd(this)
-     }
+    if (this.$route.query.id) {
+      getAd(this)
+    }
   }
 }
 
-function updateAd(_this) {
-  getContent(_this)
+function updateAd (_this) {
   api.put(`admin/ads/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function createAd(_this) {
-  getContent(_this)
+function createAd (_this) {
   api.post('admin/ads', _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function getAd(_this) {
+function getAd (_this) {
   api.get(`admin/ads/${_this.$route.query.id}`)
   .then((result) => {
     result.data.post.column_id = result.data.post.column.id
     _this.form = result.data.post
-    addContent(_this, _this.form.content_type)
-
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 </script>

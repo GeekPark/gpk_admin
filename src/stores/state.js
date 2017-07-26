@@ -1,5 +1,5 @@
 export default {
   markdownEditor: {},
-  htmlEditor:     {},
-  isLoading:      false
+  htmlEditor: {},
+  isLoading: false
 }

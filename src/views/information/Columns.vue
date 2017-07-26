@@ -28,7 +28,6 @@
 </template>
 
 <script>
-
 import Base from '../base'
 import tool from 'tools'
 const vm = Base({
@@ -51,12 +50,12 @@ const vm = Base({
   watch: {
     'listData.columns': function (val) {
       val.forEach(el => {
-        if (el.state === 'published') {el.state = '已发布'}
+        if (el.state === 'published') { el.state = '已发布' }
         el.published_at = tool.moment(el.published_at)
       })
     }
   }
-});
+})
 export default vm
 </script>
 

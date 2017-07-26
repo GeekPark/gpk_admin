@@ -42,10 +42,8 @@
 </template>
 
 <script>
-
-import Base from '../base'
 import tool from 'tools'
-import api  from 'stores/api'
+import api from 'stores/api'
 
 const url = 'admin/posts'
 
@@ -54,7 +52,7 @@ export default {
     return {
       params: {
         title: '',
-        state: 'all',
+        state: 'all'
       },
       currentPage: 1,
       listData: {
@@ -78,10 +76,10 @@ export default {
         console.log(err)
       })
     },
-    handleSizeChange(index, val) {
+    handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
-    handleCurrentChange(index, val) {
+    handleCurrentChange (index, val) {
       this.currentPage = index
       this.fetch()
       console.log(`当前页: ${index}`)
@@ -93,10 +91,10 @@ export default {
         this.listData = result.data
       }).catch((err) => {
         console.log(err)
-         this.$message.error(err.toString())
+        this.$message.error(err.toString())
       })
     },
-    handleDestroy(index, val, list) {
+    handleDestroy (index, val, list) {
       api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
         this.$message.success('success')
         list.splice(index, 1)
@@ -105,7 +103,7 @@ export default {
         this.$message.error(err.toString())
       })
     },
-    recommendPost(row) {
+    recommendPost (row) {
       api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
         this.fetch()
         console.log(result)
@@ -116,10 +114,9 @@ export default {
     'listData.posts': function (val) {
       val.forEach(el => {
         el.published_at = tool.moment(el.published_at)
-        if (el.state === 'published') {el.state = '已发布'}
-        if (el.state === 'unpublished') {el.state = '草稿'; el.published_at = ''}
-        if (el.state === 'closed') {el.state = '已删除'}
-
+        if (el.state === 'published') { el.state = '已发布' }
+        if (el.state === 'unpublished') { el.state = '草稿'; el.published_at = '' }
+        if (el.state === 'closed') { el.state = '已删除' }
       })
     },
     'params.state': function () {

@@ -22,14 +22,14 @@ export default {
   methods: {
   },
   watch: {
-    'select': function(val) {
+    'select': function (val) {
       this.callback(val)
     }
   },
   mounted () {
     api.get('admin/columns')
     .then(result => {
-      this.loading = false;
+      this.loading = false
       this.searchData = result.data.columns
     })
   }

@@ -8,12 +8,11 @@
 </template>
 
 <script>
-import api from 'stores/api'
 export default {
   name: 'app',
   computed: {
     isLoading () {
-      return this.$store.state.isLoading;
+      return this.$store.state.isLoading
     }
   }
 }

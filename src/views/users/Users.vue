@@ -40,7 +40,7 @@
 </template>
 
 <script>
-const base_url = 'admin/users'
+const url = 'admin/users'
 
 import api from 'stores/api'
 import tools from 'tools'
@@ -71,10 +71,10 @@ export default {
     rowClick (row) {
       this.$router.push(`/users/info/${row.id}`)
     },
-    handleSizeChange(index, val) {
+    handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
-    handleCurrentChange(index, val) {
+    handleCurrentChange (index, val) {
       this.page = index
       fetchUsers(this)
       console.log(`当前页: ${index}`)
@@ -93,18 +93,17 @@ export default {
 }
 
 function fetchUsers (_this) {
-  api.account.get(base_url, {params: {
-    nickname: _this.searchText ,
+  api.account.get(url, {params: {
+    nickname: _this.searchText,
     page: _this.page,
     role: _this.role,
-    mode: 'filter',
+    mode: 'filter'
   }}).then(result => {
     _this.listData = result.data
   }).catch(err => {
-    // console.log(err)
+    console.log(err)
   })
 }
-
 
 function fetch (_this, url, key) {
   api.account.get(url).then(result => {
