@@ -7,8 +7,8 @@
     .filter
       el-input(placeholder="搜索",
                icon="search",
-               v-model="input2",
-               :on-icon-click="handleIconClick")
+               v-model="params.title",
+               :on-icon-click="search")
   el-table(:data='listData.columns' border)
     el-table-column(prop='', label='产品名称')
     el-table-column(prop='', label='作者', width="100")
@@ -32,32 +32,90 @@
 </template>
 
 <script>
-import Base from '../base'
+import api from 'stores/api'
 import tool from 'tools'
-const vm = Base({
-  url: 'admin/columns',
-  data: {
-    recommend: false,
-    input2: ''
+
+const url = 'admin/recommendations'
+
+export default {
+  data () {
+    return {
+      params: {
+        title: ''
+      },
+      currentPage: 1,
+      listData: {
+        recommendations: [],
+        meta: {
+          total_count: 0,
+          limit_value: 0
+        }
+      }
+    }
   },
   methods: {
     handleEdit (index, row) {
-      this.$router.push(`columns/new?id=${row.id}`)
+      this.$router.push(`recommendations/new?id=${row.id}`)
     },
-    handleIconClick () {
-
+    search () {
+      api.get(url, {params: this.params}).then(result => {
+        console.log(result)
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    handleSizeChange (index, val) {
+      console.log(`每页 ${index} 条`)
+    },
+    handleCurrentChange (index, val) {
+      this.currentPage = index
+      this.fetch()
+      console.log(`当前页: ${index}`)
+    },
+    fetch () {
+      const params = Object.assign({page: this.currentPage}, this.params)
+      api.get(url, {params: params}).then((result) => {
+        console.log(result)
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
+        this.$message.error(err.toString())
+      })
+    },
+    handleDestroy (index, val, list) {
+      api.delete(`${url}/${val.id}`).then((result) => {
+        this.$message.success('success')
+        this.fetch()
+      }).catch((err) => {
+        console.log(err)
+        this.$message.error(err.toString())
+      })
+    },
+    recommendPost (row) {
+      api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
+        this.fetch()
+        console.log(result)
+      })
+    },
+    addPost () {
+      window.open('/recommendations/new?content_type=html')
     }
   },
   watch: {
-    'listData.columns': function (val) {
+    'listData.recommendations': function (val) {
       val.forEach(el => {
-        if (el.state === 'published') { el.state = '已发布' }
-        el.published_at = tool.moment(el.published_at)
+        el.created_at = tool.moment(el.created_at)
       })
+    },
+    'params.state': function () {
+      this.search()
     }
+  },
+  beforeMount () {
+    this.fetch()
   }
-})
-export default vm
+}
 </script>
 
 <style lang="stylus" scoped>

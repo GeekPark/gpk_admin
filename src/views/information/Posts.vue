@@ -30,7 +30,7 @@
     el-table-column(prop='column_title', label='栏目', width="150")
     el-table-column(prop='published_at', label='发布时间', width="180")
     el-table-column(prop='state', label=' 状态', width="80")
-    el-table-column(prop='views', label=' PV', width="100")
+    el-table-column(prop='views', label=' PV', width="70")
     el-table-column(label='操作', width="170")
       template(scope='scope')
         el-button(type='text',
