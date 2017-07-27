@@ -37,7 +37,6 @@ html, body
   height 100%
 
 .admin
-  box-shadow 3px 2px 10px 0px #B0B0B0;
   margin-left $siderrWidth
   height auto
   min-height calc(100% - 120px)
@@ -55,7 +54,7 @@ html, body
   left 0
   width $siderrWidth
   height 100%
-  background-color rgb(0, 188, 212)
+  background-color #324157
   position fixed
   overflow-y scroll
   z-index 2
@@ -66,18 +65,16 @@ html, body
 #vsider .el-row::-webkit-scrollbar
   display none
 
-#vsider, #vheader
-  display block !important
-
-
 #vheader
   height $headerHeight
-  width calc(100% - 200px)
   margin-left $siderrWidth
-  padding-right 30px
+  z-index 2
+  position relative
   background #fff
-  top 0
-  left 0
+  box-shadow 3px 2px 10px 0px #D9D9D9
+#vfooter
+  background rgb(250, 250, 250)
+
 
 .admin-header
   display flex
@@ -91,34 +88,8 @@ html, body
 .el-pagination
   text-align left
   margin-top 20px
-
-
-.el-submenu, .el-menu
-  background-color rgb(0, 188, 212)
-
-  .el-menu-item-group, .el-menu-item
-    background-color rgb(23, 183, 204)
-
-  .el-menu-item:hover
-    background-color rgb(0, 172, 193)
-
-  * {
-    color: #fff
-  }
-  .is-active {
-    color: #fff
-  }
-  .el-menu-item-group__title {
-    color: #E1E1E1
-  }
-
-.el-submenu__title:hover
-  background-color rgb(0, 172, 193)
-
-
 .el-form
   clear both
-
 
 //  public css
 

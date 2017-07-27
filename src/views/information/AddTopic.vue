@@ -1,14 +1,14 @@
 <template lang="jade">
-#add-post.admin
+#add-topic.admin
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='form', :model='form', label-width='150px', label-position='top')
-    el-form-item(label='专题名称')
+  el-form(ref='add-topic-form', :model='form', label-width='150px', label-position='top', :rules='rules')
+    el-form-item(label='专题名称', prop='title')
       el-input(placeholder='', v-model='form.title')
-    el-form-item(label='描述')
+    el-form-item(label='描述', prop='description')
       el-input(type='textarea', placeholder='', v-model='form.description')
     el-form-item(label='背景封面')
-      upload(:callback='uploadImage')
+      upload(:callback='uploadImage', :url='form.banner_url', :uploadDelete="uploadDelete")
     el-form-item.actions(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='close') 关闭
@@ -23,25 +23,41 @@ export default {
       form: {
         title: '',
         description: '',
-        picture: '',
-        content_type: 'normal',
-        is: false
+        banner_url: ''
+      },
+      rules: {
+        title: [
+          { required: true, message: '请输入专题标题', trigger: 'blur', min: 0 }
+        ],
+        description: [
+          { required: true, message: '请输入描述', trigger: 'blur', min: 0 }
+        ]
       }
     }
   },
   methods: {
     onSubmit () {
-      if (this.$route.query.id) {
-        updateTopic(this)
-      } else {
-        createTopic(this)
-      }
+      this.$refs['add-topic-form'].validate((valid) => {
+        console.log(valid)
+        if (valid !== true) {
+          return this.$message.error('内容信息不完整, 请完善后再提交!')
+        } else {
+          if (this.$route.query.id) {
+            updateTopic(this)
+          } else {
+            createTopic(this)
+          }
+        }
+      })
     },
     handleSelect (item) {
       console.log(item)
     },
     uploadImage (img) {
-      this.form.cover_id = img.id
+      this.form.banner_id = img.id
+    },
+    uploadDelete () {
+      this.form.banner_url = this.form.banner_id = ''
     },
     close () {
       window.close()
@@ -77,7 +93,7 @@ function createTopic (_this) {
 function getTopic (_this) {
   api.get(`admin/topics/${_this.$route.query.id}`)
   .then((result) => {
-    _this.form = result.data.post
+    _this.form = result.data.topic
   }).catch((err) => {
     _this.$message.error(err.toString())
   })

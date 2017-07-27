@@ -1,21 +1,11 @@
 <template lang="jade">
 #vfooter
+  p © 2017 GeekPark
 </template>
 
 <script>
 export default {
-  name: 'vfooter',
-  computed: {
-  },
-  data () {
-    return {
-    }
-  },
-  methods: {
-    handleSelect (key, keyPath) {
-      console.log(key, keyPath)
-    }
-  }
+  name: 'vfooter'
 }
 </script>
 
@@ -23,8 +13,5 @@ export default {
 <style lang="stylus" scoped>
 #vfooter
   text-align center
-  position absolute
-  bottom 0
-  left 0
-  right 0
+  padding 10px 0px
 </style>

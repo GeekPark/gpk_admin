@@ -7,8 +7,8 @@
     .filter
       el-input(placeholder="搜索",
                icon="search",
-               v-model="input2",
-               :on-icon-click="handleIconClick")
+               v-model="params.title",
+               :on-icon-click="search")
   el-table(:data='listData.topics' border)
     el-table-column(prop='title', label='专题名称', width="150")
     el-table-column(prop='description', label='专题描述')
@@ -34,17 +34,19 @@ import tool from 'tools'
 const vm = Base({
   url: 'admin/topics',
   data: {
-    recommend: false,
-    input2: ''
+    params: {
+      title: ''
+    }
   },
   methods: {
-    handleEdit (index, row) {
-      this.$router.push(`topics/new?id=${row.id}`)
-    },
-    handleIconClick () {
-    },
     addTopic () {
       window.open('/topics/new')
+    },
+    handleEdit (index, row) {
+      window.open(`topics/new?id=${row.id}`)
+    },
+    search () {
+      this.fetch()
     }
   },
   watch: {

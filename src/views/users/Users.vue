@@ -1,25 +1,25 @@
 <template lang="jade">
 #admin-users.admin
-  .title
-    h1 {{$route.meta.title}}
-  .filter
-    el-button(type='text', @click='handleEdit()') 全部
-    | /
-    el-button(type='text', @click='handleEdit()') 未验证
-    | /
-    el-button(type='text', @click='handleEdit()') 已验证
-    | /
-    el-button(type='text', @click='handleEdit()') 已禁言
-    el-input(placeholder="搜索",
-             icon="search",
-             v-model="searchText",
-             :on-icon-click="handleIconClick")
-  .roles
-    el-select(v-model="role",placeholder="请选择", @change='rolesChange')
-      el-option(v-for="item in possible_roles", :label="item", :value="item", :key="item")
+  .admin-header
+    .title
+      h1 {{$route.meta.title}}
+    .filter
+      el-button(type='text', @click='handleEdit()') 全部
+      | /
+      el-button(type='text', @click='handleEdit()') 未验证
+      | /
+      el-button(type='text', @click='handleEdit()') 已验证
+      | /
+      el-button(type='text', @click='handleEdit()') 已禁言
+      el-select(v-model="role",placeholder="请选择", @change='rolesChange')
+        el-option(v-for="item in possible_roles", :label="item", :value="item", :key="item")
+      el-input(placeholder="搜索",
+               icon="search",
+               v-model="searchText",
+               :on-icon-click="handleIconClick")
   el-table(:data='listData.json', @current-change="rowClick" border)
     el-table-column(prop='', label='注册方式', width="100")
-    el-table-column(prop='nickname', label='nickname', width="120")
+    el-table-column(prop='nickname', label='nickname')
     el-table-column(prop='realname', label='realname', width="120")
     el-table-column(prop='email', label='邮箱', width="200")
     el-table-column(prop='mobile', label='手机号', width="150")

@@ -4,7 +4,7 @@
     router-link(to="/")
       img.sider-logo(src="../assets/imgs/sider_logo.svg")
     el-col(:span='8')
-      el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="light")
+      el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="dark")
         el-submenu(index='/info')
           template(slot='title')
             img(src='../assets/imgs/sider_info.svg')

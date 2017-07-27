@@ -1,63 +1,67 @@
 <template lang="jade">
 #vheader
-
-  el-menu.el-menu-demo(theme='light',
-                       :default-active='activeIndex',
-                       mode='horizontal',
-                       @select='handleSelect')
-    //- el-submenu(index='profile')
-    //-   template(slot='title') 个人中心
-    //-   el-menu-item(index='profile') 账号
-    //-   el-menu-item(index='logout') 登出
+  img.avatar(:src='info.avatar_url')
+  span.nickname {{info.nickname}}
+  img.logout(src='../assets/imgs/header-logout.svg', @click='logout')
 </template>
 
 <script>
 import api from 'stores/api'
+import config from '../config'
 export default {
   name: 'vheader',
-  computed: {
-  },
   data () {
     return {
-      activeIndex: '1',
-      email: '',
-      routes: []
+      info: {}
     }
   },
   methods: {
-    handleSelect (key, keyPath) {
-      if (key === 'logout') {
-        const _this = this
-        api._post({
-          url: 'account/logout',
-          data: {}
-        }).then((result) => {
+    logout () {
+      if (this.info.avatar_url) {
+        api.account.delete('logout').then(result => {
           console.log(result)
-          if (result.status === 200) {
-            localStorage.setItem('email', null)
-            localStorage.setItem('user', null)
-            _this.$router.push('/login')
-          }
-        }).catch((err) => {
-          console.log(err)
         })
       } else {
-        this.$router.push(`/${key}`)
+        window.open(config.account)
       }
-      console.log(key, keyPath)
     }
   },
-  beforeMount () {
-    let email = localStorage.getItem('email')
-    this.$set(this, 'email', email)
+  mounted () {
+    api.account.get('my/access_key').then(result => {
+      if (Object.keys(result.data) <= 0) {
+        this.$message.error('未登录, 请再新窗口登录后, 刷新本页面')
+        window.open(config.account)
+        return
+      }
+      const url = `admin/info?access_key=${result.data.access_key}`
+      api.get(url).then(result => {
+        this.info = result.data
+      })
+    })
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.el-menu
-  float right
-  margin-right 45px
+#vheader
+  font-size 15px
+  display flex
+  justify-content flex-end
+  align-items center
+  padding-right 30px
+
+  .avatar
+    position relative
+    height 80%
+    border-radius 4px
+    margin-right 15px
+    cursor pointer
+  .nickname
+    margin-right 20px
+    cursor pointer
+  .logout
+    height 40%
+    cursor pointer
 
 </style>
 

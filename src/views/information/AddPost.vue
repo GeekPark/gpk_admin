@@ -200,7 +200,9 @@ function getPost (_this) {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+.el-input, .el-textarea
+  width 50%
 .el-select-dropdown
   z-index 99999 !important
 
