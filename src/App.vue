@@ -20,7 +20,7 @@ export default {
 
 <style lang="stylus">
 
-$siderrWidth = 140px
+$siderrWidth = 200px
 $headerHeight = 60px
 
 html, body
@@ -90,6 +90,8 @@ html, body
   margin-top 20px
 .el-form
   clear both
+.el-date-editor, .el-select
+  width 300px !important
 
 //  public css
 

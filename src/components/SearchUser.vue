@@ -1,6 +1,6 @@
 <template lang="jade">
 #search-user
-  el-select(v-model='select', multiple='', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
+  el-select(v-model='select', multiple, filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
 
 </template>
@@ -39,7 +39,7 @@ export default {
   },
   watch: {
     'select': function (val) {
-      this.callback(val)
+      this.callback(this.select)
     }
   },
   mounted () {

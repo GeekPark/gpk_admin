@@ -5,11 +5,6 @@
       h1 {{$route.meta.title}}
       el-button(type='text', @click="addAD") 添加广告
     .filter
-      el-button(type='text', @click='handleEdit()') 全部
-      | /
-      el-button(type='text', @click='handleEdit()') 草稿
-      | /
-      el-button(type='text', @click='handleEdit()') 已删除
       el-input(placeholder="搜索",
                icon="search",
                v-model="input2",

@@ -2,7 +2,7 @@
 #vheader
   img.avatar(:src='info.avatar_url')
   span.nickname {{info.nickname}}
-  img.logout(src='../assets/imgs/header-logout.svg', @click='logout')
+  img.logout(src='../assets/imgs/header-logout.png', @click='logout')
 </template>
 
 <script>
@@ -18,7 +18,7 @@ export default {
   methods: {
     logout () {
       if (this.info.avatar_url) {
-        api.account.delete('logout').then(result => {
+        api.account.delete(`logout`).then(result => {
           console.log(result)
         })
       } else {

@@ -88,8 +88,8 @@ export default {
   &
     text-align left
   .sider-logo
-    width calc(100% - 40px)
-    padding 20px
+    width calc(100% - 20px)
+    padding 20px 10px
   .el-col
     // border-top 2px solid rgb(0, 164, 186)
     img

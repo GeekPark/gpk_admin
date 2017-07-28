@@ -8,7 +8,7 @@
     el-form-item(label='摘要', prop='abstract')
       el-input(type='textarea',v-model='form.abstract')
     el-form-item(label='CCID')
-      el-input(placeholder='极客制造栏目专用', v-model='form.ccid')
+      el-input(placeholder='视频类文章填写该项', v-model='form.video_id')
     el-form-item(label='写作模式')
       el-select(v-model='form.content_type', placeholder='请选择')
         el-option(v-for='item in content_types',
@@ -23,9 +23,9 @@
       search-tag(:callback='searchTag')
     el-form-item(label='栏目选择', prop='column_id')
       search-column(:callback='searchColumn')
-    el-form-item(label='文章头图', prop='img')
-      upload(:callback='uploadImage')
-    el-form-item(label='作者', prop='user')
+    el-form-item(label='文章头图', prop='cover_id')
+      upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
+    el-form-item(label='作者', prop='author_ids')
       search-user(:callback='searchUser')
     el-form-item(label='定时发送', prop='date')
       el-date-picker(v-model='form.auto_publish_at',
@@ -33,8 +33,8 @@
                      placeholder='选择日期时间')
     el-form-item(label='')
       el-button(type='primary', @click='submitForm') 发布
-      el-button(type='success', @click='submitForm') 存草稿
-      el-button(type='danger', @click='submitForm') 取消
+      el-button(type='success', @click='state="unpublished", submitForm') 存草稿
+      el-button(type='danger', @click='close') 关闭
 </template>
 
 <script>
@@ -51,7 +51,7 @@ export default {
       }
     }
     const validateArray = (rule, value, callback) => {
-      if (value.length === 0) {
+      if (value === undefined || value.length && value.length === 0) {
         callback(new Error('请输入内容'))
       } else {
         callback()
@@ -67,11 +67,12 @@ export default {
         tags: [],
         column_id: [],
         cover_id: '',
+        cover_url: '',
         author_ids: [],
         auto_publish_at: null,
         state: 'published',
-        meta: {},
-        ccid: ''
+        video_id: '',
+        post_type: 'text'
       },
       rules: {
         title: [
@@ -92,10 +93,10 @@ export default {
         tags: [
           { required: true, validator: validateArray, message: '请至少选择一个标签', trigger: 'change' }
         ],
-        img: [
-          { type: 'string', required: true, message: '请上传文章头图', trigger: 'change' }
+        cover_id: [
+          { type: 'number', required: true, message: '请上传文章头图', trigger: 'change' }
         ],
-        user: [
+        author_ids: [
           { required: true, validator: validateArray, message: '请至少选择一个作者', trigger: 'change' }
         ]
       },
@@ -112,6 +113,10 @@ export default {
     submitForm () {
       this.$refs['add-post-form'].validate((valid) => {
         if (valid) {
+          delete this.form.cover_url
+          if (this.form.video_id !== '') {
+            this.form.post_type = 'video'
+          }
           if (this.$route.query.id) {
             updatePost(this)
           } else {
@@ -129,13 +134,20 @@ export default {
     uploadImage (img) {
       this.form.cover_id = img.id
     },
-    searchUser (user) {
+    uploadDelete () {
+      this.form.cover_url = this.form.cover_id = ''
+    },
+    searchUser (users) {
+      this.form.author_ids = users
     },
     searchTag (tags) {
       this.form.tags = tags
     },
     searchColumn (column) {
       this.form.column_id = column
+    },
+    close () {
+      window.close()
     }
   },
   watch: {
@@ -152,7 +164,7 @@ export default {
 
 function getContent (_this) {
   if (_this.$route.query.content_type === 'html') {
-    _this.form.content_source = _this.$store.state.htmlEditor.$txt.html()
+    _this.form.content_source = _this.$store.state.htmlEditor.txt.html()
   } else {
     _this.form.content_source = _this.$store.state.markdownEditor.value()
   }
@@ -161,7 +173,7 @@ function getContent (_this) {
 function addContent (_this, val) {
   setTimeout(() => {
     if (val === 'html') {
-      _this.$store.state.htmlEditor.$txt.html(_this.form.content_source)
+      _this.$store.state.htmlEditor.txt.html(_this.form.content_source)
     } else {
       _this.$store.state.markdownEditor.value(_this.form.content_source)
     }
@@ -180,6 +192,7 @@ function updatePost (_this) {
 
 function createPost (_this) {
   getContent(_this)
+  console.log(_this.form)
   api.post('admin/posts', _this.form)
   .then((result) => {
     _this.$message.success('success')
@@ -208,7 +221,4 @@ function getPost (_this) {
 
 #add-post
   hegiht auto !important
-  .el-select
-    width 50%
-
 </style>

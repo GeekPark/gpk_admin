@@ -15,11 +15,9 @@ export default {
     }
   },
   mounted () {
-    tools.editor(this)
-    const _this = this
-    this.$store.state.htmlEditor.onchange = function () {
-      _this.count = this.$txt.text().length
-    }
+    tools.editor(this, () => {
+      this.count = this.$store.state.htmlEditor.txt.text().length
+    })
   }
 }
 </script>
@@ -30,8 +28,13 @@ export default {
   line-height 35px
   letter-spacing 1px
 
+  #editor
+    z-index: 10;
+    position: relative;
+
   .w-e-text-container
-    height 600px !important
+    height 450px !important
+    max-height 600px !important
 
   .count
     text-align right

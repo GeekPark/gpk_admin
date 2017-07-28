@@ -23,7 +23,7 @@ export default {
       const handle = (link) => {
         return link.replace('www.geekpark.net', 'geekpark.geeklabs.vc')
       }
-      if (this.url === null) {
+      if (this.url === null || this.url === '') {
         return handle(this.uploadUrl)
       } else {
         return handle(this.url)
