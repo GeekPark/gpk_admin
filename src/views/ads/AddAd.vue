@@ -51,7 +51,7 @@ export default {
         video_link: '',
         position: '',
         title: '',
-        ad_type: '广告'
+        ad_type: 'ad'
       },
       types: {ad: '广告', topic: '专题'},
       positions: ['top_banner', 'medium_up', 'app', 'post', 'medium_below']
