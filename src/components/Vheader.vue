@@ -2,7 +2,7 @@
 #vheader
   img.avatar(:src='info.avatar_url')
   span.nickname {{info.nickname}}
-  img.logout(src='../assets/imgs/header-logout.png', @click='logout')
+  img.logout(src='../assets/imgs/header-logout.svg', @click='logout')
 </template>
 
 <script>

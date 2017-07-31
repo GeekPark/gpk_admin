@@ -6,21 +6,21 @@
     .filter
       el-input(placeholder="搜索",
                icon="search",
-               v-model="params.title",
-               :on-icon-click="search")
+               v-model="params.content",
+               :on-icon-click="fetch")
   el-table(:data='listData.comments',border)
     el-table-column(prop='commenter_info.nickname', label='用户名', width="100")
     el-table-column(prop='content', label='内容')
     el-table-column(label='来源')
       template(scope='scope')
-        a() {{scope.row.commentable_title}}
+        a(@click='clickCommentable(scope.row)') {{scope.row.commentable_title}}
     el-table-column(prop='created_at', label='创建时间', width="170")
-    el-table-column(label='操作', width="110")
+    el-table-column(label='操作', width="140")
       template(scope='scope')
         el-button(type='text',
-                  @click='search(scope.row)') 删除
+                  @click='handleDestroy(scope.row)') 删除
         el-button(type='text',
-                  @click='search(scope.row)') 禁言
+                  @click='handleBlock(scope.row)') {{scope.row.commenter_info.banned ? "取消禁言" : "禁言"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -32,6 +32,7 @@
 <script>
 import api from 'stores/api'
 import tool from 'tools'
+import config from '../../config.js'
 
 const url = 'admin/comments'
 
@@ -39,8 +40,7 @@ export default {
   data () {
     return {
       params: {
-        title: '',
-        state: 'all'
+        content: ''
       },
       currentPage: 1,
       listData: {
@@ -53,16 +53,8 @@ export default {
     }
   },
   methods: {
-    handleEdit (index, row) {
-      this.$router.push(`comments/new?id=${row.id}`)
-    },
-    search () {
-      api.get(url, {params: this.params}).then(result => {
-        console.log(result)
-        this.listData = result.data
-      }).catch((err) => {
-        console.log(err)
-      })
+    clickCommentable (row) {
+      window.open(`${config.main}/topics/${row.commentable_id}#react-disgess`)
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
@@ -82,8 +74,8 @@ export default {
         this.$message.error(err.toString())
       })
     },
-    handleDestroy (index, val, list) {
-      api.delete(`${url}/${val.id}`).then((result) => {
+    handleDestroy (row) {
+      api.delete(`${url}/${row.id}`).then((result) => {
         this.$message.success('success')
         this.fetch()
       }).catch((err) => {
@@ -91,14 +83,13 @@ export default {
         this.$message.error(err.toString())
       })
     },
-    recommendPost (row) {
-      api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
-        this.fetch()
+    handleBlock (row) {
+      const str = row.commenter_info.banned ? 'unban' : 'ban'
+      api.account.post(`admin/users/${row.commenter_info.id}/${str}`)
+      .then(result => {
         console.log(result)
+        this.fetch()
       })
-    },
-    addPost () {
-      window.open('/comments/new?content_type=html')
     }
   },
   watch: {
@@ -106,9 +97,6 @@ export default {
       val.forEach(el => {
         el.created_at = tool.moment(el.created_at)
       })
-    },
-    'params.state': function () {
-      this.search()
     }
   },
   beforeMount () {

@@ -1,27 +1,29 @@
 <template lang="jade">
-#admin-posts.admin
+#admin-ads.admin
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addAD") 添加广告
+      el-button(type='text', @click="addColumn") 添加栏目
     .filter
       el-input(placeholder="搜索",
                icon="search",
-               v-model="input2",
-               :on-icon-click="handleIconClick")
+               v-model="params.title",
+               :on-icon-click="search")
   el-table(:data='listData.ads' border)
-    el-table-column(prop='', label='标题')
-    el-table-column(prop='', label='添加人', width="100")
-    el-table-column(prop='', label='位置', width="100")
-    el-table-column(prop='', label='点击量', width="100")
-    el-table-column(prop='', label='开始时间', width="200")
-    el-table-column(prop='', label='结束时间', width="200")
-    el-table-column(label='操作', width="150")
+    el-table-column(prop='title', label='栏目名称', width="200")
       template(scope='scope')
-        el-button(type='text',
-                  @click='handleEdit(scope.$index, scope.row)') 编辑
-        el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
+        a(@click='clickColumn(scope.row)') {{scope.row.title}}
+    el-table-column(prop='description', label='描述')
+    el-table-column(label='是否显示在首页', width="120")
+      template(scope='scope')
+        span {{scope.row.column_visible === true ? "是" : "否"}}
+    el-table-column(prop='published_at', label='添加时间', width="200")
+    el-table-column(label='操作', width="120")
+        template(scope='scope')
+          el-button(type='text',
+                    @click='handleEdit(scope.$index, scope.row)') 编辑
+          el-button(type='text',
+                    @click='handleDestroy(scope.$index, scope.row, listData.ads)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -33,27 +35,34 @@
 <script>
 import Base from '../base'
 import tool from 'tools'
+import config from '../../config.js'
+
 const vm = Base({
   url: 'admin/ads',
   data: {
-    recommend: false,
-    input2: ''
+    params: {
+      title: ''
+    }
   },
   methods: {
-    handleEdit (index, row) {
-      this.$router.push(`posts/new?id=${row.id}`)
-    },
-    handleIconClick () {
-    },
-    addAD () {
+    addColumn () {
       window.open('/ads/new')
+    },
+    handleEdit (index, row) {
+      window.open(`ads/new?id=${row.id}`)
+    },
+    search () {
+      this.fetch()
+    },
+    clickColumn (row) {
+      window.open(`${config.main}/collections/${row.title}`)
     }
   },
   watch: {
-    'listData.posts': function (val) {
+    'listData.ads': function (val) {
       val.forEach(el => {
         if (el.state === 'published') { el.state = '已发布' }
-        el.published_at = tool.moment(el.published_at)
+        el.published_at = tool.moment(el.created_at)
       })
     }
   }

@@ -52,6 +52,7 @@ export default {
       api.account.put(`admin/users/${this.$route.params.id}`, {
         roles: this.user.roles
       }).then(result => {
+        this.$message.success('success')
         console.log(result)
       })
     },
