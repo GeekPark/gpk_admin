@@ -17,7 +17,7 @@ export default {
   name: 'upload',
   computed: {
     uploadHost () {
-      return `${config.host}v1/admin/images`
+      return `${config.api}/api/v1/admin/images`
     },
     displayUrl () {
       const handle = (link) => {

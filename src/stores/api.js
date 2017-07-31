@@ -1,6 +1,6 @@
 import config from '../config'
 import axios from 'axios'
-const baseUrl = `${config.host}v1`
+const baseUrl = `${config.api}/api/v1`
 
 const request = create()
 
@@ -41,6 +41,6 @@ request.interceptors.response.use(function (response) {
   return Promise.reject(error)
 })
 
-request.account = create(`${config.account}`)
+request.account = create(`${config.account}/`)
 
 export default request

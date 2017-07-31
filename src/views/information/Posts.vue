@@ -26,6 +26,8 @@
                :on-icon-click="search")
   el-table(:data='listData.posts' border)
     el-table-column(prop='title', label='标题')
+      template(scope='scope')
+        a(@click='clickArticle(scope.row)') {{scope.row.title}}
     el-table-column(prop='authors.nickname', label='作者', width="100")
     el-table-column(prop='column_title', label='栏目', width="150")
     el-table-column(prop='published_at', label='发布时间', width="180")
@@ -50,6 +52,7 @@
 <script>
 import tool from 'tools'
 import api from 'stores/api'
+import config from '../../config.js'
 
 const url = 'admin/posts'
 
@@ -108,6 +111,9 @@ export default {
         console.log(err)
         this.$message.error(err.toString())
       })
+    },
+    clickArticle (row) {
+      window.open(`${config.main}/topics/${row.id}`)
     },
     recommendPost (row) {
       api.post(`${url}/${row.id}/toggle_recommended`).then(result => {

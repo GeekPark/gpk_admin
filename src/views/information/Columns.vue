@@ -11,6 +11,8 @@
                :on-icon-click="search")
   el-table(:data='listData.columns' border)
     el-table-column(prop='title', label='栏目名称', width="200")
+      template(scope='scope')
+        a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='description', label='描述')
     el-table-column(label='是否显示在首页', width="120")
       template(scope='scope')
@@ -33,6 +35,8 @@
 <script>
 import Base from '../base'
 import tool from 'tools'
+import config from '../../config.js'
+
 const vm = Base({
   url: 'admin/columns',
   data: {
@@ -49,6 +53,9 @@ const vm = Base({
     },
     search () {
       this.fetch()
+    },
+    clickColumn (row) {
+      window.open(`${config.main}/collections/${row.title}`)
     }
   },
   watch: {
