@@ -26,7 +26,7 @@
     el-form-item(label='文章头图', prop='cover_id')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='作者', prop='author_ids')
-      search-user(:callback='searchUser')
+      search-user(:callback='searchUser', :multiple='true')
     el-form-item(label='定时发送', prop='date')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',

@@ -1,6 +1,8 @@
 <template lang="jade">
 #search-user
-  el-select(v-model='select', multiple, filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
+  el-select(v-if='multiple', v-model='select', multiple, filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
+    el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
+  el-select(v-else, v-model='select', filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
 
 </template>
@@ -13,12 +15,10 @@ export default {
     return {
       searchData: [],
       select: [],
-      list: [],
-      loading: false,
-      states: []
+      loading: false
     }
   },
-  props: ['callback'],
+  props: ['callback', 'author', 'multiple'],
   methods: {
     remoteMethod (query) {
       if (query !== '') {
@@ -40,12 +40,14 @@ export default {
   watch: {
     'select': function (val) {
       this.callback(this.select)
+    },
+    'author': function () {
+      if (!this.author) { return }
+      this.searchData = [this.author]
+      this.select = this.author.id
     }
   },
   mounted () {
-    this.list = this.states.map(item => {
-      return { value: item, label: item }
-    })
   }
 }
 </script>
