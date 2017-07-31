@@ -10,18 +10,18 @@
                v-model="params.title",
                :on-icon-click="search")
   el-table(:data='listData.ads' border)
-    el-table-column(prop='title', label='栏目名称', width="200")
+    el-table-column(prop='title', label='标题', width="200")
       template(scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
-    el-table-column(prop='description', label='描述')
-    el-table-column(label='是否显示在首页', width="120")
-      template(scope='scope')
-        span {{scope.row.column_visible === true ? "是" : "否"}}
-    el-table-column(prop='published_at', label='添加时间', width="200")
-    el-table-column(label='操作', width="120")
+    el-table-column(prop='position', label='位置')
+    el-table-column(prop='active_at', label='开始时间', width="170")
+    el-table-column(prop='active_through', label='结束时间', width="170")
+    el-table-column(label='操作', width="200")
         template(scope='scope')
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑
+          el-button(type='text',
+                    @click='handleClose(scope.row)') {{scope.row.is_active ? '关闭' : '开启'}}
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row, listData.ads)') 删除
   el-pagination(@size-change='handleSizeChange',
@@ -36,6 +36,7 @@
 import Base from '../base'
 import tool from 'tools'
 import config from '../../config.js'
+import api from 'stores/api'
 
 const vm = Base({
   url: 'admin/ads',
@@ -48,7 +49,7 @@ const vm = Base({
     addColumn () {
       window.open('/ads/new')
     },
-    handleEdit (index, row) {
+    handleEdit (row) {
       window.open(`ads/new?id=${row.id}`)
     },
     search () {
@@ -56,13 +57,18 @@ const vm = Base({
     },
     clickColumn (row) {
       window.open(`${config.main}/collections/${row.title}`)
+    },
+    handleClose (row) {
+      api.patch(`admin/ads/${row.id}`, {is_active: !row.is_active}).then(result => {
+        console.log(result)
+      })
     }
   },
   watch: {
     'listData.ads': function (val) {
       val.forEach(el => {
-        if (el.state === 'published') { el.state = '已发布' }
-        el.published_at = tool.moment(el.created_at)
+        el.active_at = tool.moment(el.active_at)
+        el.active_through = tool.moment(el.active_through)
       })
     }
   }
