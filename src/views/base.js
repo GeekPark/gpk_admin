@@ -1,18 +1,17 @@
 import api from 'stores/api'
 
 export default (options) => {
-
   let {
     methods = {},
-    data    = {},
-    watch   = {}
+    data = {},
+    watch = {}
   } = options
 
   methods = Object.assign({
-    handleSizeChange(index, val) {
+    handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
-    handleCurrentChange(index, val) {
+    handleCurrentChange (index, val) {
       this.currentPage = index
       this.fetch()
       console.log(`当前页: ${index}`)
@@ -23,18 +22,18 @@ export default (options) => {
         this.listData = result.data
       }).catch((err) => {
         console.log(err)
-         this.$message.error(err.toString())
+        this.$message.error(err.toString())
       })
     },
-    handleDestroy(index, val, list) {
+    handleDestroy (index, val, list) {
       api.delete(`${options.url}/${val.id}`, {}).then((result) => {
         this.$message.success('success')
-        list.splice(index, 1)
+        this.fetch()
       }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
       })
-  }}, methods)
+    }}, methods)
 
   data = Object.assign({
     currentPage: 1,
@@ -46,9 +45,7 @@ export default (options) => {
     }
   }, data)
 
-  const base =  {
-    computed: {
-    },
+  const base = {
     data () {
       return data
     },

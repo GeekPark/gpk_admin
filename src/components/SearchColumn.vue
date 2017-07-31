@@ -1,8 +1,7 @@
 <template lang="jade">
 #search-column
-  el-form-item(:label='title', required)
-    el-select(v-model='select', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
-      el-option(v-for='item in searchData', :key='item.id', :label='item.title', :value='item.id')
+  el-select(v-model='select', placeholder='请输入关键词', :loading='loading')
+    el-option(v-for='item in searchData', :key='item.id', :label='item.title', :value='item.id')
 
 </template>
 
@@ -19,18 +18,18 @@ export default {
       states: []
     }
   },
-  props: ['callback', 'title'],
+  props: ['callback'],
   methods: {
   },
   watch: {
-    'select': (val) => {
-
+    'select': function (val) {
+      this.callback(val)
     }
   },
   mounted () {
     api.get('admin/columns')
     .then(result => {
-      this.loading = false;
+      this.loading = false
       this.searchData = result.data.columns
     })
   }

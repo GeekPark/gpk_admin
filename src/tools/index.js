@@ -1,29 +1,15 @@
-import moment     from 'moment'
-import wangEditor from 'wangeditor'
-import config     from '../config.js'
-// console.log(config);
-
-function printLog(title, info) {
-  window.console && console.log(title, info);
-}
+import moment from 'moment'
+import WangEditor from 'wangeditor'
 
 export default {
   moment: (obj, format = 'YYYY-MM-DD HH:mm:ss') => {
     return moment(obj).format(format)
   },
-  editor: function (vm) {
-    let editor = new wangEditor('editor');
-    editor.config.customUpload = true;
-    // editor.config.menuFixed = 200,
-    wangEditor.config.printLog = false;
-    editor.config.emotions = {
-      'default': {
-        title: '默认',
-        data: 'http://oivm82a2h.bkt.clouddn.com/emotions.data'
-      }
-    };
-    editor.create();
+  editor: function (vm, onchange) {
+    let editor = new WangEditor('#editor')
+    editor.customConfig.onchange = onchange
+    editor.create()
     vm.$store.commit('SET_ITEM', { key: 'htmlEditor', val: editor })
-    return editor;
+    return editor
   }
 }

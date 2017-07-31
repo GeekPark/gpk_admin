@@ -1,14 +1,14 @@
 <template lang="jade">
-el-form-item#upload-component(:label='title')
+#upload
   el-upload.avatar-uploader(
-                   :action='uploadUrl',
+                   :action='uploadHost',
                    name='upload_file',
                    :show-file-list="false",
                    :on-success="handleAvatarScucess",
                    :before-upload="beforeAvatarUpload")
-    img.avatar(v-if="imageUrl", :src="imageUrl")
+    img.avatar(v-if="displayUrl", :src="displayUrl")
     i.avatar-uploader-icon.el-icon-plus(v-else)
-  i.avatar-delete-icon.el-icon-delete(v-if="imageUrl != ''", @click="imageUrl = ''")
+  i.avatar-delete-icon.el-icon-delete(v-if="displayUrl != ''", @click="avatarDelete")
 </template>
 
 <script>
@@ -16,43 +16,61 @@ import config from '../config.js'
 export default {
   name: 'upload',
   computed: {
-    uploadUrl() {
+    uploadHost () {
       return `${config.host}v1/admin/images`
+    },
+    displayUrl () {
+      const handle = (link) => {
+        return link.replace('www.geekpark.net', 'geekpark.geeklabs.vc')
+      }
+      if (this.url === null || this.url === '') {
+        return handle(this.uploadUrl)
+      } else {
+        return handle(this.url)
+      }
     }
   },
   data () {
     return {
-      imageUrl: '',
+      uploadUrl: ''
     }
   },
-  props: ['callback', 'title'],
+  props: ['callback', 'url', 'uploadDelete'],
   methods: {
     handleAvatarScucess (response, file, fileList) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(response)
+      this.$message.success('上传成功')
+      this.uploadUrl = response.image.url
       this.callback(response.image)
     },
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    beforeAvatarUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isLt2M;
+      return isLt2M
+    },
+    avatarDelete () {
+      this.uploadDelete()
     }
   }
 }
 </script>
 
 <style lang="stylus">
+.avatar-uploader {
+  display: inline-block;
+}
+
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
+  border: 1px dashed #B2B2B2;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
+  padding: 10px;
   overflow: hidden;
   text-align: center;
   width: 200px;
-
-
 }
 .avatar-uploader .el-upload:hover {
   border-color: #20a0ff;
@@ -73,6 +91,10 @@ export default {
 .avatar-delete-icon {
   z-index: 10;
   right: 10px;
-  top: 10px;
+  top: 0;
+  cursor: pointer;
+  position: absolute;
+  left: 230px;
+  font-size: 25px;
 }
 </style>

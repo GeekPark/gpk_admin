@@ -7,25 +7,25 @@
 <script>
 export default {
   name: 'vmarkdown',
-  data() {
+  data () {
     return {
-      input: '### hello',
+      input: '### hello'
     }
   },
-  props:['markdown'],
+  props: ['markdown'],
   mounted () {
-    var simplemde = new SimpleMDE({
-      element: document.getElementById("markdown"),
+    var simplemde = new window.SimpleMDE({
+      element: document.getElementById('markdown'),
       autofocus: true,
       autosave: {
         enabled: true,
-        uniqueId: "vmarkdown",
-        delay: 1000,
+        uniqueId: 'vmarkdown',
+        delay: 1000
       },
       renderingConfig: {
         singleLineBreaks: false,
-        codeSyntaxHighlighting: true,
-      },
+        codeSyntaxHighlighting: true
+      }
     })
     simplemde.value(this.markdown || '')
     this.$store.commit('SET_ITEM', {

@@ -1,9 +1,7 @@
 <template lang="jade">
 #search-tag
-  el-form-item(:label='title')
-    el-select(v-model='select', multiple='', filterable='', remote='', placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
-      el-option(v-for='item in searchData', :key='item', :label='item', :value='item')
-
+  el-select(v-model='tags', multiple, filterable, allow-create, placeholder='请选择文章标签', :loading='loading')
+    el-option(v-for='item in tags', :key='item', :label='item', :value='item')
 </template>
 
 <script>
@@ -12,41 +10,25 @@ export default {
   name: 'search-tag',
   data () {
     return {
-      searchData: [],
-      select: [],
-      list: [],
-      loading: false,
-      states: []
+      tags: [],
+      loading: false
     }
   },
-  props: ['callback', 'title'],
+  props: {callback: Function},
   methods: {
-     remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true;
-          api.get('admin/tags',{params: {name: query}})
-          .then(result => {
-            this.loading = false;
-            this.searchData = result.data.filter(item => {
-              const regex = new RegExp(query, "g");
-              return item.match(regex);
-            });
-
-          })
-        } else {
-          this.searchData = [];
-        }
-      }
+    fetch () {
+      api.get(`admin/tags`).then(result => {
+        this.tags = result.data.tags || []
+      })
+    }
   },
   watch: {
-    'select': (val) => {
-      this.callback(val)
+    'tags': function (val) {
+      this.callback(this.tags)
     }
   },
   mounted () {
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
+    this.fetch()
   }
 }
 </script>

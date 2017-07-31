@@ -8,12 +8,11 @@
 </template>
 
 <script>
-import api from 'stores/api'
 export default {
   name: 'app',
   computed: {
     isLoading () {
-      return this.$store.state.isLoading;
+      return this.$store.state.isLoading
     }
   }
 }
@@ -26,6 +25,7 @@ $headerHeight = 60px
 
 html, body
   width 100%
+  height 100%
   margin 0
   padding 0
   overflow-x hidden
@@ -34,12 +34,12 @@ html, body
   color #2c3e50
   background transparent
   width 100%
+  height 100%
 
 .admin
-  box-shadow 3px 2px 10px 0px #B0B0B0;
-  width calc(100% - $siderrWidth)
   margin-left $siderrWidth
-  height calc(100% - 120px)
+  height auto
+  min-height calc(100% - 120px)
   background rgb(250, 250, 250)
   padding 30px
   padding-top 30px
@@ -54,7 +54,7 @@ html, body
   left 0
   width $siderrWidth
   height 100%
-  background-color rgb(0, 188, 212)
+  background-color #324157
   position fixed
   overflow-y scroll
   z-index 2
@@ -65,49 +65,33 @@ html, body
 #vsider .el-row::-webkit-scrollbar
   display none
 
-#vsider, #vheader
-  display block !important
-
-
 #vheader
   height $headerHeight
-  width calc(100% - 200px)
   margin-left $siderrWidth
-  padding-right 30px
+  z-index 2
+  position relative
   background #fff
-  top 0
-  left 0
+  box-shadow 3px 2px 10px 0px #D9D9D9
+#vfooter
+  background rgb(250, 250, 250)
+
+
+.admin-header
+  display flex
+  justify-content space-between
+  align-items center
+  margin-bottom 10px
 
 // element -ui
+.el-table
+  font-size 40%
 .el-pagination
   text-align left
-
-.el-submenu, .el-menu
-  background-color rgb(0, 188, 212)
-
-  .el-menu-item-group, .el-menu-item
-    background-color rgb(23, 183, 204)
-
-  .el-menu-item:hover
-    background-color rgb(0, 172, 193)
-
-  * {
-    color: #fff
-  }
-  .is-active {
-    color: #fff
-  }
-  .el-menu-item-group__title {
-    color: #E1E1E1
-  }
-
-.el-submenu__title:hover
-  background-color rgb(0, 172, 193)
-
-
+  margin-top 20px
 .el-form
   clear both
-
+.el-date-editor, .el-select
+  width 300px !important
 
 //  public css
 
@@ -134,14 +118,11 @@ html, body
   opacity 0
 
 .title
-  float left
   h1
     display inline-block
     margin-right 20px
 
 .filter
-  margin-bottom 20px
-  float right
   .el-button
     margin-left 0px
   .el-input

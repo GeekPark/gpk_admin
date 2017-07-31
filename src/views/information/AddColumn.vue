@@ -1,24 +1,24 @@
 <template lang="jade">
-#add-post.admin
+#add-column.admin
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='form', :model='form', label-width='150px', label-position='top')
-    el-form-item(label='栏目标题')
+  el-form(ref='add-column-form', :model='form', label-width='150px', label-position='top', :rules="rules")
+    el-form-item(label='栏目标题', prop='title')
       el-input(placeholder='', v-model='form.title')
-    el-form-item(label='描述')
-      el-input(type='textarea', placeholder='描述', v-model='form.description')
-    upload(:callback='uploadImage', title='背景封面')
-    el-form-item(label='文章是否显示在首页')
-      el-switch(v-model="form.is", on-text="", off-text="")
+    el-form-item(label='描述', prop='description')
+      el-input(type='textarea',  v-model='form.description')
+    el-form-item(label='背景封面')
+      upload(:callback='uploadImage', :url='form.banner_url', :uploadDelete="uploadDelete")
+    el-form-item.column_visible(label='文章是否显示在首页')
+      el-radio.radio(v-model='form.column_visible', :label="true") 是
+      el-radio.radio(v-model='form.column_visible', :label="false") 否
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
-      el-button(type='danger', @click='onSubmit') 关闭
+      el-button(type='danger', @click='close') 关闭
 </template>
 
 <script>
-
-import tools    from 'tools'
-import api      from 'stores/api'
+import api from 'stores/api'
 
 export default {
   data () {
@@ -26,61 +26,80 @@ export default {
       form: {
         title: '',
         description: '',
-        picture: '',
-        content_type: 'normal',
-        is: false
+        banner_url: '',
+        banner_id: '',
+        column_visible: false
+      },
+      rules: {
+        title: [
+          { required: true, message: '请输入栏目标题', trigger: 'blur', min: 0 }
+        ],
+        description: [
+          { required: true, message: '请输入描述', trigger: 'blur', min: 0 }
+        ]
       }
     }
   },
   methods: {
-    onSubmit() {
-      if (this.$route.query.id) {
-        updateAd(this)
-      } else {
-        createAd(this)
-      }
+    onSubmit () {
+      this.$refs['add-column-form'].validate((valid) => {
+        if (valid !== true) {
+          return this.$message.error('内容信息不完整, 请完善后再提交!')
+        } else {
+          if (this.$route.query.id) {
+            updateColumn(this)
+          } else {
+            createColumn(this)
+          }
+        }
+      })
     },
-    handleSelect(item) {
-      console.log(item);
+    handleSelect (item) {
+      console.log(item)
     },
-    uploadImage(img) {
-      this.form.cover_id = img.id
+    uploadImage (img) {
+      this.form.banner_id = img.id
     },
+    uploadDelete () {
+      this.form.banner_url = this.form.banner_id = ''
+    },
+    close () {
+      window.close()
+    }
   },
   mounted () {
-     if (this.$route.query.id) {
-       getAd(this)
-     }
+    if (this.$route.query.id) {
+      getColumn(this)
+    }
   }
 }
 
-function updateAd(_this) {
+function updateColumn (_this) {
   api.put(`admin/columns/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
+    window.close()
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function createAd(_this) {
+function createColumn (_this) {
   api.post('admin/columns', _this.form)
   .then((result) => {
-     _this.$message.success('success')
+    _this.$message.success('success')
+    window.close()
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 
-function getAd(_this) {
+function getColumn (_this) {
   api.get(`admin/columns/${_this.$route.query.id}`)
   .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
-    _this.form = result.data.post
-    addContent(_this, _this.form.content_type)
-
+    _this.form = result.data.column
   }).catch((err) => {
-     _this.$message.error(err.toString())
+    _this.$message.error(err.toString())
   })
 }
 </script>
@@ -88,5 +107,8 @@ function getAd(_this) {
 <style lang="stylus" scoped>
 .el-input, .el-textarea
   width 50%
+
+.column_visible
+  margin-top 20px
 
 </style>

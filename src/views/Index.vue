@@ -1,96 +1,93 @@
 <template lang="jade">
 #index.admin
-  el-row.new-posts(:gutter="20")
-    el-col(:span='9')
-      .grid-content.bg-purple
-        h1 最新文章
-        p.title(v-for='item in postsData.posts', :key='item.id') {{item.title}}
-    el-col(:span='5')
-      .grid-content.bg-purple-light
-        h1 最新活动
-    el-col(:span='5')
-      .grid-content.bg-purple
-        h1 日常数据
-    el-col(:span='5')
-      .grid-content.bg-purple-light
-        h1 日历
-  el-row
-    el-col(:span='24')
-      h1 后台管理中心
-  el-row(:gutter="20")
-    el-col(v-for='item in sections',
-           :key='item.id',
-           :span='Math.floor((24 / sections.length))')
-      .grid-content.bg-purple
-        router-link(:to='item.url').a-title-text.center {{item.title}}
-  el-row
-    el-col(:span='24')
+  el-row.index-header(:gutter='20')
+    el-col(:span='6')
+      .item.bg-purple
+        img.icon(src='../assets/imgs/index_article.png')
+        .count
+          h1 {{postCount}}
+          span 昨日新增文章
+    el-col(:span='6')
+      .item.bg-purple
+        img.icon(src='../assets/imgs/index_comment.png')
+        .count
+          h1 {{commentCount}}
+          span 昨日新增评论
+    el-col(:span='6')
+      .item.bg-purple
+        img.icon(src='../assets/imgs/index_user.png')
+        .count
+          h1 {{userCount}}
+          span 昨日新增用户
+  el-row.index-articles(:gutter='40')
+    el-col(:span='12')
+      h1 最新文章
+      .item(v-for='item in posts')
+        p {{item.title}}
+    el-col(:span='12')
+        h1 7日热门排行
+        .item(v-for='item in hotWeek')
+          p {{item.title}}
+          span {{item.views}}
+  el-row.index-quickly(:gutter="20")
+    el-col
       h1 快速访问
-  el-row(:gutter="20")
     el-col(v-for='item in quickly',
            :key='item.id',
-           :span='Math.floor((24 / sections.length))')
-      .grid-content.bg-purple
-        a(:href='item.url', target='_blank').a-title-text.center {{item.title}}
-  el-row
-    el-col(:span='24')
-      h1 图表
+           :span='Math.floor((24 / quickly.length))')
+      .item.bg-purple
+        a(:href='item.url', target='_blank').a-title-text {{item.title}}
 </template>
 
 <script>
-
 import api from 'stores/api'
 
 export default {
   data () {
     return {
-      sections: [{
-        title: '文章管理',
-        url: '/posts',
-      },{
-        title: '用户管理',
-        url: '/users',
-      },{
-        title: '广告管理',
-        url: '/ads',
-      },{
-        title: '微信管理',
-        url: '/wechats',
-      }],
-      quickly: [{
-        title: '极客公园',
-        url: 'http://geekpark.net',
-      },{
+      quickly: [ {
         title: 'Teambition',
-        url: 'https://www.teambition.com/projects',
-      },{
+        url: 'https://www.teambition.com/projects'
+      }, {
+        title: '活动站后台',
+        url: ''
+      }, {
         title: '极光推送',
-        url: 'https://www.jiguang.cn/dev/#/app/list#dev',
-      },{
-        title: 'Innoawards',
-        url: '',
-      },{
-        title: 'Github',
-        url: 'https://github.com/geekpark/gpk_admin',
+        url: 'https://www.jiguang.cn/dev/#/app/list#dev'
+      }, {
+        title: 'iTunes Connect',
+        url: 'https://itunesconnect.apple.com'
+      }, {
+        title: '极客公园官网',
+        url: 'http://geekpark.net'
       }],
-      postsData: {
-        posts: [],
-      },
+      postCount: 0,
+      commentCount: 0,
+      userCount: 0,
+      hotWeek: [],
+      posts: []
     }
   },
 
   methods: {
     fetch () {
-      api.get('admin/posts').then((result) => {
-        console.log(result);
-        this.postsData = result.data
-      }).catch((err) => {
-        console.log(err);
-        this.$message.error(err.toString())
+      api.get('admin/posts').then(result => {
+        this.posts = result.data.posts.splice(0, 7)
+      })
+      api.get('admin/posts/yesterday').then(result => {
+        this.postCount = result.data.meta.total_count
+      })
+      api.get('admin/comments/yesterday').then(result => {
+        this.commentCount = result.data.meta.total_count
+      })
+      api.account.get('admin/users/yesterday').then(result => {
+        this.userCount = result.data.meta.total_count
+      })
+      api.get('posts//hot_in_week').then(result => {
+        this.hotWeek = result.data.posts
       })
     }
   },
-
   beforeMount () {
     this.fetch()
   }
@@ -99,19 +96,45 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
 .el-col
   margin-bottom 20px
 
-.new-posts
-
-  .grid-content
-    min-height 155px
-    max-height 155px
-    overflow hidden
+.index-header .el-col .item
+  // border 1px solid #B2B2B2
+  height 90px
+  display flex
+  justify-content space-between
+  align-items center
+  padding 0 20px
+  border-radius 4px
   h1
-    margin-bottom 20px
+    padding-left 10px
+    font-size 30px
+    margin-bottom 5px
+    margin-top 5px
+  span
+    font-size 14px
+.index-articles
+  min-height 300px
+.index-quickly .item
+  height 90px
+  display flex
+  justify-content center
+  align-items center
+  border-radius 4px
+  a
+    font-size 18px
+.index-articles
+  .item
+    display flex
+    justify-content space-between
+    align-items center
   p
-    line-height 25px
-    font-size 1.7rem
+    font-size 14px
+    width 100%
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+    margin 0
+    line-height 30px
 </style>

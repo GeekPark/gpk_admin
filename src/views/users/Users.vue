@@ -1,25 +1,25 @@
 <template lang="jade">
 #admin-users.admin
-  .title
-    h1 {{$route.meta.title}}
-  .filter
-    el-button(type='text', @click='handleEdit()') 全部
-    | /
-    el-button(type='text', @click='handleEdit()') 未验证
-    | /
-    el-button(type='text', @click='handleEdit()') 已验证
-    | /
-    el-button(type='text', @click='handleEdit()') 已禁言
-    el-input(placeholder="搜索",
-             icon="search",
-             v-model="searchText",
-             :on-icon-click="handleIconClick")
-  .roles
-    el-select(v-model="role",placeholder="请选择", @change='rolesChange')
-      el-option(v-for="item in possible_roles", :label="item", :value="item")
+  .admin-header
+    .title
+      h1 {{$route.meta.title}}
+    .filter
+      el-button(type='text', @click='handleEdit()') 全部
+      | /
+      el-button(type='text', @click='handleEdit()') 未验证
+      | /
+      el-button(type='text', @click='handleEdit()') 已验证
+      | /
+      el-button(type='text', @click='handleEdit()') 已禁言
+      el-select(v-model="role",placeholder="请选择", @change='rolesChange')
+        el-option(v-for="item in possible_roles", :label="item", :value="item", :key="item")
+      el-input(placeholder="搜索",
+               icon="search",
+               v-model="searchText",
+               :on-icon-click="handleIconClick")
   el-table(:data='listData.json', @current-change="rowClick" border)
     el-table-column(prop='', label='注册方式', width="100")
-    el-table-column(prop='nickname', label='nickname', width="120")
+    el-table-column(prop='nickname', label='nickname')
     el-table-column(prop='realname', label='realname', width="120")
     el-table-column(prop='email', label='邮箱', width="200")
     el-table-column(prop='mobile', label='手机号', width="150")
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-const base_url = 'admin/users'
+const url = 'admin/users'
 
 import api from 'stores/api'
 import tools from 'tools'
@@ -71,10 +71,10 @@ export default {
     rowClick (row) {
       this.$router.push(`/users/info/${row.id}`)
     },
-    handleSizeChange(index, val) {
+    handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
-    handleCurrentChange(index, val) {
+    handleCurrentChange (index, val) {
       this.page = index
       fetchUsers(this)
       console.log(`当前页: ${index}`)
@@ -93,18 +93,17 @@ export default {
 }
 
 function fetchUsers (_this) {
-  api.account.get(base_url, {params: {
-    nickname: _this.searchText ,
+  api.account.get(url, {params: {
+    nickname: _this.searchText,
     page: _this.page,
     role: _this.role,
-    mode: 'filter',
+    mode: 'filter'
   }}).then(result => {
     _this.listData = result.data
   }).catch(err => {
-    // console.log(err)
+    console.log(err)
   })
 }
-
 
 function fetch (_this, url, key) {
   api.account.get(url).then(result => {

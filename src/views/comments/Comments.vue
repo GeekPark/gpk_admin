@@ -1,25 +1,26 @@
 <template lang="jade">
 #admin-comments.admin
-  .title
-    h1 {{$route.meta.title}}
-  .filter
-    el-input(placeholder="搜索",
-             icon="search",
-             v-model="input2",
-             :on-icon-click="handleFilter")
-  el-table(:data='listData.comments',)
-    el-table-column(prop='', label='用户名', width="100")
-    el-table-column(prop='content', label='内容', width="200")
-    el-table-column(label='来源', width="150")
+  .admin-header
+    .title
+      h1 {{$route.meta.title}}
+    .filter
+      el-input(placeholder="搜索",
+               icon="search",
+               v-model="params.title",
+               :on-icon-click="search")
+  el-table(:data='listData.comments',border)
+    el-table-column(prop='commenter_info.nickname', label='用户名', width="100")
+    el-table-column(prop='content', label='内容')
+    el-table-column(label='来源')
       template(scope='scope')
         a() {{scope.row.commentable_title}}
-    el-table-column(prop='created_at', label='创建时间', width="200")
-    el-table-column(label='操作', width="150")
+    el-table-column(prop='created_at', label='创建时间', width="170")
+    el-table-column(label='操作', width="110")
       template(scope='scope')
         el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.comments)') 删除
+                  @click='search(scope.row)') 删除
         el-button(type='text',
-                  @click='handleFilter(scope.$index, scope.row)') 禁言
+                  @click='search(scope.row)') 禁言
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import api  from 'stores/api'
+import api from 'stores/api'
 import tool from 'tools'
 
 const url = 'admin/comments'
@@ -37,13 +38,13 @@ const url = 'admin/comments'
 export default {
   data () {
     return {
-      filterParams: {
-        commentable_type: "",
-        state: "",
+      params: {
+        title: '',
+        state: 'all'
       },
-      input2: '',
       currentPage: 1,
       listData: {
+        comments: [],
         meta: {
           total_count: 0,
           limit_value: 0
@@ -52,69 +53,70 @@ export default {
     }
   },
   methods: {
-    handleSizeChange(index, val) {
-      console.log(`每页 ${index} 条`)
+    handleEdit (index, row) {
+      this.$router.push(`comments/new?id=${row.id}`)
     },
-    handleCurrentChange(index, val) {
-      this.currentPage = index
-      fetch(this, {page: index}, )
-      console.log(`当前页: ${index}`)
-    },
-    handleFilter() {
-      fetch(this, url, {
-        page: this.currentPage
+    search () {
+      api.get(url, {params: this.params}).then(result => {
+        console.log(result)
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
       })
     },
-    handleDestroy(index, val, list) {
-      api.delete(`${options.url}/${val.id}`, {}).then((result) => {
-        this.$message.success('success')
-        list.splice(index, 1)
+    handleSizeChange (index, val) {
+      console.log(`每页 ${index} 条`)
+    },
+    handleCurrentChange (index, val) {
+      this.currentPage = index
+      this.fetch()
+      console.log(`当前页: ${index}`)
+    },
+    fetch () {
+      const params = Object.assign({page: this.currentPage}, this.params)
+      api.get(url, {params: params}).then((result) => {
+        console.log(result)
+        this.listData = result.data
       }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
       })
+    },
+    handleDestroy (index, val, list) {
+      api.delete(`${url}/${val.id}`).then((result) => {
+        this.$message.success('success')
+        this.fetch()
+      }).catch((err) => {
+        console.log(err)
+        this.$message.error(err.toString())
+      })
+    },
+    recommendPost (row) {
+      api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
+        this.fetch()
+        console.log(result)
+      })
+    },
+    addPost () {
+      window.open('/comments/new?content_type=html')
     }
-  },
-  mounted () {
-    fetch(this, url, {page: this.currentPage})
   },
   watch: {
     'listData.comments': function (val) {
       val.forEach(el => {
-        if (el.state === 'published') {el.state = '已发布'}
-        if (el.content.length >= 30) {
-          el.content = `${el.content.slice(0, 30)}...`
-        }
         el.created_at = tool.moment(el.created_at)
       })
+    },
+    'params.state': function () {
+      this.search()
     }
+  },
+  beforeMount () {
+    this.fetch()
   }
-}
-
-function fetch (_this = {}, url = '', params = {}) {
-  api.get(url, {params: params}).then((result) => {
-    _this.listData = result.data
-  }).catch((err) => {
-    console.log(err)
-     _this.$message.error(err.toString())
-  })
 }
 </script>
 
 <style lang="stylus" scoped>
-.title
-  float left
-  h1
-    display inline-block
-    margin-right 20px
 
-
-.filter
-  margin-bottom 20px
-  float right
-  .el-button
-    margin-left 0px
-  .el-input
-    margin-left 20px
-    width 200px
 </style>

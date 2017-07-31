@@ -1,21 +1,18 @@
 <template lang="jade">
 #admin-posts.admin
-  .admin-header
-    .title
-      h1 {{$route.meta.title}}
-    .filter
-      el-input(placeholder="搜索",
-               icon="search",
-               v-model="input2",
-               :on-icon-click="handleIconClick")
-  el-table(:data='listData.posts' border)
-    el-table-column(prop='title', label='标题')
-    el-table-column(prop='author', label='作者', width="100")
-    el-table-column(prop='published_at', label='发布时间', width="180")
-    el-table-column(prop='', label='微信分享', width="100")
-    el-table-column(prop='', label='Twitter分享', width="100")
-    el-table-column(prop='', label='LinkedIn分享', width="100")
-    el-table-column(prop='', label='总计', width="100")
+  .title
+    h1 {{$route.meta.title}}
+    el-button(type='text', @click="$router.push('/ push/new')") 添加推送
+  el-table(:data='listData.ads' border)
+    el-table-column(prop='', label='内容')
+    el-table-column(prop='', label='发送时间', width="200")
+    el-table-column(prop='', label='状态', width="100")
+    el-table-column(prop='', label='iOS点击', width="150")
+    el-table-column(prop='', label='Android点击', width="150")
+    el-table-column(label='操作', width="100")
+      template(scope='scope')
+        el-button(type='text',
+                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -28,16 +25,15 @@
 import Base from '../base'
 import tool from 'tools'
 const vm = Base({
-  url: 'admin/posts',
+  url: 'admin/ads',
   data: {
-    recommend: false,
-    input2: ''
   },
   methods: {
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)
     },
     handleIconClick () {
+
     }
   },
   watch: {

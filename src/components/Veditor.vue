@@ -1,6 +1,6 @@
 <template lang="jade">
 #veditor
-  #editor(style="height:400px;max-height:1000px;")
+  #editor
   p.count 字数: {{this.count}}
 </template>
 
@@ -11,26 +11,30 @@ export default {
   name: 'veditor',
   data () {
     return {
-      count: 0,
+      count: 0
     }
   },
   mounted () {
-    tools.editor(this)
-    const _this = this
-    this.$store.state.htmlEditor.onchange = function () {
-        _this.count = this.$txt.text().length
-    }
+    tools.editor(this, () => {
+      this.count = this.$store.state.htmlEditor.txt.text().length
+    })
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 #veditor
-
   font-size 16px
-  padding-bottom 30px
   line-height 35px
   letter-spacing 1px
+
+  #editor
+    z-index: 10;
+    position: relative;
+
+  .w-e-text-container
+    height 450px !important
+    max-height 600px !important
 
   .count
     text-align right
