@@ -65,7 +65,7 @@ export default {
         content_type: contentType,
         content_source: '',
         tags: [],
-        column_id: [],
+        column_id: '',
         cover_id: '',
         cover_url: '',
         author_ids: [],
@@ -185,6 +185,7 @@ function updatePost (_this) {
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
+    window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
@@ -192,10 +193,10 @@ function updatePost (_this) {
 
 function createPost (_this) {
   getContent(_this)
-  console.log(_this.form)
   api.post('admin/posts', _this.form)
   .then((result) => {
     _this.$message.success('success')
+    window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
