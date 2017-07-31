@@ -2,13 +2,13 @@
 #add-post.admin
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='form', :model='form', label-width='80px')
+  el-form(ref='form', :model='form', label-width='80px', label-position='top')
     el-form-item(label='标题')
-      el-input(placeholder='请输入标题 必填', v-model='form.title')
+      el-input(v-model='form.title')
     el-form-item(label='跳转链接')
-      el-input(placeholder='请输入网页链接', v-model='form.link')
+      el-input(v-model='form.link')
     el-form-item(label='视频地址')
-      el-input(placeholder='请输入视频地址', v-model='form.link')
+      el-input(placeholder='APP 视频广告专用', v-model='form.video_link')
     el-form-item(label='开始时间')
       el-date-picker(v-model='form.active_at',
                      type='datetime',
@@ -24,8 +24,13 @@
                   :value='item',
                   :key='item')
     el-form-item(label='广告标识')
+      el-select(v-model='form.ad_type', placeholder='请选择')
+        el-option(v-for='(value, key) in types',
+                  :label='value',
+                  :value='key',
+                  :key='key')
     el-form-item(label='图片')
-      upload(:callback='uploadImage')
+      upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 发布
       el-button(type='danger', @click='onSubmit') 关闭
@@ -40,12 +45,16 @@ export default {
       form: {
         active_at: '',
         active_through: '',
-        picture: '',
+        cover_id: '',
+        cover_url: '',
         link: '',
+        video_link: '',
         position: '',
-        title: ''
+        title: '',
+        ad_type: '广告'
       },
-      positions: ['banner', 'logo', 'top_left', 'top_right']
+      types: {ad: '广告', topic: '专题'},
+      positions: ['top_banner', 'medium_up', 'app', 'post', 'medium_below']
     }
   },
   methods: {
@@ -61,6 +70,9 @@ export default {
     },
     uploadImage (img) {
       this.form.cover_id = img.id
+    },
+    uploadDelete () {
+      this.form.cover_url = this.form.cover = ''
     }
   },
   mounted () {

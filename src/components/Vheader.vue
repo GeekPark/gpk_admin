@@ -2,7 +2,7 @@
 #vheader
   img.avatar(:src='info.avatar_url')
   span.nickname {{info.nickname}}
-  img.logout(src='../assets/imgs/header-logout.png', @click='logout')
+  img.logout(src='../assets/imgs/header-logout.svg', @click='logout')
 </template>
 
 <script>
@@ -30,7 +30,8 @@ export default {
     api.account.get('my/access_key').then(result => {
       if (Object.keys(result.data) <= 0) {
         this.$message.error('未登录, 请再新窗口登录后, 刷新本页面')
-        window.open(config.account)
+        const tab = window.open('about:blank')
+        setTimeout(() => { tab.location = config.account }, 200)
         return
       }
       const url = `admin/info?access_key=${result.data.access_key}`

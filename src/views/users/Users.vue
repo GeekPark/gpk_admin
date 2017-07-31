@@ -4,20 +4,15 @@
     .title
       h1 {{$route.meta.title}}
     .filter
-      el-button(type='text', @click='handleEdit()') 全部
-      | /
-      el-button(type='text', @click='handleEdit()') 未验证
-      | /
-      el-button(type='text', @click='handleEdit()') 已验证
-      | /
-      el-button(type='text', @click='handleEdit()') 已禁言
-      el-select(v-model="role",placeholder="请选择", @change='rolesChange')
+      //- el-select(v-model="params.state",placeholder="请选择", @change='typeChange')
+      //-   el-option(v-for="item in types", :label="item.value", :value="item.key", :key="item.key")
+      el-select(v-model="params.role",placeholder="请选择", @change='rolesChange')
         el-option(v-for="item in possible_roles", :label="item", :value="item", :key="item")
       el-input(placeholder="搜索",
                icon="search",
-               v-model="searchText",
-               :on-icon-click="handleIconClick")
-  el-table(:data='listData.json', @current-change="rowClick" border)
+               v-model="params.searchText",
+               :on-icon-click="rolesChange")
+  el-table(:data='listData.json' border)
     el-table-column(prop='', label='注册方式', width="100")
     el-table-column(prop='nickname', label='nickname')
     el-table-column(prop='realname', label='realname', width="120")
@@ -28,12 +23,12 @@
     el-table-column(label='操作', width="130")
       template(scope='scope')
         el-button(type='text',
-                  @click='handleEdit(scope.$index, scope.row)') 编辑
+                  @click='handleEdit(scope.row)') 编辑
         el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.json)') 删除
+                  @click='handleDestroy(scope.row)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
-                :current-page='page',
+                :current-page='params.page',
                 :page-size='listData.meta.limit_value',
                 layout='total, prev, pager, next, jumper',
                 :total='listData.meta.total_count')
@@ -52,10 +47,20 @@ export default {
   },
   data () {
     return {
-      page: 1,
-      searchText: '',
       possible_roles: [],
-      role: 'user',
+      types: [{
+        key: 'all',
+        value: '全部'
+      }, {
+        key: 'banned',
+        value: '已禁言'
+      }],
+      params: {
+        role: 'user',
+        page: 1,
+        state: '',
+        searchText: ''
+      },
       listData: {
         users: [],
         meta: {
@@ -68,19 +73,31 @@ export default {
     rolesChange () {
       fetchUsers(this)
     },
+    typeChange () {
+
+    },
     rowClick (row) {
-      this.$router.push(`/users/info/${row.id}`)
+      window.open(`/users/info/${row.id}`)
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
     handleCurrentChange (index, val) {
-      this.page = index
+      this.params.page = index
       fetchUsers(this)
       console.log(`当前页: ${index}`)
     },
-    handleIconClick () {
-      fetchUsers(this)
+    handleDestroy (val) {
+      api.account.delete(`${url}/${val.id}`).then(result => {
+        this.$message.success('success')
+        this.fetch()
+      }).catch(err => {
+        console.log(err)
+        this.$message.error(err.toString())
+      })
+    },
+    handleEdit (row) {
+      window.open(`users/info/${row.id}`)
     }
   },
   watch: {
@@ -94,9 +111,9 @@ export default {
 
 function fetchUsers (_this) {
   api.account.get(url, {params: {
-    nickname: _this.searchText,
-    page: _this.page,
-    role: _this.role,
+    nickname: _this.params.searchText,
+    page: _this.params.page,
+    role: _this.params.role,
     mode: 'filter'
   }}).then(result => {
     _this.listData = result.data
@@ -116,4 +133,7 @@ function fetch (_this, url, key) {
 h1 {
   top: -5px;
 }
+.el-select
+  width 150px !important
+  margin-right 50px
 </style>

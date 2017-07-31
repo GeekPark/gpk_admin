@@ -13,17 +13,18 @@ export default {
     return {
       searchData: [],
       select: [],
-      list: [],
-      loading: false,
-      states: []
+      loading: false
     }
   },
-  props: ['callback'],
-  methods: {
-  },
+  props: ['callback', 'column'],
   watch: {
     'select': function (val) {
       this.callback(val)
+    },
+    'column': function (val) {
+      if (!this.column.id) { return }
+      this.select = this.column.id
+      this.searchData = [this.column]
     }
   },
   mounted () {

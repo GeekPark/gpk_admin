@@ -20,13 +20,13 @@
               v-bind:markdown='form.markdown')
       veditor(v-else)
     el-form-item(label='添加标签', prop='tags')
-      search-tag(:callback='searchTag')
+      search-tag(:callback='searchTag', :tags='form.tags')
     el-form-item(label='栏目选择', prop='column_id')
-      search-column(:callback='searchColumn')
+      search-column(:callback='searchColumn', :column='form.column')
     el-form-item(label='文章头图', prop='cover_id')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
-    el-form-item(label='作者', prop='author_ids')
-      search-user(:callback='searchUser')
+    el-form-item(label='作者', prop='authors')
+      search-user(:callback='searchUser', :multiple='true')
     el-form-item(label='定时发送', prop='date')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
@@ -68,7 +68,7 @@ export default {
         column_id: '',
         cover_id: '',
         cover_url: '',
-        author_ids: [],
+        authors: [],
         auto_publish_at: null,
         state: 'published',
         video_id: '',
@@ -96,7 +96,7 @@ export default {
         cover_id: [
           { type: 'number', required: true, message: '请上传文章头图', trigger: 'change' }
         ],
-        author_ids: [
+        authors: [
           { required: true, validator: validateArray, message: '请至少选择一个作者', trigger: 'change' }
         ]
       },
@@ -138,7 +138,7 @@ export default {
       this.form.cover_url = this.form.cover_id = ''
     },
     searchUser (users) {
-      this.form.author_ids = users
+      this.form.authors = users
     },
     searchTag (tags) {
       this.form.tags = tags
@@ -196,7 +196,7 @@ function createPost (_this) {
   api.post('admin/posts', _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    // window.close()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })

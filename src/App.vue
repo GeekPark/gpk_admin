@@ -93,6 +93,9 @@ html, body
 .el-date-editor, .el-select
   width 300px !important
 
+.el-table__row .el-button span
+  font-size 40%
+
 //  public css
 
 .no-touch-bg

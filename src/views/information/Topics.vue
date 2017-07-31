@@ -11,6 +11,8 @@
                :on-icon-click="search")
   el-table(:data='listData.topics' border)
     el-table-column(prop='title', label='专题名称', width="150")
+      template(scope='scope')
+        a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='description', label='专题描述')
     el-table-column(prop='post_count', label='文章数量', width="90")
     el-table-column(prop='published_at', label='添加时间', width="160")
@@ -31,6 +33,8 @@
 <script>
 import Base from '../base'
 import tool from 'tools'
+import config from '../../config.js'
+
 const vm = Base({
   url: 'admin/topics',
   data: {
@@ -47,6 +51,9 @@ const vm = Base({
     },
     search () {
       this.fetch()
+    },
+    clickColumn (row) {
+      window.open(`${config.main}/collections/${row.title}`)
     }
   },
   watch: {

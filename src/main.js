@@ -14,6 +14,8 @@ import Upload from 'components/Upload.vue'
 import SearchUser from 'components/SearchUser.vue'
 import SearchTag from 'components/SearchTag.vue'
 import SearchColumn from 'components/SearchColumn.vue'
+import SearchArticle from 'components/SearchArticle.vue'
+import ProductCategories from 'components/ProductCategories.vue'
 import Vmarkdown from 'components/Vmarkdown.vue'
 // import hljs         from 'highlight.js'
 // import VueDND     from 'awe-dnd'
@@ -27,6 +29,8 @@ Vue.component(Vmarkdown.name, Vmarkdown)
 Vue.component(SearchUser.name, SearchUser)
 Vue.component(SearchTag.name, SearchTag)
 Vue.component(SearchColumn.name, SearchColumn)
+Vue.component(SearchArticle.name, SearchArticle)
+Vue.component(ProductCategories.name, ProductCategories)
 
 Vue.directive('highlightjs', el => {
   // let blocks = el.querySelectorAll('pre');

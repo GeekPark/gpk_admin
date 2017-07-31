@@ -3,26 +3,24 @@
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="$router.push('/recommendations/new')") 添加推荐
+      el-button(type='text', @click="addRecommend") 添加推荐
     .filter
       el-input(placeholder="搜索",
                icon="search",
                v-model="params.title",
-               :on-icon-click="search")
-  el-table(:data='listData.columns' border)
-    el-table-column(prop='', label='产品名称')
-    el-table-column(prop='', label='作者', width="100")
-    el-table-column(prop='', label='类别', width="200")
-    el-table-column(prop='', label='发布时间', width="100")
+               :on-icon-click="fetch")
+  el-table(:data='listData.recommendations' border)
+    el-table-column(prop='product_name', label='产品名称')
+    el-table-column(prop='author.nickname', label='作者', width="100")
+    el-table-column(prop='product_category', label='类别', width="200")
+    el-table-column(prop='created_at', label='发布时间', width="170")
     el-table-column(prop='', label='分享数量', width="100")
-    el-table-column(prop='', label='LinkedIn分享', width="100")
-    el-table-column(prop='', label='总计', width="100")
     el-table-column(label='操作', width="120")
       template(scope='scope')
         el-button(type='text',
-                  @click='handleEdit(scope.$index, scope.row)') 编辑
+                  @click='handleEdit(scope.row)') 编辑
         el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.columns)') 删除
+                  @click='handleDestroy(scope.row)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -54,16 +52,8 @@ export default {
     }
   },
   methods: {
-    handleEdit (index, row) {
-      this.$router.push(`recommendations/new?id=${row.id}`)
-    },
-    search () {
-      api.get(url, {params: this.params}).then(result => {
-        console.log(result)
-        this.listData = result.data
-      }).catch((err) => {
-        console.log(err)
-      })
+    handleEdit (row) {
+      window.open(`recommendations/new?id=${row.id}`)
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
@@ -74,32 +64,25 @@ export default {
       console.log(`当前页: ${index}`)
     },
     fetch () {
-      const params = Object.assign({page: this.currentPage}, this.params)
-      api.get(url, {params: params}).then((result) => {
+      api.get(url).then(result => {
         console.log(result)
         this.listData = result.data
-      }).catch((err) => {
+      }).catch(err => {
         console.log(err)
         this.$message.error(err.toString())
       })
     },
-    handleDestroy (index, val, list) {
-      api.delete(`${url}/${val.id}`).then((result) => {
+    handleDestroy (val) {
+      api.delete(`${url}/${val.id}`).then(result => {
         this.$message.success('success')
         this.fetch()
-      }).catch((err) => {
+      }).catch(err => {
         console.log(err)
         this.$message.error(err.toString())
       })
     },
-    recommendPost (row) {
-      api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
-        this.fetch()
-        console.log(result)
-      })
-    },
-    addPost () {
-      window.open('/recommendations/new?content_type=html')
+    addRecommend () {
+      window.open('/recommendations/new')
     }
   },
   watch: {
@@ -112,7 +95,7 @@ export default {
       this.search()
     }
   },
-  beforeMount () {
+  mounted () {
     this.fetch()
   }
 }
