@@ -3,7 +3,7 @@
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addColumn") 添加栏目
+      el-button(type='text', @click="addColumn") 添加广告
     .filter
       el-input(placeholder="搜索",
                icon="search",
