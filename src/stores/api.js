@@ -24,7 +24,7 @@ function create (url = baseUrl) {
 
 // Add a request interceptor
 request.interceptors.request.use(function (config) {
-  config.params = Object.assign({roles: 'dev'}, config.params)
+  // config.params = Object.assign({roles: 'dev'}, config.params)
   // store.commit('LOADING', true)
   return config
 }, function (error) {
