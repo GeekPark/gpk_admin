@@ -1,6 +1,8 @@
 # [GeekPark](http://geekpark.net) Content Management System
 [![Build Status](https://travis-ci.org/GeekPark/gpk_admin.svg?branch=master)](https://travis-ci.org/GeekPark/gpk_admin)
 [![Code Climate](https://codeclimate.com/github/GeekPark/gpk_admin/badges/gpa.svg)](https://codeclimate.com/github/GeekPark/gpk_admin)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
 ### Features
 
