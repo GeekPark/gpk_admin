@@ -28,7 +28,9 @@
     el-table-column(prop='title', label='标题')
       template(scope='scope')
         a(@click='clickArticle(scope.row)') {{scope.row.title}}
-    el-table-column(prop='authors.nickname', label='作者', width="100")
+    el-table-column(props='authors', label='作者', width="100")
+      template(scope='scope')
+        span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
     el-table-column(prop='column_title', label='栏目', width="150")
     el-table-column(prop='published_at', label='发布时间', width="180")
     el-table-column(prop='state', label=' 状态', width="80")
