@@ -25,6 +25,8 @@ export default {
       }
       if (this.url === null || this.url === '') {
         return handle(this.uploadUrl)
+      } else if (this.url === 'deleted') {
+        return ''
       } else {
         return handle(this.url)
       }

@@ -135,7 +135,8 @@ export default {
       this.form.cover_id = img.id
     },
     uploadDelete () {
-      this.form.cover_url = this.form.cover_id = ''
+      this.form.cover_url = 'deleted'
+      this.form.cover_id = ''
     },
     searchUser (users) {
       this.form.authors = users

@@ -34,6 +34,8 @@
     el-table-column(prop='column_title', label='栏目', width="150")
     el-table-column(prop='published_at', label='发布时间', width="180")
     el-table-column(prop='state', label=' 状态', width="80")
+      template(scope='scope')
+        span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
     el-table-column(prop='views', label=' PV', width="70")
     el-table-column(label='操作', width="170")
       template(scope='scope')
@@ -76,9 +78,6 @@ export default {
     }
   },
   methods: {
-    handleEdit (index, row) {
-      this.$router.push(`posts/new?id=${row.id}`)
-    },
     search () {
       api.get(url, {params: this.params}).then(result => {
         console.log(result)
@@ -114,6 +113,9 @@ export default {
         this.$message.error(err.toString())
       })
     },
+    handleEdit (index, row) {
+      this.$router.push(`posts/new?id=${row.id}`)
+    },
     clickArticle (row) {
       window.open(`${config.main}/topics/${row.id}`)
     },
@@ -124,7 +126,7 @@ export default {
       })
     },
     addPost () {
-      window.open('/posts/new?content_type=html')
+      this.$router.push('/posts/new?content_type=html')
     }
   },
   watch: {
@@ -149,6 +151,8 @@ export default {
 <style lang="stylus" scoped>
 .active
   color #7F7F7F
+.unpublished
+  color #FF0000
 
 
 </style>

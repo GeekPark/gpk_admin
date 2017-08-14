@@ -77,7 +77,7 @@ export default {
 
     },
     rowClick (row) {
-      window.open(`/users/info/${row.id}`)
+      this.$router.push(`/users/info/${row.id}`)
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
@@ -97,7 +97,7 @@ export default {
       })
     },
     handleEdit (row) {
-      window.open(`users/info/${row.id}`)
+      this.$router.push(`users/info/${row.id}`)
     }
   },
   watch: {

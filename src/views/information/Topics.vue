@@ -44,10 +44,10 @@ const vm = Base({
   },
   methods: {
     addTopic () {
-      window.open('/topics/new')
+      this.$router.push('/topics/new')
     },
     handleEdit (index, row) {
-      window.open(`topics/new?id=${row.id}`)
+      this.$router.push(`topics/new?id=${row.id}`)
     },
     search () {
       this.fetch()

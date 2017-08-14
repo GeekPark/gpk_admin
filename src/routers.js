@@ -40,7 +40,7 @@ const router = new VueRouter({
     { path: '/users',
       name: 'users',
       component: Users,
-      meta: {title: '用户'}
+      meta: {title: '用户列表'}
     },
     { path: '/users/new',
       name: 'users-new',
@@ -123,7 +123,7 @@ const router = new VueRouter({
     { path: '/comments',
       name: 'comments',
       component: Comments,
-      meta: {title: '评论'}
+      meta: {title: '评论列表'}
     },
     { path: '*',
       component: Errors,

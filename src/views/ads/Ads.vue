@@ -9,7 +9,7 @@
                icon="search",
                v-model="params.title",
                :on-icon-click="search")
-  el-table(:data='listData.ads' border)
+  el-table(:data='listData.ads', :row-class-name="tableRowClassName", border)
     el-table-column(prop='title', label='标题', width="200")
       template(scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
@@ -46,11 +46,19 @@ const vm = Base({
     }
   },
   methods: {
+    tableRowClassName (row, index) {
+      if (index === 1) {
+        return 'info-row'
+      } else if (index === 3) {
+        return 'positive-row'
+      }
+      return ''
+    },
     addColumn () {
-      window.open('/ads/new')
+      this.$router.push('/ads/new')
     },
     handleEdit (row) {
-      window.open(`ads/new?id=${row.id}`)
+      this.$router.push(`ads/new?id=${row.id}`)
     },
     search () {
       this.fetch()
@@ -77,5 +85,7 @@ export default vm
 </script>
 
 <style lang="stylus" scoped>
+.activeAd
+  background #e2f0e4
 
 </style>

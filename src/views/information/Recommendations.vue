@@ -52,9 +52,6 @@ export default {
     }
   },
   methods: {
-    handleEdit (row) {
-      window.open(`recommendations/new?id=${row.id}`)
-    },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
@@ -81,8 +78,11 @@ export default {
         this.$message.error(err.toString())
       })
     },
+    handleEdit (row) {
+      this.$router.push(`recommendations/new?id=${row.id}`)
+    },
     addRecommend () {
-      window.open('/recommendations/new')
+      this.$router.push('/recommendations/new')
     }
   },
   watch: {

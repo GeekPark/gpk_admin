@@ -53,10 +53,11 @@ export default {
 
   .avatar
     position relative
-    height 80%
+    height 60%
     border-radius 4px
     margin-right 15px
     cursor pointer
+    border-radius 100%
   .nickname
     margin-right 20px
     cursor pointer

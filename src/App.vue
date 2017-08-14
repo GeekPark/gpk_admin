@@ -83,8 +83,6 @@ html, body
   margin-bottom 10px
 
 // element -ui
-.el-table
-  font-size 40%
 .el-pagination
   text-align left
   margin-top 20px
@@ -92,9 +90,6 @@ html, body
   clear both
 .el-date-editor, .el-select
   width 300px !important
-
-.el-table__row .el-button span
-  font-size 40%
 
 //  public css
 

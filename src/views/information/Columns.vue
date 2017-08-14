@@ -46,10 +46,10 @@ const vm = Base({
   },
   methods: {
     addColumn () {
-      window.open('/columns/new')
+      this.$router.push('/columns/new')
     },
     handleEdit (index, row) {
-      window.open(`columns/new?id=${row.id}`)
+      this.$router.push(`columns/new?id=${row.id}`)
     },
     search () {
       this.fetch()
