@@ -13,7 +13,7 @@
       el-radio.radio(v-model='form.column_visible', :label="true") 是
       el-radio.radio(v-model='form.column_visible', :label="false") 否
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary',:disabled='disabled', @click='onSubmit') 发布
       el-button(type='danger', @click='close') 关闭
 </template>
 
@@ -23,6 +23,7 @@ import api from 'stores/api'
 export default {
   data () {
     return {
+      disabled: false,
       form: {
         title: '',
         description: '',
@@ -64,7 +65,7 @@ export default {
       this.form.banner_url = this.form.banner_id = ''
     },
     close () {
-      window.close()
+      this.$router.push('/columns')
     }
   },
   mounted () {
@@ -75,21 +76,25 @@ export default {
 }
 
 function updateColumn (_this) {
+  _this.disabled = true
   api.put(`admin/columns/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/columns')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
 
 function createColumn (_this) {
+  _this.disabled = true
   api.post('admin/columns', _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/columns')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }

@@ -28,7 +28,7 @@
     el-form-item(label='是否禁言:')
       el-switch(v-model="user.banned", on-text="", off-text="", @change='blockChange')
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 保存
+      el-button(type='primary', :disabled='disabled', @click='onSubmit') 保存
 </template>
 
 <script>
@@ -43,17 +43,22 @@ export default {
   },
   data () {
     return {
+      disabled: false,
       user: {},
       roles: []
     }
   },
   methods: {
     onSubmit () {
+      this.disabled = true
       api.account.put(`admin/users/${this.$route.params.id}`, {
         roles: this.user.roles
       }).then(result => {
         this.$message.success('success')
-        console.log(result)
+        this.$router.push('/users')
+      }).catch(err => {
+        console.log(err)
+        this.disabled = false
       })
     },
     blockChange (val) {

@@ -32,7 +32,7 @@
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
-      el-button(type='primary', @click='submitForm') 发布
+      el-button(type='primary', :disabled='disabled', @click='submitForm') 发布
       el-button(type='success', @click='state="unpublished", submitForm') 存草稿
       el-button(type='danger', @click='close') 关闭
 </template>
@@ -59,6 +59,7 @@ export default {
     }
     const contentType = this.$route.query.content_type || ''
     return {
+      disabled: false,
       form: {
         title: '',
         abstract: '',
@@ -113,7 +114,7 @@ export default {
     submitForm () {
       this.$refs['add-post-form'].validate((valid) => {
         if (valid) {
-          delete this.form.cover_url
+          this.form.cover_url = ''
           if (this.form.video_id !== '') {
             this.form.post_type = 'video'
           }
@@ -148,7 +149,7 @@ export default {
       this.form.column_id = column
     },
     close () {
-      window.close()
+      this.$router.push('/posts')
     }
   },
   watch: {
@@ -183,22 +184,26 @@ function addContent (_this, val) {
 
 function updatePost (_this) {
   getContent(_this)
+  _this.disabled = true
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/posts')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
 
 function createPost (_this) {
   getContent(_this)
+  _this.disabled = true
   api.post('admin/posts', _this.form)
   .then((result) => {
     _this.$message.success('success')
-    // window.close()
+    _this.$router.push('/posts')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }

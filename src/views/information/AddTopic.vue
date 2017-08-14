@@ -10,7 +10,7 @@
     el-form-item(label='背景封面')
       upload(:callback='uploadImage', :url='form.banner_url', :uploadDelete="uploadDelete")
     el-form-item.actions(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
       el-button(type='danger', @click='close') 关闭
 </template>
 
@@ -20,6 +20,7 @@ import api from 'stores/api'
 export default {
   data () {
     return {
+      disabled: false,
       form: {
         title: '',
         description: '',
@@ -60,7 +61,7 @@ export default {
       this.form.banner_url = this.form.banner_id = ''
     },
     close () {
-      window.close()
+      this.$router.push('/topics')
     }
   },
   mounted () {
@@ -71,21 +72,25 @@ export default {
 }
 
 function updateTopic (_this) {
+  _this.disabled = true
   api.put(`admin/topics/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/topics')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
 
 function createTopic (_this) {
+  _this.disabled = true
   api.post('admin/topics', _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/topics')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }

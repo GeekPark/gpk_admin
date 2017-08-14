@@ -14,9 +14,9 @@
       template(scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='position', label='位置')
-    el-table-column(prop='active_at', label='开始时间', width="170")
-    el-table-column(prop='active_through', label='结束时间', width="170")
-    el-table-column(label='操作', width="200")
+    el-table-column(prop='active_at', label='开始时间', width="180")
+    el-table-column(prop='active_through', label='结束时间', width="180")
+    el-table-column(label='操作', width="170")
         template(scope='scope')
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑
@@ -46,11 +46,14 @@ const vm = Base({
     }
   },
   methods: {
-    tableRowClassName (row, index) {
-      if (index === 1) {
-        return 'info-row'
-      } else if (index === 3) {
-        return 'positive-row'
+    tableRowClassName (row) {
+      const through = new Date(row.active_through)
+      const now = new Date()
+      console.log(through)
+      console.log(now)
+      console.log(through > now)
+      if (through > now) {
+        return 'active-ad'
       }
       return ''
     },
@@ -84,8 +87,8 @@ const vm = Base({
 export default vm
 </script>
 
-<style lang="stylus" scoped>
-.activeAd
-  background #e2f0e4
+<style lang="stylus">
+.active-ad
+  background-color #e2f0e4 !important
 
 </style>
