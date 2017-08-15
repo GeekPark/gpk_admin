@@ -15,17 +15,13 @@
       template(scope='scope')
         span(v-for='item in scope.row.authors', :key='item.nickname') {{item.nickname}}
     el-table-column(prop='post_count', label='栏目', width="90")
-    el-table-column(prop='published_at', label='添加时间', width="170")
+    el-table-column(prop='', label='添加时间', width="180")
+        template(scope='scope')
+          span {{topic.created_at}}
     el-table-column(label='操作', width="70")
         template(scope='scope')
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row)') 移除
-  //- el-pagination(@size-change='handleSizeChange',
-  //-               @current-change='handleCurrentChange',
-  //-               :current-page='currentPage',
-  //-               :page-size='listData.meta.limit_value',
-  //-               layout='total, prev, pager, next, jumper',
-  //-               :total='listData.meta.total_count')
 </template>
 
 <script>
@@ -54,8 +50,7 @@ export default {
       console.log(`当前页: ${index}`)
     },
     handleDestroy (index, val) {
-      api.post(`/admin/topics/${this.$route.query.id}/members`,
-        {post_ids: [this.post]})
+      api.delete(`/admin/topics/${this.$route.query.id}/${val.id}`)
       .then(result => {
         this.fetch()
       })
@@ -73,10 +68,8 @@ export default {
     }
   },
   watch: {
-    'topic.posts': function (val) {
-      val.forEach(el => {
-        el.published_at = tool.moment(el.published_at)
-      })
+    'topic': function (val) {
+      val.created_at = tool.moment(val.created_at)
     }
   },
   mounted () {

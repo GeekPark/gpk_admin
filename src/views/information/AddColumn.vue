@@ -62,7 +62,8 @@ export default {
       this.form.banner_id = img.id
     },
     uploadDelete () {
-      this.form.banner_url = this.form.banner_id = ''
+      this.form.banner_url = 'deleted'
+      this.form.banner_id = ''
     },
     close () {
       this.$router.push('/columns')
