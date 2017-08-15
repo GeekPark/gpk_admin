@@ -16,8 +16,10 @@
     el-table-column(prop='description', label='专题描述')
     el-table-column(prop='post_count', label='文章数量', width="90")
     el-table-column(prop='published_at', label='添加时间', width="160")
-    el-table-column(label='操作', width="110")
+    el-table-column(label='操作', width="140")
         template(scope='scope')
+          el-button(type='text',
+                    @click='handleManagement(scope.$index, scope.row)') 管理
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑
           el-button(type='text',
@@ -34,7 +36,7 @@
 import Base from '../base'
 import tool from 'tools'
 import config from '../../config.js'
-
+const max = 40
 const vm = Base({
   url: 'admin/topics',
   data: {
@@ -49,6 +51,9 @@ const vm = Base({
     handleEdit (index, row) {
       this.$router.push(`topics/new?id=${row.id}`)
     },
+    handleManagement (index, row) {
+      this.$router.push(`topics/management?id=${row.id}`)
+    },
     search () {
       this.fetch()
     },
@@ -61,6 +66,9 @@ const vm = Base({
       val.forEach(el => {
         if (el.state === 'published') { el.state = '已发布' }
         el.published_at = tool.moment(el.created_at)
+        if (el.description && el.description.length > max) {
+          el.description = `${el.description.substring(0, max)}...`
+        }
       })
     }
   }

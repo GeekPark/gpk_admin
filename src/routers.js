@@ -8,15 +8,20 @@ import Errors from 'views/Errors.vue'
 import Posts from 'views/information/Posts.vue'
 import AddPost from 'views/information/AddPost.vue'
 import Share from 'views/information/Share.vue'
+
 import Recommendations from 'views/information/Recommendations.vue'
 import AddRecommend from 'views/information/AddRecommend.vue'
+
 import Topics from 'views/information/Topics.vue'
 import AddTopic from 'views/information/AddTopic.vue'
+import ManageTopics from 'views/information/ManageTopics.vue'
+
 import Columns from 'views/information/Columns.vue'
 import AddColumn from 'views/information/AddColumn.vue'
 
 import Push from 'views/push/Push.vue'
 import AddPush from 'views/push/AddPush.vue'
+
 import Ads from 'views/ads/Ads.vue'
 import AddAd from 'views/ads/AddAd.vue'
 
@@ -87,6 +92,11 @@ const router = new VueRouter({
       name: 'info-topic-new',
       component: AddTopic,
       meta: {title: '添加专题'}
+    },
+    { path: '/topics/management',
+      name: 'info-topic-management',
+      component: ManageTopics,
+      meta: {title: '管理专题'}
     },
     { path: '/columns',
       name: 'info-columns',
