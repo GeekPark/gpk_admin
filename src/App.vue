@@ -35,6 +35,7 @@ html, body
   background transparent
   width 100%
   height 100%
+  font-family Sans-serif
 
 .admin
   margin-left $siderrWidth
