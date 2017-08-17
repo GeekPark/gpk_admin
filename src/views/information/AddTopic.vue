@@ -8,9 +8,11 @@
     el-form-item(label='描述', prop='description')
       el-input(type='textarea', placeholder='', v-model='form.description')
     el-form-item(label='背景封面')
-      upload(:callback='uploadImage', :url='form.banner_url', :uploadDelete="uploadDelete")
+      upload(:callback='uploadBanner', :url='form.banner_url', :uploadDelete="deleteBanner")
+     el-form-item(label='移动端背景封面')
+      upload(:callback='uploadAppBanner', :url='form.app_banner_url', :uploadDelete="deleteAppBanner")
     el-form-item.actions(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
       el-button(type='danger', @click='close') 关闭
 </template>
 
@@ -20,10 +22,14 @@ import api from 'stores/api'
 export default {
   data () {
     return {
+      disabled: false,
       form: {
         title: '',
         description: '',
-        banner_url: ''
+        banner_url: '',
+        banner_id: '',
+        app_banner_url: '',
+        app_banner_id: ''
       },
       rules: {
         title: [
@@ -53,14 +59,22 @@ export default {
     handleSelect (item) {
       console.log(item)
     },
-    uploadImage (img) {
+    uploadBanner (img) {
       this.form.banner_id = img.id
     },
-    uploadDelete () {
-      this.form.banner_url = this.form.banner_id = ''
+    deleteBanner () {
+      this.form.banner_url = 'deleted'
+      this.form.banner_id = ''
+    },
+    uploadAppBanner (img) {
+      this.form.app_banner_id = img.id
+    },
+    deleteAppBanner () {
+      this.form.app_banner_url = 'deleted'
+      this.form.app_banner_id = ''
     },
     close () {
-      window.close()
+      this.$router.push('/topics')
     }
   },
   mounted () {
@@ -71,21 +85,25 @@ export default {
 }
 
 function updateTopic (_this) {
+  _this.disabled = true
   api.put(`admin/topics/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/topics')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
 
 function createTopic (_this) {
+  _this.disabled = true
   api.post('admin/topics', _this.form)
   .then((result) => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/topics')
   }).catch((err) => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }

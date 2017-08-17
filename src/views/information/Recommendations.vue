@@ -11,8 +11,10 @@
                :on-icon-click="fetch")
   el-table(:data='listData.recommendations' border)
     el-table-column(prop='product_name', label='产品名称')
-    el-table-column(prop='author.nickname', label='作者', width="100")
-    el-table-column(prop='product_category', label='类别', width="200")
+    el-table-column(prop='author', label='作者', width="140")
+      template(scope='scope')
+        span(v-for='item in scope.row.author') {{item.nickname}}
+    el-table-column(prop='product_category', label='类别', width="100")
     el-table-column(prop='created_at', label='发布时间', width="170")
     el-table-column(prop='', label='分享数量', width="100")
     el-table-column(label='操作', width="120")
@@ -52,9 +54,6 @@ export default {
     }
   },
   methods: {
-    handleEdit (row) {
-      window.open(`recommendations/new?id=${row.id}`)
-    },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
@@ -81,8 +80,11 @@ export default {
         this.$message.error(err.toString())
       })
     },
+    handleEdit (row) {
+      this.$router.push(`recommendations/new?id=${row.id}`)
+    },
     addRecommend () {
-      window.open('/recommendations/new')
+      this.$router.push('/recommendations/new')
     }
   },
   watch: {

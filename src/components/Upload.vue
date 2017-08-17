@@ -21,10 +21,15 @@ export default {
     },
     displayUrl () {
       const handle = (link) => {
+        if (link.length < 0) {
+          return ''
+        }
         return link.replace('www.geekpark.net', 'geekpark.geeklabs.vc')
       }
       if (this.url === null || this.url === '') {
         return handle(this.uploadUrl)
+      } else if (this.url === 'deleted') {
+        return ''
       } else {
         return handle(this.url)
       }

@@ -1,6 +1,6 @@
 <template lang="jade">
 #search-post
-  el-select(v-model='select', filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
+  el-select(v-model='select', filterable, remote, placeholder='搜索文章', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in searchData', :key='item.id', :label='item.title', :value='item.id')
 
 </template>
@@ -39,6 +39,10 @@ export default {
       this.callback(this.select)
     },
     'post': function (val) {
+      if (this.post === 'deleted') {
+        this.select = ''
+        return
+      }
       if (!this.post.id) { return }
       this.select = this.post.id
       this.searchData = [this.post]

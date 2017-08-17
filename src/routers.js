@@ -8,15 +8,20 @@ import Errors from 'views/Errors.vue'
 import Posts from 'views/information/Posts.vue'
 import AddPost from 'views/information/AddPost.vue'
 import Share from 'views/information/Share.vue'
+
 import Recommendations from 'views/information/Recommendations.vue'
 import AddRecommend from 'views/information/AddRecommend.vue'
+
 import Topics from 'views/information/Topics.vue'
 import AddTopic from 'views/information/AddTopic.vue'
+import ManageTopics from 'views/information/ManageTopics.vue'
+
 import Columns from 'views/information/Columns.vue'
 import AddColumn from 'views/information/AddColumn.vue'
 
 import Push from 'views/push/Push.vue'
 import AddPush from 'views/push/AddPush.vue'
+
 import Ads from 'views/ads/Ads.vue'
 import AddAd from 'views/ads/AddAd.vue'
 
@@ -40,7 +45,7 @@ const router = new VueRouter({
     { path: '/users',
       name: 'users',
       component: Users,
-      meta: {title: '用户'}
+      meta: {title: '用户列表'}
     },
     { path: '/users/new',
       name: 'users-new',
@@ -88,6 +93,11 @@ const router = new VueRouter({
       component: AddTopic,
       meta: {title: '添加专题'}
     },
+    { path: '/topics/management',
+      name: 'info-topic-management',
+      component: ManageTopics,
+      meta: {title: '管理专题'}
+    },
     { path: '/columns',
       name: 'info-columns',
       component: Columns,
@@ -123,7 +133,7 @@ const router = new VueRouter({
     { path: '/comments',
       name: 'comments',
       component: Comments,
-      meta: {title: '评论'}
+      meta: {title: '评论列表'}
     },
     { path: '*',
       component: Errors,

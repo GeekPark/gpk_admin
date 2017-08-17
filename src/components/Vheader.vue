@@ -17,12 +17,17 @@ export default {
   },
   methods: {
     logout () {
+      const url = `${config.account}/?callback_url=${location.href}`
       if (this.info.avatar_url) {
         api.account.delete(`logout`).then(result => {
           console.log(result)
+          location.href = config.account
+        }).catch(err => {
+          console.log(err)
+          location.href = url
         })
       } else {
-        window.open(config.account)
+        location.href = url
       }
     }
   },
@@ -31,7 +36,8 @@ export default {
       if (Object.keys(result.data) <= 0) {
         this.$message.error('未登录, 请再新窗口登录后, 刷新本页面')
         const tab = window.open('about:blank')
-        setTimeout(() => { tab.location = config.account }, 200)
+        const url = `${config.account}/?callback_url=${location.href}`
+        setTimeout(() => { tab.location = url }, 200)
         return
       }
       const url = `admin/info?access_key=${result.data.access_key}`
@@ -53,10 +59,11 @@ export default {
 
   .avatar
     position relative
-    height 80%
+    height 60%
     border-radius 4px
     margin-right 15px
     cursor pointer
+    border-radius 100%
   .nickname
     margin-right 20px
     cursor pointer

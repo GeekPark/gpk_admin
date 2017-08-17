@@ -16,7 +16,7 @@
     el-form-item(label='作者')
       search-user(:callback='searchUser', :author='form.author')
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
       el-button(type='danger', @click='close') 关闭
 </template>
 
@@ -26,6 +26,7 @@ import api from 'stores/api'
 export default {
   data () {
     return {
+      disabled: false,
       form: {
         product_name: '',
         description: '',
@@ -63,7 +64,8 @@ export default {
       this.form.cover_id = img.id
     },
     uploadDelete () {
-      this.form.cover_url = this.form.cover_id = ''
+      this.form.cover_url = 'deleted'
+      this.form.cover_id = ''
     },
     searchUser (user) {
       this.form.author_id = user
@@ -75,7 +77,7 @@ export default {
       this.form.product_category = product
     },
     close () {
-      window.close()
+      this.$router.push('/recommendations')
     }
   },
   mounted () {
@@ -88,22 +90,26 @@ export default {
 function updateRecommend (_this) {
   delete _this.form.author
   delete _this.form.post
+  _this.disabled = true
   api.put(`admin/recommendations/${_this.$route.query.id}`, _this.form)
   .then(result => {
     _this.$message.success('success')
-    window.close()
+    _this.$router.push('/recommendations')
   }).catch(err => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
 
 function createRecommend (_this) {
+  _this.disabled = true
   api.post('admin/recommendations', _this.form)
   .then(result => {
     console.log(result)
     _this.$message.success('success')
-    // window.close()
+    _this.$router.push('/recommendations')
   }).catch(err => {
+    _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
