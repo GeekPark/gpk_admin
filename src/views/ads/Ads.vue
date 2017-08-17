@@ -16,12 +16,11 @@
     el-table-column(prop='position', label='位置')
     el-table-column(prop='active_at', label='开始时间', width="180")
     el-table-column(prop='active_through', label='结束时间', width="180")
+    el-table-column(prop='views', label='点击量')
     el-table-column(label='操作', width="170")
         template(scope='scope')
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑
-          el-button(type='text',
-                    @click='handleClose(scope.row)') {{scope.row.is_active ? '关闭' : '开启'}}
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row, listData.ads)') 删除
   el-pagination(@size-change='handleSizeChange',
@@ -36,7 +35,7 @@
 import Base from '../base'
 import tool from 'tools'
 import config from '../../config.js'
-import api from 'stores/api'
+// import api from 'stores/api'
 
 const vm = Base({
   url: 'admin/ads',
@@ -68,11 +67,6 @@ const vm = Base({
     },
     clickColumn (row) {
       window.open(`${config.main}/collections/${row.title}`)
-    },
-    handleClose (row) {
-      api.patch(`admin/ads/${row.id}`, {is_active: !row.is_active}).then(result => {
-        console.log(result)
-      })
     }
   },
   watch: {

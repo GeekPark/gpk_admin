@@ -44,7 +44,7 @@
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
         el-button(type='text',
-                  @click='recommendPost(scope.row)') {{scope.row.recommended === true ? "推荐": "取消推荐"}}
+                  @click='recommendPost(scope.row)') {{scope.row.recommended === false ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',

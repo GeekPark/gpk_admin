@@ -33,7 +33,7 @@
                      placeholder='选择日期时间')
     el-form-item(label='')
       el-button(type='primary', :disabled='disabled', @click='submitForm') 发布
-      el-button(type='success', @click='state="unpublished", submitForm') 存草稿
+      el-button(type='success', :disabled='disabled', @click='state="unpublished", submitForm') 存草稿
       el-button(type='danger', @click='close') 关闭
 </template>
 
