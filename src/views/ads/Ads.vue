@@ -47,9 +47,6 @@ const vm = Base({
     tableRowClassName (row) {
       const through = new Date(row.active_through)
       const now = new Date()
-      console.log(through)
-      console.log(now)
-      console.log(through > now)
       if (through > now) {
         return 'active-ad'
       }
