@@ -35,7 +35,6 @@
 import Base from '../base'
 import tool from 'tools'
 import config from '../../config.js'
-// import api from 'stores/api'
 
 const vm = Base({
   url: 'admin/ads',
