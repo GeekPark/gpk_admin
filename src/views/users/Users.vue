@@ -38,7 +38,7 @@
 const url = 'admin/users'
 
 import api from 'stores/api'
-import tools from 'tools'
+import tool from 'tools'
 
 export default {
   mounted () {
@@ -88,13 +88,16 @@ export default {
       console.log(`当前页: ${index}`)
     },
     handleDestroy (val) {
-      api.account.delete(`${url}/${val.id}`).then(result => {
-        this.$message.success('success')
-        this.fetch()
-      }).catch(err => {
-        console.log(err)
-        this.$message.error(err.toString())
-      })
+      const destroy = () => {
+        api.account.delete(`${url}/${val.id}`).then(result => {
+          this.$message.success('success')
+          this.fetch()
+        }).catch(err => {
+          console.log(err)
+          this.$message.error(err.toString())
+        })
+      }
+      tool.deleteConfirm(this, destroy)
     },
     handleEdit (row) {
       this.$router.push(`users/info/${row.id}`)
@@ -103,7 +106,7 @@ export default {
   watch: {
     'listData.json': (val) => {
       val.forEach(el => {
-        el.created_at = tools.moment(el.created_at)
+        el.created_at = tool.moment(el.created_at)
       })
     }
   }

@@ -97,13 +97,16 @@ export default {
       })
     },
     handleDestroy (index, val, list) {
-      api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
-        this.$message.success('success')
-        this.fetch()
-      }).catch((err) => {
-        console.log(err)
-        this.$message.error(err.toString())
-      })
+      const destroy = () => {
+        api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
+          this.$message.success('success')
+          this.fetch()
+        }).catch((err) => {
+          console.log(err)
+          this.$message.error(err.toString())
+        })
+      }
+      tool.deleteConfirm(this, destroy)
     },
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)

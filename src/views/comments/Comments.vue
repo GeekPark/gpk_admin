@@ -96,6 +96,10 @@ export default {
     'listData.comments': function (val) {
       val.forEach(el => {
         el.created_at = tool.moment(el.created_at)
+        if (Array.isArray(el.commenter_info)) {
+          el.commenter_info = el.commenter_info[0]
+          el.commenter_info.banned = el.commenter_info.banned || false
+        }
       })
     }
   },

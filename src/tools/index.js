@@ -47,5 +47,15 @@ export default {
     editor.create()
     vm.$store.commit('SET_ITEM', { key: 'htmlEditor', val: editor })
     return editor
+  },
+  deleteConfirm: function (_this, handler) {
+    _this.$confirm('确定要删除吗', '删除确认', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      handler()
+    }).catch(() => {
+    })
   }
 }

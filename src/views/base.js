@@ -1,4 +1,5 @@
 import api from 'stores/api'
+import tool from '../tools'
 
 export default (options) => {
   let {
@@ -26,13 +27,16 @@ export default (options) => {
       })
     },
     handleDestroy (index, val, list) {
-      api.delete(`${options.url}/${val.id}`, {}).then((result) => {
-        this.$message.success('success')
-        this.fetch()
-      }).catch((err) => {
-        console.log(err)
-        this.$message.error(err.toString())
-      })
+      const destroy = () => {
+        api.delete(`${options.url}/${val.id}`, {}).then((result) => {
+          this.$message.success('success')
+          this.fetch()
+        }).catch((err) => {
+          console.log(err)
+          this.$message.error(err.toString())
+        })
+      }
+      tool.deleteConfirm(this, destroy)
     }}, methods)
 
   data = Object.assign({

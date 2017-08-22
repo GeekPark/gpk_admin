@@ -72,13 +72,16 @@ export default {
       })
     },
     handleDestroy (val) {
-      api.delete(`${url}/${val.id}`).then(result => {
-        this.$message.success('success')
-        this.fetch()
-      }).catch(err => {
-        console.log(err)
-        this.$message.error(err.toString())
-      })
+      const destroy = () => {
+        api.delete(`${url}/${val.id}`).then(result => {
+          this.$message.success('success')
+          this.fetch()
+        }).catch(err => {
+          console.log(err)
+          this.$message.error(err.toString())
+        })
+      }
+      tool.deleteConfirm(this, destroy)
     },
     handleEdit (row) {
       this.$router.push(`recommendations/new?id=${row.id}`)
