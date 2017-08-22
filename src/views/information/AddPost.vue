@@ -204,8 +204,10 @@ function updatePost (_this) {
   _this.disabled = true
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-    _this.$message.success('success')
-    _this.$router.push('/posts')
+    publish(_this, _this.$route.query.id, () => {
+      _this.$message.success('success')
+      _this.$router.push('/posts')
+    })
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())
@@ -217,12 +219,28 @@ function createPost (_this) {
   _this.disabled = true
   api.post('admin/posts', _this.form)
   .then((result) => {
-    _this.$message.success('success')
-    _this.$router.push('/posts')
+    console.log(result)
+    publish(_this, result.data.id, () => {
+      _this.$message.success('success')
+      _this.$router.push('/posts')
+    })
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())
   })
+}
+
+function publish (_this, id, cb) {
+  if (!_this.form.auto_publish_at ||
+    _this.form.auto_publish_at === '' ||
+    _this.form.auto_publish_at === null ||
+    _this.form.auto_publish_at === undefined) {
+    api.patch(`admin/posts/${id}/publish`).then(result => {
+      cb()
+    })
+  } else {
+    cb()
+  }
 }
 
 function getPost (_this) {
