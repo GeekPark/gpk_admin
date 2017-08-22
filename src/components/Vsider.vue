@@ -91,13 +91,14 @@ export default {
     text-align left
   .sider-logo
     color #bfcbd9
-    font-size 17px
-    margin 10px
+    font-size 18px
+    margin 20px 10px
     text-align center
     img
-      width 30px
+      width 20px
       vertical-align middle
       margin-right 5px
+      border-radius 3px
     span
       height 30px
       vertical-align middle

@@ -22,7 +22,11 @@ export default {
       this.callback(val)
     },
     'column': function (val) {
-      if (!this.column.id) { return }
+      if (this.column.length && this.column.length > 0) {
+        this.select = this.column.map(el => el.id)
+        this.searchData = this.column
+        return
+      }
       this.select = this.column.id
       this.searchData = [this.column]
     }
