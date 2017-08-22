@@ -55,7 +55,7 @@ const vm = Base({
     addColumn () {
       this.$router.push('/ads/new')
     },
-    handleEdit (row) {
+    handleEdit (index, row) {
       this.$router.push(`ads/new?id=${row.id}`)
     },
     search () {

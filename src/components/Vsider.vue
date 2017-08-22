@@ -2,7 +2,9 @@
 #vsider
   el-row.tac
     router-link(to="/")
-      img.sider-logo(src="../assets/imgs/sider_logo.svg")
+      .sider-logo
+        img(src="https://ocpk3ohd2.qnssl.com/assets/v2/icons/geekpark-icon-196-03ac430f5643fc17aba3b3f5429a287d.png")
+        span 极客公园管理后台
     el-col(:span='8')
       el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="dark")
         el-submenu(index='/info')
@@ -88,8 +90,18 @@ export default {
   &
     text-align left
   .sider-logo
-    width calc(100% - 20px)
-    padding 20px 10px
+    color #bfcbd9
+    font-size 18px
+    margin 20px 10px
+    text-align center
+    img
+      width 20px
+      vertical-align middle
+      margin-right 5px
+      border-radius 3px
+    span
+      height 30px
+      vertical-align middle
   .el-col
     // border-top 2px solid rgb(0, 164, 186)
     img

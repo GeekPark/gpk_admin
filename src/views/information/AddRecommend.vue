@@ -16,7 +16,7 @@
     el-form-item(label='作者')
       search-user(:callback='searchUser', :author='form.author')
     el-form-item(label='')
-      el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
+      el-button(type='primary', :disabled='disabled', @click='onSubmit') 提交
       el-button(type='danger', @click='close') 关闭
 </template>
 

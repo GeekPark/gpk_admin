@@ -1,7 +1,8 @@
 <template lang="jade">
 #search-user
   el-select(v-if='multiple', v-model='select', multiple, filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
-    el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
+    el-option(v-for='item in data', :key='item.id', :label='item.nickname', :value='item.id')
+
   el-select(v-else, v-model='select', filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
 
@@ -18,7 +19,18 @@ export default {
       loading: false
     }
   },
-  props: ['callback', 'author', 'multiple'],
+  computed: {
+    'data' () {
+      if (this.users && this.users.length > 0) {
+        // setTimeout(() => {
+        //   this.select = this.users.map(el => el.id)
+        // }, 100)
+        return this.users
+      }
+      return this.searchData
+    }
+  },
+  props: ['callback', 'multiple', 'authors', 'author'],
   methods: {
     remoteMethod (query) {
       if (query !== '') {
@@ -43,8 +55,13 @@ export default {
     },
     'author': function () {
       if (!this.author) { return }
-      this.searchData = [this.author]
-      this.select = this.author.id
+      this.searchData = this.author
+      this.select = this.author.map(el => el.id)
+    },
+    'authors': function () {
+      if (!this.authors) { return }
+      this.searchData = this.authors
+      this.select = this.authors.map(el => el.id)
     }
   },
   mounted () {

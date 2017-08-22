@@ -6,20 +6,12 @@
       el-button(type='text', @click="addPost") 添加文章
     .filter
       el-button(type='text',
-                @click='params.state = "all"',
-                v-bind:class='{active: params.state === "all"}') 全部
-      | /
-      el-button(type='text',
                 @click='params.state = "published"',
                 v-bind:class='{active: params.state === "published"}') 已发布
       | /
       el-button(type='text',
                 @click='params.state = "unpublished"',
                 v-bind:class='{active: params.state === "unpublished"}') 草稿
-      | /
-      el-button(type='text',
-                @click='params.state = "closed"',
-                v-bind:class='{active: params.state === "closed"}') 已删除
       el-input(placeholder="搜索",
                icon="search",
                v-model="params.title",
@@ -32,7 +24,7 @@
       template(scope='scope')
         span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
     el-table-column(prop='column_title', label='栏目', width="150")
-    el-table-column(prop='published_at', label='发布时间', width="180")
+    el-table-column(prop='published_at', label='发布时间', width="180", v-if='params.state === "published"')
     el-table-column(prop='state', label=' 状态', width="80")
       template(scope='scope')
         span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
@@ -65,7 +57,7 @@ export default {
     return {
       params: {
         title: '',
-        state: 'all'
+        state: 'published'
       },
       currentPage: 1,
       listData: {
@@ -105,13 +97,16 @@ export default {
       })
     },
     handleDestroy (index, val, list) {
-      api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
-        this.$message.success('success')
-        this.fetch()
-      }).catch((err) => {
-        console.log(err)
-        this.$message.error(err.toString())
-      })
+      const destroy = () => {
+        api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
+          this.$message.success('success')
+          this.fetch()
+        }).catch((err) => {
+          console.log(err)
+          this.$message.error(err.toString())
+        })
+      }
+      tool.deleteConfirm(this, destroy)
     },
     handleEdit (index, row) {
       this.$router.push(`posts/new?id=${row.id}`)

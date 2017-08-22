@@ -26,14 +26,19 @@
     el-form-item(label='文章头图', prop='cover_id')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='作者', prop='authors')
-      search-user(:callback='searchUser', :multiple='true')
-    el-form-item(label='定时发送', prop='date')
+      search-user(:callback='searchUser', :authors='form.authors_full',:multiple='true')
+    el-form-item(label='状态')
+      el-select(v-model='form.state', placeholder='请选择')
+        el-option(v-for='item in post_states',
+                  :label='item.title',
+                  :value='item.val',
+                  :key='item.val')
+    el-form-item(label='定时发送', prop='date', v-if='form.state === "published"')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
-      el-button(type='primary', :disabled='disabled', @click='submitForm') 发布
-      el-button(type='success', :disabled='disabled', @click='state="unpublished", submitForm') 存草稿
+      el-button(type='primary', :disabled='disabled', @click='submitForm') 提交
       el-button(type='danger', @click='close') 关闭
 </template>
 
@@ -66,12 +71,14 @@ export default {
         content_type: contentType,
         content_source: '',
         tags: [],
+        column: [],
         column_id: '',
         cover_id: '',
         cover_url: '',
         authors: [],
-        auto_publish_at: null,
-        state: 'published',
+        authors_full: [],
+        auto_publish_at: '',
+        state: 'unpublished',
         video_id: '',
         post_type: 'text'
       },
@@ -101,6 +108,13 @@ export default {
           { required: true, validator: validateArray, message: '请至少选择一个作者', trigger: 'change' }
         ]
       },
+      post_states: [{
+        title: '草稿',
+        val: 'unpublished'
+      }, {
+        title: '已发布',
+        val: 'published'
+      }],
       content_types: [{
         title: '富文本',
         val: 'html'
@@ -117,6 +131,9 @@ export default {
           this.form.cover_url = ''
           if (this.form.video_id !== '') {
             this.form.post_type = 'video'
+          }
+          if (this.form.auto_publish_at === '') {
+            delete this.form.auto_publish_at
           }
           if (this.$route.query.id) {
             updatePost(this)
@@ -212,7 +229,11 @@ function getPost (_this) {
   api.get(`admin/posts/${_this.$route.query.id}`)
   .then((result) => {
     result.data.post.column_id = result.data.post.column.id
-    _this.form = result.data.post
+    Object.keys(_this.form).forEach(key => {
+      _this.form[key] = result.data.post[key]
+    })
+    _this.form.authors_full = result.data.post.authors
+    _this.form.authors = _this.form.authors_full.map(el => el.id)
     addContent(_this, _this.form.content_type)
   }).catch((err) => {
     _this.$message.error(err.toString())

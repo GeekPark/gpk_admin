@@ -13,7 +13,7 @@
       el-radio.radio(v-model='form.column_visible', :label="true") 是
       el-radio.radio(v-model='form.column_visible', :label="false") 否
     el-form-item(label='')
-      el-button(type='primary',:disabled='disabled', @click='onSubmit') 发布
+      el-button(type='primary',:disabled='disabled', @click='onSubmit') 提交
       el-button(type='danger', @click='close') 关闭
 </template>
 

@@ -32,7 +32,7 @@
     el-form-item(label='图片')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary', @click='onSubmit') 提交
       el-button(type='danger', @click='onSubmit') 关闭
 </template>
 
@@ -85,7 +85,7 @@ export default {
 function updateAd (_this) {
   api.put(`admin/ads/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-    window.close()
+    _this.$router.push('/ads')
     _this.$message.success('success')
   }).catch((err) => {
     _this.$message.error(err.toString())
@@ -95,7 +95,7 @@ function updateAd (_this) {
 function createAd (_this) {
   api.post('admin/ads', _this.form)
   .then((result) => {
-    window.close()
+    _this.$router.push('/ads')
     _this.$message.success('success')
   }).catch((err) => {
     _this.$message.error(err.toString())
@@ -105,7 +105,7 @@ function createAd (_this) {
 function getAd (_this) {
   api.get(`admin/ads/${_this.$route.query.id}`)
   .then((result) => {
-    _this.form = result.data.post
+    _this.form = result.data.ad
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
