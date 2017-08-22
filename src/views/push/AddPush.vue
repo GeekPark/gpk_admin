@@ -12,7 +12,7 @@
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary', @click='onSubmit') 提交
       el-button(type='danger', @click='onSubmit') 关闭
 </template>
 

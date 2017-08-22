@@ -38,7 +38,7 @@
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
-      el-button(type='primary', :disabled='disabled', @click='submitForm') 发布
+      el-button(type='primary', :disabled='disabled', @click='submitForm') 提交
       el-button(type='danger', @click='close') 关闭
 </template>
 

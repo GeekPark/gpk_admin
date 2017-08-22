@@ -12,7 +12,7 @@
      el-form-item(label='移动端背景封面')
       upload(:callback='uploadAppBanner', :url='form.app_banner_url', :uploadDelete="deleteAppBanner")
     el-form-item.actions(label='')
-      el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
+      el-button(type='primary', :disabled='disabled', @click='onSubmit') 提交
       el-button(type='danger', @click='close') 关闭
 </template>
 

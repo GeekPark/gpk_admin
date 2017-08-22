@@ -49,6 +49,9 @@ export default {
     return editor
   },
   deleteConfirm: function (_this, handler) {
+    setTimeout(() => {
+      document.querySelector('.el-message-box__headerbtn').style.display = 'none'
+    }, 100)
     _this.$confirm('确定要删除吗', '删除确认', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',

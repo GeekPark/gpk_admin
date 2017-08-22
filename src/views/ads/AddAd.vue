@@ -32,7 +32,7 @@
     el-form-item(label='图片')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 发布
+      el-button(type='primary', @click='onSubmit') 提交
       el-button(type='danger', @click='onSubmit') 关闭
 </template>
 
