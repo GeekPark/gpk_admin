@@ -1,5 +1,6 @@
 <template lang="jade">
-#app(v-loading="isLoading", element-loading-text="拼命加载中")
+#app(element-loading-text="拼命加载中")
+  #loading-bar
   vsider
   vheader
   transition(name="slide-fade")
@@ -9,12 +10,7 @@
 
 <script>
 export default {
-  name: 'app',
-  computed: {
-    isLoading () {
-      return this.$store.state.isLoading
-    }
-  }
+  name: 'app'
 }
 </script>
 
@@ -65,6 +61,14 @@ html, body
 
 #vsider .el-row::-webkit-scrollbar
   display none
+
+#loading-bar
+  position fixed
+  width 0px
+  height 3px
+  background-color #20a0ff
+  z-index 100
+  box-shadow 0px 0px 2px 0px #467BA7
 
 #vheader
   height $headerHeight

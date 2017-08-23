@@ -2,7 +2,7 @@ import config from '../config'
 import axios from 'axios'
 const baseUrl = `${config.api}/api/v1`
 
-const request = create()
+const baseReq = create()
 
 function create (url = baseUrl) {
   return axios.create({
@@ -22,25 +22,41 @@ function create (url = baseUrl) {
   })
 }
 
+const beginLoading = () => {
+  const el = document.getElementById('loading-bar')
+  el.style.transition = 'width 1.5s'
+  el.style.width = '100%'
+}
+
+const finishLoading = () => {
+  const el = document.getElementById('loading-bar')
+  el.style.transition = 'width 0s'
+  el.style.width = '100%'
+  setTimeout(() => {
+    el.style.transition = 'width 0s'
+    el.style.width = '0px'
+  }, 2000)
+}
+
+baseReq.account = create(`${config.account}/`)
+
 // Add a request interceptor
-request.interceptors.request.use(function (config) {
+baseReq.interceptors.request.use(function (config) {
+  beginLoading()
   config.params = Object.assign({roles: 'dev'}, config.params)
-  // store.commit('LOADING', true)
   return config
 }, function (error) {
-  // store.commit('LOADING', false)
+  finishLoading()
   return Promise.reject(error)
 })
 
 // Add a response interceptor
-request.interceptors.response.use(function (response) {
-  // store.commit('LOADING', false)
+baseReq.interceptors.response.use(function (response) {
+  finishLoading()
   return response
 }, function (error) {
-  // store.commit('LOADING', false)
+  finishLoading()
   return Promise.reject(error)
 })
 
-request.account = create(`${config.account}/`)
-
-export default request
+export default baseReq

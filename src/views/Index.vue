@@ -22,7 +22,7 @@
   el-row.index-articles(:gutter='40')
     el-col(:span='12')
       h1 最新文章
-      .item(v-for='item in posts')
+      .item.pointer(v-for='item in posts', @click='handleEdit(item)')
         p {{item.title}}
     el-col(:span='12')
         h1 7日热门排行
@@ -71,7 +71,7 @@ export default {
 
   methods: {
     fetch () {
-      api.get('admin/posts').then(result => {
+      api.get('admin/posts?state=published').then(result => {
         this.posts = result.data.posts.splice(0, 7)
       })
       api.get('admin/posts/yesterday').then(result => {
@@ -86,6 +86,9 @@ export default {
       api.get('posts//hot_in_week').then(result => {
         this.hotWeek = result.data.posts
       })
+    },
+    handleEdit (item) {
+      this.$router.push(`/posts/new/?content_type=html&id=${item.id}`)
     }
   },
   beforeMount () {
@@ -125,6 +128,8 @@ export default {
   a
     font-size 18px
 .index-articles
+  .pointer
+    cursor pointer
   .item
     display flex
     justify-content space-between

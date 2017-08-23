@@ -24,6 +24,7 @@ export default {
         if (link.length < 0) {
           return ''
         }
+        // 暂时替换
         return link.replace('www.geekpark.net', 'geekpark.geeklabs.vc')
       }
       if (this.url === null || this.url === '') {
@@ -45,8 +46,8 @@ export default {
     handleAvatarScucess (response, file, fileList) {
       console.log(response)
       this.$message.success('上传成功')
-      this.uploadUrl = response.image.url
       this.callback(response.image)
+      this.uploadUrl = response.image.url
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -101,5 +102,6 @@ export default {
   position: absolute;
   left: 230px;
   font-size: 18px;
+  width: 20px;
 }
 </style>

@@ -61,6 +61,7 @@ export default {
     },
     uploadBanner (img) {
       this.form.banner_id = img.id
+      this.form.banner_url = ''
     },
     deleteBanner () {
       this.form.banner_url = 'deleted'
@@ -68,6 +69,7 @@ export default {
     },
     uploadAppBanner (img) {
       this.form.app_banner_id = img.id
+      this.form.app_banner_url = ''
     },
     deleteAppBanner () {
       this.form.app_banner_url = 'deleted'

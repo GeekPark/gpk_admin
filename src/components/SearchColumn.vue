@@ -36,7 +36,7 @@ export default {
       .then(result => {
         this.loading = false
         this.searchData = result.data.columns
-        this.select = this.column.id
+        this.select = this.column.id || ''
       })
     }
   },
