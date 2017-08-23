@@ -100,6 +100,6 @@ export default {
   cursor: pointer;
   position: absolute;
   left: 230px;
-  font-size: 25px;
+  font-size: 18px;
 }
 </style>

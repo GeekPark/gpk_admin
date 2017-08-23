@@ -33,7 +33,7 @@
                   :label='item.title',
                   :value='item.val',
                   :key='item.val')
-    el-form-item(label='定时发送', prop='date', v-if='form.state === "published"')
+    el-form-item(label='发布时间', prop='date', v-if='form.state === "published"')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
@@ -252,6 +252,7 @@ function getPost (_this) {
     })
     _this.form.authors_full = result.data.post.authors
     _this.form.authors = _this.form.authors_full.map(el => el.id)
+    _this.form.video_id = result.data.post.extra.video_id
     addContent(_this, _this.form.content_type)
   }).catch((err) => {
     _this.$message.error(err.toString())

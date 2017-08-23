@@ -27,16 +27,21 @@ export default {
         this.searchData = this.column
         return
       }
-      this.select = this.column.id
-      this.searchData = [this.column]
+      this.fetch()
+    }
+  },
+  methods: {
+    fetch () {
+      api.get('admin/columns')
+      .then(result => {
+        this.loading = false
+        this.searchData = result.data.columns
+        this.select = this.column.id
+      })
     }
   },
   mounted () {
-    api.get('admin/columns')
-    .then(result => {
-      this.loading = false
-      this.searchData = result.data.columns
-    })
+    this.fetch()
   }
 }
 </script>
