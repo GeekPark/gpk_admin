@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     logout () {
-      const url = `${config.account}/?callback_url=${location.href}`
+      const url = `${config.account}?callback_url=${location.href}`
       if (this.info.avatar_url) {
         api.account.delete(`logout`).then(result => {
           console.log(result)
@@ -34,10 +34,8 @@ export default {
   mounted () {
     api.account.get('my/access_key').then(result => {
       if (Object.keys(result.data) <= 0) {
-        this.$message.error('未登录, 请再新窗口登录后, 刷新本页面')
-        const tab = window.open('about:blank')
-        const url = `${config.account}/?callback_url=${location.href}`
-        setTimeout(() => { tab.location = url }, 200)
+        const url = `${config.account}/login/?callback_url=${location.href}`
+        location.href = url
         return
       }
       const url = `admin/info?access_key=${result.data.access_key}`

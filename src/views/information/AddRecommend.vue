@@ -62,6 +62,7 @@ export default {
     },
     uploadImage (img) {
       this.form.cover_id = img.id
+      this.form.cover_url = ''
     },
     uploadDelete () {
       this.form.cover_url = 'deleted'

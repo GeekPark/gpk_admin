@@ -33,7 +33,7 @@
                   :label='item.title',
                   :value='item.val',
                   :key='item.val')
-    el-form-item(label='定时发送', prop='date', v-if='form.state === "published"')
+    el-form-item(label='发布时间', prop='date', v-if='form.state === "published"')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
@@ -151,6 +151,7 @@ export default {
     },
     uploadImage (img) {
       this.form.cover_id = img.id
+      this.form.cover_url = ''
     },
     uploadDelete () {
       this.form.cover_url = 'deleted'
@@ -217,6 +218,7 @@ function createPost (_this) {
   _this.disabled = true
   api.post('admin/posts', _this.form)
   .then((result) => {
+    console.log(result)
     _this.$message.success('success')
     _this.$router.push('/posts')
   }).catch((err) => {
@@ -224,6 +226,19 @@ function createPost (_this) {
     _this.$message.error(err.toString())
   })
 }
+
+// function publish (_this, id, cb) {
+//   if (!_this.form.auto_publish_at ||
+//     _this.form.auto_publish_at === '' ||
+//     _this.form.auto_publish_at === null ||
+//     _this.form.auto_publish_at === undefined) {
+//     api.patch(`admin/posts/${id}/publish`).then(result => {
+//       cb()
+//     })
+//   } else {
+//     cb()
+//   }
+// }
 
 function getPost (_this) {
   api.get(`admin/posts/${_this.$route.query.id}`)
@@ -234,6 +249,7 @@ function getPost (_this) {
     })
     _this.form.authors_full = result.data.post.authors
     _this.form.authors = _this.form.authors_full.map(el => el.id)
+    _this.form.video_id = result.data.post.extra.video_id
     addContent(_this, _this.form.content_type)
   }).catch((err) => {
     _this.$message.error(err.toString())

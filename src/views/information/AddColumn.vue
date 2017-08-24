@@ -60,6 +60,7 @@ export default {
     },
     uploadImage (img) {
       this.form.banner_id = img.id
+      this.form.banner_url = ''
     },
     uploadDelete () {
       this.form.banner_url = 'deleted'

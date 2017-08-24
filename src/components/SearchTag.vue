@@ -1,6 +1,6 @@
 <template lang="jade">
 #search-tag
-  el-select(v-model='select', multiple, filterable, allow-create, placeholder='请选择文章标签', :loading='loading')
+  el-select(v-model='select', multiple, filterable, allow-create, remote,placeholder='请选择文章标签', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in allTags', :key='item', :label='item', :value='item')
 </template>
 
@@ -17,10 +17,17 @@ export default {
   },
   props: {callback: Function, tags: Array},
   methods: {
-    fetch () {
-      api.get(`admin/tags`).then(result => {
-        this.allTags = result.data.tags || []
-      })
+    remoteMethod (query) {
+      if (query !== '') {
+        this.loading = true
+        api.get('admin/tags', { params: {title: query} })
+        .then(result => {
+          this.loading = false
+          this.allTags = result.data
+        })
+      } else {
+        this.allTags = []
+      }
     }
   },
   watch: {
@@ -33,7 +40,6 @@ export default {
     }
   },
   mounted () {
-    this.fetch()
   }
 }
 </script>
