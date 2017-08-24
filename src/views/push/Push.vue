@@ -10,9 +10,9 @@
     el-table-column(prop='', label='iOS点击', width="150")
     el-table-column(prop='', label='Android点击', width="150")
     el-table-column(label='操作', width="100")
-      template(scope='scope')
-        el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
+      //- template(scope='scope')
+      //-   el-button(type='text',
+      //-             @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',

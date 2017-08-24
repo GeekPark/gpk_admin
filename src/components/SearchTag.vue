@@ -23,7 +23,10 @@ export default {
         api.get('admin/tags', { params: {title: query} })
         .then(result => {
           this.loading = false
-          this.allTags = result.data
+          this.allTags = result.data.filter(item => {
+            const regex = new RegExp(query, 'g')
+            return item.match(regex)
+          })
         })
       } else {
         this.allTags = []

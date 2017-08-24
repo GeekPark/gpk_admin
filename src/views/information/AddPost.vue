@@ -243,13 +243,15 @@ function createPost (_this) {
 function getPost (_this) {
   api.get(`admin/posts/${_this.$route.query.id}`)
   .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
+    const {post} = result.data
+    post.column_id = post.column.id
     Object.keys(_this.form).forEach(key => {
-      _this.form[key] = result.data.post[key]
+      _this.form[key] = post[key]
     })
-    _this.form.authors_full = result.data.post.authors
+    _this.form.auto_publish_at = post.published_at
+    _this.form.authors_full = post.authors
     _this.form.authors = _this.form.authors_full.map(el => el.id)
-    _this.form.video_id = result.data.post.extra.video_id
+    _this.form.video_id = post.extra.video_id
     addContent(_this, _this.form.content_type)
   }).catch((err) => {
     _this.$message.error(err.toString())

@@ -8,6 +8,7 @@
       el-input(placeholder="搜索",
                icon="search",
                v-model="params.title",
+               @keyup.enter.native='fetch',
                :on-icon-click="search")
   el-table(:data='listData.ads', :row-class-name="tableRowClassName", border)
     el-table-column(prop='title', label='标题', width="200")

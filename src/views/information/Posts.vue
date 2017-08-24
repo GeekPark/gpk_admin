@@ -15,6 +15,7 @@
       el-input(placeholder="搜索",
                icon="search",
                v-model="params.title",
+               @keyup.enter.native='fetch',
                :on-icon-click="search")
   el-table(:data='listData.posts' border)
     el-table-column(prop='title', label='标题')
@@ -23,7 +24,7 @@
     el-table-column(props='authors', label='作者', width="100")
       template(scope='scope')
         span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
-    el-table-column(prop='column_title', label='栏目', width="150")
+    el-table-column(prop='column_title', label='栏目', width="110")
     el-table-column(prop='published_at', label='发布时间', width="180", v-if='params.state === "published"')
     el-table-column(prop='state', label=' 状态', width="80")
       template(scope='scope')

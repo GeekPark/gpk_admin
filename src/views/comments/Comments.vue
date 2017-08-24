@@ -7,6 +7,7 @@
       el-input(placeholder="搜索",
                icon="search",
                v-model="params.content",
+               @keyup.enter.native='fetch',
                :on-icon-click="fetch")
   el-table(:data='listData.comments',border)
     el-table-column(prop='commenter_info.nickname', label='用户名', width="100")
