@@ -81,7 +81,17 @@ export default {
     if (this.$route.query.id) {
       getAd(this)
     }
+    getPosition(this)
   }
+}
+
+function getPosition (_this) {
+  api.get(`admin/ads/positions`)
+  .then((result) => {
+    _this.positions = result.data
+  }).catch((err) => {
+    _this.$message.error(err.toString())
+  })
 }
 
 function updateAd (_this) {
