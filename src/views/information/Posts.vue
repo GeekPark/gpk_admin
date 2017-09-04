@@ -113,7 +113,13 @@ export default {
       this.$router.push(`posts/new?id=${row.id}`)
     },
     clickArticle (row) {
-      window.open(`${config.main}/topics/${row.id}`)
+      if (row.state === '已发布') {
+        window.open(`${config.main}/news/${row.id}`)
+      } else {
+        api.get(`posts/${row.id}/preview`).then(result => {
+          window.open(result.data.url)
+        })
+      }
     },
     recommendPost (row) {
       api.post(`${url}/${row.id}/toggle_recommended`).then(result => {

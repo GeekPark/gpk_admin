@@ -56,7 +56,7 @@ const vm = Base({
       this.fetch()
     },
     clickColumn (row) {
-      window.open(`${config.main}/collections/${row.title}`)
+      window.open(`${config.main}/column/${row.id}`)
     }
   },
   watch: {

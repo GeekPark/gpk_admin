@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     clickCommentable (row) {
-      window.open(`${config.main}/topics/${row.commentable_id}#react-disgess`)
+      window.open(`${config.main}/views/${row.commentable_id}#react-disgess`)
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)

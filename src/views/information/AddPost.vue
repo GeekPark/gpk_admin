@@ -19,11 +19,11 @@
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
       veditor(v-else)
-    el-form-item(label='添加标签', prop='tags')
+    el-form-item(label='添加标签（标签至少3个）', prop='tags')
       search-tag(:callback='searchTag', :tags='form.tags')
     el-form-item(label='栏目选择', prop='column_id')
       search-column(:callback='searchColumn', :column='form.column')
-    el-form-item(label='文章头图', prop='cover_id')
+    el-form-item(label='文章头图（1400×780）', prop='cover_id')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='作者', prop='authors')
       search-user(:callback='searchUser', :authors='form.authors_full',:multiple='true')
