@@ -7,7 +7,7 @@
       el-input(placeholder='', v-model='form.title')
     el-form-item(label='描述', prop='description')
       el-input(type='textarea',  v-model='form.description')
-    el-form-item(label='背景封面')
+    el-form-item(label='背景封面（1920×300）')
       upload(:callback='uploadImage', :url='form.banner_url', :uploadDelete="uploadDelete")
     el-form-item.column_visible(label='文章是否显示在首页')
       el-radio.radio(v-model='form.column_visible', :label="true") 是

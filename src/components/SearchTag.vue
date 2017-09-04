@@ -20,10 +20,13 @@ export default {
     remoteMethod (query) {
       if (query !== '') {
         this.loading = true
-        api.get('admin/tags', { params: {title: query} })
+        api.get('admin/tags', { params: {name: query} })
         .then(result => {
           this.loading = false
-          this.allTags = result.data
+          this.allTags = result.data.filter(item => {
+            const regex = new RegExp(query, 'g')
+            return item.match(regex)
+          })
         })
       } else {
         this.allTags = []

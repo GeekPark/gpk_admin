@@ -7,9 +7,9 @@
       el-input(placeholder='', v-model='form.title')
     el-form-item(label='描述', prop='description')
       el-input(type='textarea', placeholder='', v-model='form.description')
-    el-form-item(label='背景封面')
+    el-form-item(label='PC端背景封面（1920×300）')
       upload(:callback='uploadBanner', :url='form.banner_url', :uploadDelete="deleteBanner")
-     el-form-item(label='移动端背景封面')
+    el-form-item(label='移动端背景封面（750×350）')
       upload(:callback='uploadAppBanner', :url='form.app_banner_url', :uploadDelete="deleteAppBanner")
     el-form-item.actions(label='')
       el-button(type='primary', :disabled='disabled', @click='onSubmit') 提交

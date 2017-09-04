@@ -19,11 +19,11 @@
       vmarkdown(v-if='$route.query.content_type !=="html"'
               v-bind:markdown='form.markdown')
       veditor(v-else)
-    el-form-item(label='添加标签', prop='tags')
+    el-form-item(label='添加标签（标签至少3个）', prop='tags')
       search-tag(:callback='searchTag', :tags='form.tags')
     el-form-item(label='栏目选择', prop='column_id')
       search-column(:callback='searchColumn', :column='form.column')
-    el-form-item(label='文章头图', prop='cover_id')
+    el-form-item(label='文章头图（1400×780）', prop='cover_id')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
     el-form-item(label='作者', prop='authors')
       search-user(:callback='searchUser', :authors='form.authors_full',:multiple='true')
@@ -243,13 +243,15 @@ function createPost (_this) {
 function getPost (_this) {
   api.get(`admin/posts/${_this.$route.query.id}`)
   .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
+    const {post} = result.data
+    post.column_id = post.column.id
     Object.keys(_this.form).forEach(key => {
-      _this.form[key] = result.data.post[key]
+      _this.form[key] = post[key]
     })
-    _this.form.authors_full = result.data.post.authors
+    _this.form.auto_publish_at = post.published_at
+    _this.form.authors_full = post.authors
     _this.form.authors = _this.form.authors_full.map(el => el.id)
-    _this.form.video_id = result.data.post.extra.video_id
+    _this.form.video_id = post.extra.video_id
     addContent(_this, _this.form.content_type)
   }).catch((err) => {
     _this.$message.error(err.toString())
