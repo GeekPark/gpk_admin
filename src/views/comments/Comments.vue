@@ -21,7 +21,8 @@
         el-button(type='text',
                   @click='handleDestroy(scope.row)') 删除
         el-button(type='text',
-                  @click='handleBlock(scope.row)') {{scope.row.commenter_info.banned ? "取消禁言" : "禁言"}}
+                  @click='handleBlock(scope.row)',
+                  v-if='scope.row.commenter_info') {{scope.row.commenter_info.banned ? "取消禁言" : "禁言"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -99,7 +100,7 @@ export default {
         el.created_at = tool.moment(el.created_at)
         if (Array.isArray(el.commenter_info)) {
           el.commenter_info = el.commenter_info[0]
-          el.commenter_info.banned = el.commenter_info.banned || false
+          el.commenter_info.banned = el.commenter_info !== null ? (el.commenter_info.banned || false) : false
         }
       })
     }

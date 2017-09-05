@@ -107,6 +107,12 @@ function getPosition (_this) {
 }
 
 function updateAd (_this) {
+  Object.keys(_this.positions).forEach(key => {
+    if (_this.form.position === _this.positions[key]) {
+      _this.form.position = key
+    }
+  })
+  console.log(_this.form)
   api.put(`admin/ads/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$router.push('/ads')
@@ -129,7 +135,9 @@ function createAd (_this) {
 function getAd (_this) {
   api.get(`admin/ads/${_this.$route.query.id}`)
   .then((result) => {
-    _this.form = result.data.ad
+    Object.keys(_this.form).forEach(key => {
+      _this.form[key] = result.data.ad[key]
+    })
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
