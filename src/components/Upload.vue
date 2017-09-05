@@ -24,8 +24,7 @@ export default {
         if (link.length < 0) {
           return ''
         }
-        // 暂时替换
-        return link.replace('www.geekpark.net', 'geekpark.geeklabs.vc')
+        return link
       }
       if (this.url === null || this.url === '') {
         return handle(this.uploadUrl)
