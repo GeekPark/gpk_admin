@@ -34,14 +34,16 @@ export default {
   mounted () {
     api.account.get('my/access_key').then(result => {
       if (Object.keys(result.data) <= 0) {
-        const url = `${config.account}/login/?callback_url=${location.href}`
-        location.href = url
+        location.href = `${config.account}/login/?callback_url=${location.href}`
         return
       }
       const url = `admin/info?access_key=${result.data.access_key}`
       api.get(url).then(result => {
         this.info = result.data
       })
+    }).catch(e => {
+      console.log(e)
+      location.href = `${config.account}/login/?callback_url=${location.href}`
     })
   }
 }
