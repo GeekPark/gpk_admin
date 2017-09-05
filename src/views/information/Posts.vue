@@ -99,7 +99,7 @@ export default {
     },
     handleDestroy (index, val, list) {
       const destroy = () => {
-        api.put(`${url}/${val.id}`, {state: 'closed'}).then((result) => {
+        api.delete(`${url}/${val.id}`).then((result) => {
           this.$message.success('success')
           this.fetch()
         }).catch((err) => {
