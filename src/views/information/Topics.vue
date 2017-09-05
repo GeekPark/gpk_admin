@@ -16,8 +16,8 @@
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='description', label='专题描述')
     el-table-column(prop='post_count', label='文章数量', width="90")
-    el-table-column(prop='published_at', label='发布时间', width="160")
-    el-table-column(label='操作', width="140")
+    el-table-column(prop='published_at', label='发布时间', width="170")
+    el-table-column(label='操作', width="150")
         template(scope='scope')
           el-button(type='text',
                     @click='handleManagement(scope.$index, scope.row)') 管理
