@@ -39,7 +39,13 @@ export default {
       }
       const url = `admin/info?access_key=${result.data.access_key}`
       api.get(url).then(result => {
-        this.info = result.data
+        if (result != null) {
+          console.log(result.data)
+          this.info = result.data
+          if (result.data.roles.includes('admin') === false) {
+            location.href = config.main
+          }
+        }
       })
     }).catch(e => {
       console.log(e)
