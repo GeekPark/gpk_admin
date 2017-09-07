@@ -128,7 +128,6 @@ export default {
     submitForm () {
       this.$refs['add-post-form'].validate((valid) => {
         if (valid) {
-          this.form.cover_url = ''
           if (this.form.video_id !== '') {
             this.form.post_type = 'video'
           }
