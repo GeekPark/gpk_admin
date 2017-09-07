@@ -24,8 +24,7 @@ export default {
         if (link.length < 0) {
           return ''
         }
-        // 暂时替换
-        return link.replace('www.geekpark.net', 'geekpark.geeklabs.vc')
+        return link
       }
       if (this.url === null || this.url === '') {
         return handle(this.uploadUrl)
@@ -50,9 +49,9 @@ export default {
       this.uploadUrl = response.image.url
     },
     beforeAvatarUpload (file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 1024 / 1024 < 20
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$message.error('上传头像图片大小不能超过 20MB!')
       }
       return isLt2M
     },

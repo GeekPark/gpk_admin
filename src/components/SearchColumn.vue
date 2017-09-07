@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     fetch () {
-      api.get('admin/columns')
+      api.get('admin/columns?per=10000')
       .then(result => {
         this.loading = false
         this.searchData = result.data.columns
