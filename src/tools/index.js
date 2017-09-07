@@ -9,6 +9,8 @@ export default {
   editor: function (vm, onchange) {
     let editor = new WangEditor('#editor')
     editor.customConfig.onchange = onchange
+    editor.customConfig.uploadImgMaxSize = 20 * 1024 * 1024
+    editor.customConfig.uploadImgMaxLength = 5
     editor.customConfig.uploadImgServer = `${config.api}/api/v1/admin/images`
     editor.customConfig.uploadFileName = 'upload_file'
     editor.customConfig.uploadImgHooks = {
