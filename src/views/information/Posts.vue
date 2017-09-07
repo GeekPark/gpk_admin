@@ -58,7 +58,7 @@ export default {
     return {
       params: {
         title: '',
-        state: 'published'
+        state: this.$route.query.state || 'published'
       },
       currentPage: 1,
       listData: {
