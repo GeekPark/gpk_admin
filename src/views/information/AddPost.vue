@@ -9,16 +9,8 @@
       el-input(type='textarea',v-model='form.abstract')
     el-form-item(label='CCID')
       el-input(placeholder='视频类文章填写该项', v-model='form.video_id')
-    el-form-item(label='写作模式')
-      el-select(v-model='form.content_type', placeholder='请选择')
-        el-option(v-for='item in content_types',
-                  :label='item.title',
-                  :value='item.val',
-                  :key='item.val',)
     el-form-item(label='正文', prop='content')
-      vmarkdown(v-if='$route.query.content_type !=="html"'
-              v-bind:markdown='form.markdown')
-      veditor(v-else)
+      veditor
     el-form-item(label='添加标签（标签至少3个）', prop='tags')
       search-tag(:callback='searchTag', :tags='form.tags')
     el-form-item(label='栏目选择', prop='column_id')
@@ -62,13 +54,12 @@ export default {
         callback()
       }
     }
-    const contentType = this.$route.query.content_type || ''
     return {
       disabled: false,
       form: {
         title: '',
         abstract: '',
-        content_type: contentType,
+        content_type: 'html',
         content_source: '',
         tags: [],
         column: [],
@@ -182,20 +173,12 @@ export default {
 }
 
 function getContent (_this) {
-  if (_this.$route.query.content_type === 'html') {
-    _this.form.content_source = _this.$store.state.htmlEditor.txt.html()
-  } else {
-    _this.form.content_source = _this.$store.state.markdownEditor.value()
-  }
+  _this.form.content_source = _this.$store.state.htmlEditor.txt.html()
 }
 
 function addContent (_this, val) {
   setTimeout(() => {
-    if (val === 'html') {
-      _this.$store.state.htmlEditor.txt.html(_this.form.content_source)
-    } else {
-      _this.$store.state.markdownEditor.value(_this.form.content_source)
-    }
+    _this.$store.state.htmlEditor.txt.html(_this.form.content_source)
   }, 100)
 }
 

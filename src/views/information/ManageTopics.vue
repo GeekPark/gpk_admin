@@ -27,6 +27,7 @@
 <script>
 import api from 'stores/api'
 import tool from '../../tools'
+import config from '../../config'
 export default {
   data () {
     return {
@@ -57,6 +58,9 @@ export default {
     },
     searchPost (val) {
       this.post = val
+    },
+    clickColumn (row) {
+      window.open(`${config.main}/news/${row.id}`)
     },
     addToTopic () {
       api.post(`/admin/topics/${this.$route.query.id}/members`,
