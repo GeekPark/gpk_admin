@@ -9,6 +9,8 @@ export default {
   editor: function (vm, onchange) {
     let editor = new WangEditor('#editor')
     editor.customConfig.onchange = onchange
+    editor.customConfig.uploadImgMaxSize = 20 * 1024 * 1024
+    editor.customConfig.uploadImgMaxLength = 5
     editor.customConfig.uploadImgServer = `${config.api}/api/v1/admin/images`
     editor.customConfig.uploadFileName = 'upload_file'
     editor.customConfig.uploadImgHooks = {
@@ -46,6 +48,71 @@ export default {
     editor.customConfig.withCredentials = true
     editor.create()
     vm.$store.commit('SET_ITEM', { key: 'htmlEditor', val: editor })
+
+    const oTest = document.querySelector('#veditor #editor .w-e-toolbar')
+    const newNode = document.createElement('div')
+    newNode.innerHTML = '全屏'
+    newNode.style.lineHeight = '44px'
+    newNode.style.cursor = 'pointer'
+    newNode.style.color = '#999'
+    newNode.id = 'fullscreen'
+    oTest.appendChild(newNode)
+
+    // 获取使用到的元素
+    const toolbarContaner = document.querySelector('#editor .w-e-toolbar')
+    const editorText = document.querySelector('#editor .w-e-text-container')
+    const cover = document.getElementById('editor-cover')
+    const container = document.getElementById('editor')
+    const sider = document.getElementById('vsider')
+    const addPost = document.getElementById('add-post')
+    const header = document.getElementById('vheader')
+    const footer = document.getElementById('vfooter')
+
+    // 全屏事件
+    function doFullScreen () {
+      cover.style.display = 'block'
+      editorText.style.height = '100%'
+      newNode.style.lineHeight = '26px'
+      header.style.opacity = '0'
+      toolbarContaner.style.padding = '10px 5px'
+      changeDom([sider, addPost, footer], 'none')
+      cover.appendChild(toolbarContaner)
+      cover.appendChild(editorText)
+      newNode.innerHTML = '取消'
+    }
+
+    // 退出全屏事件
+    function unDoFullScreen () {
+      changeDom([sider, addPost, footer], 'block')
+      container.appendChild(toolbarContaner)
+      container.appendChild(editorText)
+      editorText.style.height = '300px'
+      cover.style.display = 'none'
+      header.style.opacity = '1'
+      toolbarContaner.style.padding = '0px 5px'
+      newNode.style.lineHeight = '44px'
+      newNode.innerHTML = '全屏'
+    }
+
+    function changeDom (arr, state) {
+      arr.forEach(el => {
+        el.style.display = state
+      })
+    }
+
+    // 是否是全屏的标志
+    let isFullScreen = false
+
+    // 点击事件
+    newNode.addEventListener('click', function () {
+      if (isFullScreen) {
+        isFullScreen = false
+        unDoFullScreen()
+      } else {
+        isFullScreen = true
+        doFullScreen()
+      }
+    }, false)
     return editor
   },
   deleteConfirm: function (_this, handler) {

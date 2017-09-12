@@ -1,6 +1,7 @@
 <template lang="jade">
 #app(element-loading-text="拼命加载中")
   #loading-bar
+  #editor-cover
   vsider
   vheader
   transition(name="slide-fade")
@@ -69,6 +70,15 @@ html, body
   background-color #20a0ff
   z-index 100
   box-shadow 0px 0px 2px 0px #467BA7
+
+#editor-cover
+  width 100%
+  height calc(100% - 120px)
+  z-index 10
+  position relative
+  display none
+  font-size 16px
+
 
 #vheader
   height $headerHeight

@@ -59,7 +59,7 @@ const vm = Base({
       this.fetch()
     },
     clickColumn (row) {
-      window.open(`${config.main}/topics/${row.id}`)
+      window.open(`${config.main}/topic/${row.id}`)
     }
   },
   watch: {
