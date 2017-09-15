@@ -15,7 +15,7 @@
       template(scope='scope')
         span(v-for='item in scope.row.authors', :key='item.nickname') {{item.nickname}}
     el-table-column(prop='post_count', label='栏目', width="90")
-    el-table-column(prop='', label='添加时间', width="180")
+    el-table-column(prop='', label='发布时间', width="180")
         template(scope='scope')
           span {{topic.created_at}}
     el-table-column(label='操作', width="70")
