@@ -3,9 +3,9 @@
   .title
     h1 {{$route.meta.title}}
     el-button(type='text', @click="$router.push('/push/new')") 添加推送
-  el-table(:data='listData.list' border)
+  el-table(:data='listData.json' border)
     el-table-column(prop='content', label='内容')
-    el-table-column(prop='time_created_at', label='创建时间', width="180")
+    el-table-column(prop='created_at', label='创建时间', width="180")
     el-table-column(prop='time_send_at', label='推送时间', width="180")
     el-table-column(prop='redirect', label='内容ID', width="100")
       template(scope='scope')
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import tool from 'tools'
+import tool from 'tools'
 import api from 'stores/api'
 import config from '../../config.js'
 
@@ -71,7 +71,7 @@ export default {
       const params = Object.assign({page: this.currentPage}, this.params)
       api.account.get(url, {params: params}).then((result) => {
         console.log(result)
-        this.listData.list = result.data
+        this.listData = result.data
       }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
@@ -91,12 +91,12 @@ export default {
     }
   },
   watch: {
-    'listData.list': function (val) {
+    'listData.json': function (val) {
       if (val === undefined) {
         return
       }
       val.forEach(el => {
-        el.time_created_at = timetrans(el.time_created_at)
+        el.created_at = tool.moment(new Date(el.created_at))
         if (el.time_send_at) {
           el.time_send_at = timetrans(el.time_send_at)
         }
