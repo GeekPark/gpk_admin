@@ -12,13 +12,15 @@ export default {
   name: 'vheader',
   data () {
     return {
-      info: {}
+      info: {
+        avatar_url: ''
+      }
     }
   },
   methods: {
     logout () {
       const url = `${config.account}?callback_url=${location.href}`
-      if (this.info.avatar_url) {
+      if (this.info.avatar_url !== '') {
         api.account.delete(`logout`).then(result => {
           console.log(result)
           location.href = config.account
@@ -39,8 +41,7 @@ export default {
       }
       const url = `admin/info?access_key=${result.data.access_key}`
       api.get(url).then(result => {
-        if (result != null) {
-          console.log(result.data)
+        if (result.data != null) {
           this.info = result.data
           if (result.data.roles.includes('admin') === false) {
             location.href = config.main
