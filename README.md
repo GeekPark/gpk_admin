@@ -29,8 +29,6 @@ npm run dev
 
 ### Notice
 [Backend docs](https://github.com/GeekPark/gpk_admin/blob/master/BACKEND.md)
-It's very important!
-Or use [easy mock](https://www.easy-mock.com/)
 
 ### Deploy
 ```bash
