@@ -3,7 +3,7 @@
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addRecommend") 添加快讯
+      el-button(type='text', @click="addNews") 添加快讯
     .filter
       el-button(type='text',
                 @click='params.state = "unpublished"',
@@ -20,10 +20,10 @@
   el-table(:data='listData.news' border)
     el-table-column(prop='title', label='标题')
       template(scope='scope')
-        a(:href='scope.row.source_link') {{scope.row.title}}
+        a(:href='scope.row.source_link', target='_blank') {{scope.row.title}}
     el-table-column(prop='date', label='抓取时间', width="170", v-if='params.state === "unpublished"')
     el-table-column(prop='published_at', label='发布时间', width="170", v-else)
-    el-table-column(prop='', label='新闻源数量', width='110')
+    el-table-column(prop='news_count', label='新闻源数量', width='110', v-if='params.state === "unpublished"')
     el-table-column(label='操作', width="120")
       template(scope='scope')
         el-button(type='text',
@@ -49,7 +49,7 @@ export default {
     return {
       params: {
         title: '',
-        state: 'unpublished',
+        state: this.$route.query.state || 'unpublished',
         page: 1
       },
       listData: {
@@ -94,7 +94,7 @@ export default {
     handleEdit (row) {
       this.$router.push(`news/new?id=${row.id}`)
     },
-    addRecommend () {
+    addNews () {
       this.$router.push('/news/new')
     }
   },
