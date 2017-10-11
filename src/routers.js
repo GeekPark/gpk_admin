@@ -22,6 +22,9 @@ import AddColumn from 'views/information/AddColumn.vue'
 import Push from 'views/push/Push.vue'
 import AddPush from 'views/push/AddPush.vue'
 
+import News from 'views/information/News.vue'
+import AddNews from 'views/information/AddNews.vue'
+
 import Ads from 'views/ads/Ads.vue'
 import AddAd from 'views/ads/AddAd.vue'
 
@@ -128,6 +131,17 @@ const router = new VueRouter({
       name: 'push-new',
       component: AddPush,
       meta: {title: '添加推送'}
+    },
+
+    { path: '/news',
+      name: 'News',
+      component: News,
+      meta: {title: ' 快讯列表'}
+    },
+    { path: '/news/new',
+      name: 'news-new',
+      component: AddNews,
+      meta: {title: '添加 快讯'}
     },
 
     { path: '/comments',
