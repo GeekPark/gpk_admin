@@ -4,16 +4,16 @@
     h1 {{$route.meta.title}}
   el-form(ref='form', :model='form', label-width='80px')
     el-form-item(label='内容ID')
-      el-input(placeholder='', v-model='form.title')
+      el-input(placeholder='', v-model='form.redirect')
     el-form-item(label='内容标题')
-      el-input(placeholder='', v-model='form.link')
+      el-input(placeholder='', v-model='form.content')
     el-form-item(label='定时发送')
-      el-date-picker(v-model='form.active_at',
+      el-date-picker(v-model='form.send_at',
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
       el-button(type='primary', @click='onSubmit') 提交
-      el-button(type='danger', @click='onSubmit') 关闭
+      //- el-button(type='danger', @click='onSubmit') 关闭
 </template>
 
 <script>
@@ -23,61 +23,31 @@ export default {
   data () {
     return {
       form: {
-        active_at: '',
-        active_through: '',
-        picture: '',
-        link: '',
-        position: '',
-        title: ''
-      },
-      positions: ['banner', 'logo', 'top_left', 'top_right']
+        redirect: '',
+        content_type: 'topic_type',
+        content: '',
+        send_at: ''
+      }
     }
   },
   methods: {
     onSubmit () {
-      if (this.$route.query.id) {
-        updateAd(this)
-      } else {
-        createAd(this)
-      }
-    },
-    handleSelect (item) {
-      console.log(item)
-    },
-    uploadImage (img) {
-      this.form.cover_id = img.id
+      createAd(this)
     }
   },
   mounted () {
-    if (this.$route.query.id) {
-      getAd(this)
-    }
   }
 }
 
-function updateAd (_this) {
-  api.put(`admin/ads/${_this.$route.query.id}`, _this.form)
-  .then((result) => {
-    _this.$message.success('success')
-  }).catch((err) => {
-    _this.$message.error(err.toString())
-  })
-}
-
 function createAd (_this) {
-  api.post('admin/ads', _this.form)
+  console.log(_this.form)
+  if (_this.form.send_at === '') {
+    delete _this.form.send_at
+  }
+  api.account.post('api/v1/broadcasts', _this.form)
   .then((result) => {
     _this.$message.success('success')
-  }).catch((err) => {
-    _this.$message.error(err.toString())
-  })
-}
-
-function getAd (_this) {
-  api.get(`admin/ads/${_this.$route.query.id}`)
-  .then((result) => {
-    result.data.post.column_id = result.data.post.column.id
-    _this.form = result.data.post
+    _this.$router.push('/push')
   }).catch((err) => {
     _this.$message.error(err.toString())
   })

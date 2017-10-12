@@ -219,7 +219,7 @@ function getPost (_this) {
     })
     _this.form.auto_publish_at = post.published_at
     _this.form.authors_full = post.authors
-    _this.form.authors = _this.form.authors_full.map(el => el.id)
+    _this.form.authors = _this.form.authors_full ? _this.form.authors_full.map(el => el.id) : []
     _this.form.video_id = post.extra.video_id
     addContent(_this, _this.form.content_type)
   }).catch((err) => {

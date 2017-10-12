@@ -29,7 +29,7 @@
     el-table-column(prop='state', label=' 状态', width="80")
       template(scope='scope')
         span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
-    el-table-column(prop='views', label=' PV', width="70")
+    el-table-column(prop='views', label=' PV', width="90")
     el-table-column(label='操作', width="170")
       template(scope='scope')
         el-button(type='text',
@@ -37,6 +37,7 @@
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
         el-button(type='text',
+                  v-if='scope.row.state !== "草稿"',
                   @click='recommendPost(scope.row)') {{scope.row.recommended === false ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
