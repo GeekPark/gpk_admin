@@ -2,9 +2,14 @@ import moment from 'moment'
 import WangEditor from 'wangeditor'
 import config from '../config'
 
+const FORMAT = 'YYYY-MM-DD HH:mm:ss'
+
 export default {
-  moment: (obj, format = 'YYYY-MM-DD HH:mm:ss') => {
+  moment: (obj, format = FORMAT) => {
     return moment(obj).format(format)
+  },
+  utc: (obj, format = FORMAT) => {
+    return moment(obj).utc().format(format)
   },
   editor: function (vm, onchange) {
     let editor = new WangEditor('#editor')
