@@ -101,7 +101,7 @@ export default {
   watch: {
     'listData.news': function (val) {
       val.forEach(el => {
-        el.date = tool.moment(el.date)
+        el.date = tool.moment(getLocalTime(el.date_timestamp))
         el.published_at = tool.moment(el.published_at)
       })
     },
@@ -116,6 +116,9 @@ export default {
   mounted () {
     this.fetch()
   }
+}
+function getLocalTime (nS) {
+  return new Date(parseInt(nS) * 1000)
 }
 </script>
 
