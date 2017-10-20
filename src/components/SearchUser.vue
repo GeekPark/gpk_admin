@@ -1,7 +1,8 @@
 <template lang="jade">
 #search-user
   el-select(v-if='multiple', v-model='select', multiple, filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
-    el-option(v-for='item in data', :key='item.id', :label='item.nickname', :value='item.id')
+    el-option(v-for='item in data', :key='item.id', :label='item.nickname', :value='item.id', v-bind:class='{isAdmin: isAdmin(item.roles)}')
+      //- .el-select-dropdown__item
 
   el-select(v-else, v-model='select', filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
@@ -32,6 +33,9 @@ export default {
   },
   props: ['callback', 'multiple', 'authors', 'author'],
   methods: {
+    isAdmin (roles) {
+      return roles.indexOf('admin') !== -1
+    },
     remoteMethod (query) {
       if (query !== '') {
         this.loading = true
@@ -70,6 +74,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.isAdmin:after
+  width 15px
+  height 15px
+  position absolute
+  right 20px
+  border-radius 7.5px
+  bottom calc(50% - 7px)
+  top calc(50% - 7px)
+  content ''
+  background-color rgb(133, 228, 124)
 
 </style>
 

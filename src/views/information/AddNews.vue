@@ -36,9 +36,6 @@ export default {
         title: [
           { required: true, message: '请输入标题', trigger: 'blur', min: 0 }
         ],
-        summary: [
-          { required: true, message: '请输入摘要', trigger: 'blur', min: 0, max: 200 }
-        ],
         source: [
           { required: true, message: '请输入新闻来源', trigger: 'blur', min: 0 }
         ],
