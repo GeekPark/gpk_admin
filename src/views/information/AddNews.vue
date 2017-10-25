@@ -30,7 +30,7 @@ export default {
         summary: '',
         source: '',
         source_link: '',
-        state: this.$route.query.state || ''
+        state: ''
       },
       rules: {
         title: [
@@ -51,7 +51,7 @@ export default {
         if (valid !== true) {
           return this.$message.error('内容信息不完整, 请完善后再提交!')
         } else {
-          if (this.form.state === 'published') {
+          if (this.$route.query.type) {
             updateNews(this)
           } else {
             createNews(this)
@@ -78,7 +78,7 @@ function updateNews (_this) {
   api.put(`admin/news/${_this.$route.query.id}`, _this.form)
   .then(result => {
     _this.$message.success('success')
-    _this.$router.push('/news?state=published')
+    _this.$router.push('/news')
   }).catch(err => {
     _this.disabled = false
     _this.$message.error(err.toString())
