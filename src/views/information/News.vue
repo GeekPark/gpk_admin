@@ -92,7 +92,8 @@ export default {
       tool.deleteConfirm(this, destroy)
     },
     handleEdit (row) {
-      this.$router.push(`news/new?id=${row.id}&state=published&type=update`)
+      const type = row.state === 'published' ? 'update' : 'create'
+      this.$router.push(`news/new?id=${row.id}&state=published&type=${type}`)
     },
     addNews () {
       this.$router.push('/news/new')

@@ -51,7 +51,7 @@ export default {
         if (valid !== true) {
           return this.$message.error('内容信息不完整, 请完善后再提交!')
         } else {
-          if (this.$route.query.type) {
+          if (this.$route.query.type === 'update') {
             updateNews(this)
           } else {
             createNews(this)
@@ -78,7 +78,7 @@ function updateNews (_this) {
   api.put(`admin/news/${_this.$route.query.id}`, _this.form)
   .then(result => {
     _this.$message.success('success')
-    _this.$router.push('/news')
+    _this.$router.push('/news?state=published')
   }).catch(err => {
     _this.disabled = false
     _this.$message.error(err.toString())
@@ -87,13 +87,13 @@ function updateNews (_this) {
 
 function createNews (_this) {
   _this.disabled = true
-  api.patch(`admin/news/${_this.$route.query.id}/publish`)
+  api.put(`admin/news/${_this.$route.query.id}`, _this.form)
   .then(result => {
-    _this.$message.success('success')
-    _this.$router.push('/news?state=published')
-  }).catch(err => {
-    _this.disabled = false
-    _this.$message.error(err.toString())
+    api.patch(`admin/news/${_this.$route.query.id}/publish`)
+    .then(result => {
+      _this.$message.success('success')
+      _this.$router.push('/news?state=published')
+    })
   })
 }
 
