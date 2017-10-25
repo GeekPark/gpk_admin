@@ -30,7 +30,7 @@ export default {
         summary: '',
         source: '',
         source_link: '',
-        state: ''
+        state: this.$route.query.state || ''
       },
       rules: {
         title: [
