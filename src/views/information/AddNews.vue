@@ -10,7 +10,7 @@
       .count 字数 {{count}}
     el-form-item(label='新闻来源')
        el-input(placeholder='请输入新闻来源, 如(新浪科技)', v-model='form.source')
-    el-form-item(label='原文链接', prop='source_link')
+    el-form-item(label='原文链接')
        el-input(placeholder='请输入原文链接', v-model='form.source_link')
     el-form-item(label='')
       el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
@@ -35,9 +35,6 @@ export default {
       rules: {
         title: [
           { required: true, message: '请输入标题', trigger: 'blur', min: 0 }
-        ],
-        source_link: [
-          { required: true, message: '请输入原文链接', trigger: 'blur', min: 0 }
         ]
       }
     }
