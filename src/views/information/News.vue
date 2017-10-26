@@ -96,7 +96,7 @@ export default {
       this.$router.push(`news/new?id=${row.id}&state=published&type=${type}`)
     },
     addNews () {
-      this.$router.push('/news/new')
+      this.$router.push('/news/new?type=create')
     }
   },
   watch: {
