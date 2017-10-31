@@ -21,7 +21,7 @@
     el-table-column(prop='title', label='标题')
       template(scope='scope')
         a(:href='scope.row.source_link', target='_blank') {{scope.row.title}}
-    el-table-column(prop='date', label='抓取时间', width="170", v-if='params.state === "unpublished"')
+    el-table-column(prop='date', label='发布时间', width="170", v-if='params.state === "unpublished"')
     el-table-column(prop='published_at', label='发布时间', width="170", v-else)
     el-table-column(prop='news_count', label='新闻源数量', width='110', v-if='params.state === "unpublished"')
     el-table-column(label='操作', width="120")
