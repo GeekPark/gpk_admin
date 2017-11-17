@@ -70,6 +70,9 @@ export default {
       const params = Object.assign({page: this.currentPage}, this.params)
       api.get(url, {params: params}).then((result) => {
         console.log(result)
+        result.data.comments.forEach(el => {
+          el.commenter_info = el.commenter_info[0]
+        })
         this.listData = result.data
       }).catch((err) => {
         console.log(err)

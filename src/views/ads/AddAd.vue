@@ -19,14 +19,19 @@
           el-date-picker(v-model='form.active_through',
                          type='datetime',
                          placeholder='选择日期时间')
-        el-form-item(label='广告位置')
-          el-select(v-model='form.position', placeholder='请选择')
+        el-form-item(label='选择广告位置')
+          el-select(v-model='form.position', placeholder='请选择', v-if='ad_type === "web"')
             el-option(v-for='(value, key) in positions',
                       :label='value',
                       :value='key',
                       :key='key')
-        el-form-item(label='广告标识')
-          el-select(v-model='form.ad_type', placeholder='请选择')
+          el-select(v-model='form.position', placeholder='请选择', v-else)
+            el-option(v-for='(value, key) in app_positions',
+                      :label='value',
+                      :value='key',
+                      :key='key')
+        el-form-item(label='选择广告投放平台')
+          el-select(v-model='ad_type', placeholder='请选择')
             el-option(v-for='(value, key) in types',
                       :label='value',
                       :value='key',
@@ -58,11 +63,12 @@ export default {
         link: '',
         video_link: '',
         position: '',
-        title: '',
-        ad_type: 'ad'
+        title: ''
       },
-      types: {ad: '广告', topic: '专题'},
-      positions: ['top_banner', 'medium_up', 'app', 'post', 'medium_below'],
+      types: {web: '网站端广告', app: ' APP端广告'},
+      app_positions: {},
+      ad_type: 'web',
+      positions: {},
       imgs: ['ad-pc-home.png', 'ad-pc-post.png', 'ad-app.png']
     }
   },
@@ -98,9 +104,24 @@ export default {
 }
 
 function getPosition (_this) {
+  const setPosition = () => {
+    if (Object.keys(_this.positions).indexOf(_this.form.position) > -1) {
+      _this.ad_type = 'web'
+    } else {
+      _this.ad_type = 'app'
+    }
+  }
   api.get(`admin/ads/positions`)
   .then((result) => {
     _this.positions = result.data
+    setPosition()
+  }).catch((err) => {
+    _this.$message.error(err.toString())
+  })
+  api.get(`admin/ads/app_positions`)
+  .then((result) => {
+    _this.app_positions = result.data
+    setPosition()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
@@ -109,6 +130,11 @@ function getPosition (_this) {
 function updateAd (_this) {
   Object.keys(_this.positions).forEach(key => {
     if (_this.form.position === _this.positions[key]) {
+      _this.form.position = key
+    }
+  })
+  Object.keys(_this.app_positions).forEach(key => {
+    if (_this.form.position === _this.app_positions[key]) {
       _this.form.position = key
     }
   })
