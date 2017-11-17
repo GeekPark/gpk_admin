@@ -19,6 +19,12 @@
           el-date-picker(v-model='form.active_through',
                          type='datetime',
                          placeholder='选择日期时间')
+        el-form-item(label='选择广告投放平台')
+          el-select(v-model='ad_type', placeholder='请选择')
+            el-option(v-for='(value, key) in types',
+                      :label='value',
+                      :value='key',
+                      :key='key')
         el-form-item(label='选择广告位置')
           el-select(v-model='form.position', placeholder='请选择', v-if='ad_type === "web"')
             el-option(v-for='(value, key) in positions',
@@ -27,12 +33,6 @@
                       :key='key')
           el-select(v-model='form.position', placeholder='请选择', v-else)
             el-option(v-for='(value, key) in app_positions',
-                      :label='value',
-                      :value='key',
-                      :key='key')
-        el-form-item(label='选择广告投放平台')
-          el-select(v-model='ad_type', placeholder='请选择')
-            el-option(v-for='(value, key) in types',
                       :label='value',
                       :value='key',
                       :key='key')
