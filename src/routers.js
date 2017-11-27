@@ -25,6 +25,9 @@ import AddPush from 'views/push/AddPush.vue'
 import News from 'views/information/News.vue'
 import AddNews from 'views/information/AddNews.vue'
 
+import QA from 'views/information/QA.vue'
+import AddQA from 'views/information/AddQA.vue'
+
 import Ads from 'views/ads/Ads.vue'
 import AddAd from 'views/ads/AddAd.vue'
 
@@ -136,12 +139,23 @@ const router = new VueRouter({
     { path: '/news',
       name: 'News',
       component: News,
-      meta: {title: ' 快讯列表'}
+      meta: {title: '快讯列表'}
     },
     { path: '/news/new',
       name: 'news-new',
       component: AddNews,
-      meta: {title: '添加 快讯'}
+      meta: {title: '添加快讯'}
+    },
+
+    { path: '/qa',
+      name: 'qa',
+      component: QA,
+      meta: {title: '问答列表'}
+    },
+    { path: '/qa/new',
+      name: 'AddQA',
+      component: AddQA,
+      meta: {title: '添加问答'}
     },
 
     { path: '/comments',
