@@ -48,6 +48,14 @@ export default {
       customInsert: function (insertImg, result, editor) {
         const url = result.image.url
         insertImg(url)
+        const timer = setInterval(() => {
+          document.querySelectorAll('#editor .w-e-text img').forEach(el => {
+            if (el.getAttribute('src') === url) {
+              clearInterval(timer)
+              addImgLabel(vm, url)
+            }
+          })
+        }, 200)
       }
     }
     editor.customConfig.withCredentials = true
@@ -72,6 +80,49 @@ export default {
     const addPost = document.getElementById('add-post')
     const header = document.getElementById('vheader')
     const footer = document.getElementById('vfooter')
+    // 给 img 元素添加点击输入框
+    function addImgLabel (_this, url) {
+      let val = '请点击此处输入图片描述'
+      const updateEl = () => {
+        document.querySelectorAll('#editor .w-e-text img').forEach(el => {
+          const parent = el.parentNode
+          if (val.trim() === '') {
+            val = '请点击此处输入图片描述'
+          }
+          if (parent.querySelectorAll('.img-label').length === 0 && el.getAttribute('src') === url) {
+            const labelNode = document.createElement('div')
+            labelNode.placeholder = val
+            labelNode.innerHTML = val
+            labelNode.style.lineHeight = '30px'
+            labelNode.style.cursor = 'pointer'
+            labelNode.style.fontSize = '16px'
+            labelNode.style.letterSpacing = '0px'
+            labelNode.style.width = '100%'
+            labelNode.style.border = 'none'
+            labelNode.style.backgroundColor = 'transparent'
+            labelNode.className = 'img-label'
+            labelNode.contenteditable = 'true'
+            labelNode.style.outline = 'none'
+            labelNode.style.height = '30px'
+            labelNode.style.overflow = 'hidden'
+            labelNode.addEventListener('click', function () {
+              if (labelNode.innerHTML === val) {
+                labelNode.innerHTML = '&nbsp;'
+                labelNode.focus()
+              }
+            })
+            labelNode.onkeyup = function (event) {
+              if (event.keyCode === 13) {
+                return false
+              }
+            }
+            parent.appendChild(labelNode)
+          } else if (parent.querySelectorAll('.img-label').length === 1 && el.getAttribute('src') === url) {
+          }
+        })
+      }
+      updateEl()
+    }
 
     // 全屏事件
     function doFullScreen () {
