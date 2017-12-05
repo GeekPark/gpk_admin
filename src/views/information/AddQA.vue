@@ -7,10 +7,11 @@
       el-input(placeholder='请输入标题', v-model='form.title')
     el-form-item(label='补充描述')
       el-input(type='textarea',  v-model='form.description')
+      .count 字数 {{form.description.length}}
     el-form-item(label='是否添加投票')
       el-select(v-model='form.is_vote', placeholder='请选择')
         el-option(v-for='(value, key) in types', :label='key', :value='value', :key='value')
-    el-form-item()
+    el-form-item(v-if='form.is_vote === "true"')
        el-checkbox(v-model="single") 单选
        el-checkbox(v-model="multiple") 多选
     el-form-item(v-if='form.is_vote === "true"', v-for='(voteItem, index) in form.options_attributes', :label="'选项' + parseInt(index + 1) ", :key='voteItem.key',:rules="{\
@@ -28,7 +29,7 @@
             img.avatar(v-if="voteItem.cover_url", :src="voteItem.cover_url")
             i.avatar-uploader-icon.el-icon-plus(v-else)
           i.avatar-delete-icon.el-icon-delete(v-if="voteItem.cover_url != ''", @click="avatarDelete(voteItem)")
-        el-button.remove-vote(@click.prevent='removevoteItem(voteItem)') 删除
+        el-button.remove-vote(@click.prevent='removevoteItem(voteItem)', v-show='form.options_attributes.length > 2') 删除
     el-form-item(label='', v-if='form.is_vote === "true"')
       el-button(@click='addvoteItem') 添加选项
     el-form-item(label='上传头图 (必填)')
@@ -55,7 +56,7 @@ export default {
       form: {
         title: '',
         description: '',
-        is_vote: 'true',
+        is_vote: 'false',
         question_type: 'single',
         cover_url: '',
         cover_id: '',
@@ -151,6 +152,10 @@ export default {
   watch: {
     'form.is_vote': function (val) {
       console.log(val)
+      if (val && this.form.options_attributes.length < 2) {
+        this.addvoteItem()
+        this.addvoteItem()
+      }
     },
     'single': function (val) {
       if (val) {
@@ -179,6 +184,7 @@ export default {
 function updateQA (_this) {
   _this.disabled = true
   _this.form.question_type = _this.single === true ? 'single' : 'multiple'
+  // console.log(_this.form)
   api.put(`${url}/${_this.$route.query.id}`, {question: _this.form})
   .then(result => {
     _this.$message.success('success')
@@ -213,7 +219,7 @@ function getQA (_this) {
     _this.form.is_vote = _this.form.is_vote.toString()
     if (_this.form.question_type === 'single') {
       _this.single = true
-      _this.multiple = true
+      _this.multiple = false
     } else {
       _this.single = false
       _this.multiple = true
