@@ -3,7 +3,7 @@ import WangEditor from 'wangeditor'
 import config from '../config'
 
 const FORMAT = 'YYYY-MM-DD HH:mm:ss'
-let isUpload = false
+// let isUpload = false
 export default {
   moment: (obj, format = FORMAT) => {
     return moment(obj).format(format)
@@ -145,70 +145,70 @@ export default {
   }
 }
 
-function addImgLabel (_this, url) {
-  let val = '请点击此处输入图片描述'
-  isUpload = true
-  const $ = window.$
-  const updateEl = () => {
-    document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
-      const parent = el.parentNode
-      parent.style.textAlign = 'center'
-      if (val.trim() === '') {
-        val = '请点击此处输入图片描述'
-      }
-      if (parent.querySelectorAll('.img-label').length === 0 && el.getAttribute('src') === url) {
-        const labelNode = document.createElement('div')
-        const style = {
-          lineHeight: '30px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          letterSpacing: '0px',
-          width: '100%',
-          textAlign: 'center',
-          border: 'none',
-          color: '#BD232E',
-          backgroundColor: 'transparent',
-          outline: 'none',
-          height: '30px',
-          overflow: 'hidden'
-        }
-        labelNode.style = style
-        labelNode.style.color = '#999'
-        labelNode.style.textAlign = 'center'
-        labelNode.innerHTML = val
-        labelNode.className = 'img-label'
-        labelNode.addEventListener('click', function () {
-          labelNode.contenteditable = true
-          if (labelNode.innerHTML === val) {
-            labelNode.innerHTML = '&nbsp;'
-            labelNode.focus()
-          }
-        })
-        document.addEventListener('keyup', function (e) {
-          if (e.key === 'Enter' && isUpload) {
-            console.log('ENTER')
-            // $('.w-e-text p').append($('.img-label')[1])
-            $('.w-e-text').focus()
-            var place = document.createElement('p')
-            place.innerHTML = '&nbsp;'
-            document.querySelector('.w-e-text').append(place)
-            setTimeout(() => {
-              var r = document.getSelection()
-              var eles = document.querySelectorAll('.w-e-text p')
-              var labels = $(parent).find('.img-label')
-              if (labels.length > 1) {
-                $(labels).last().hide()
-              }
-              r.collapse(eles[eles.length - 1], 1)
-            }, 100)
-            isUpload = false
-            return false
-          }
-        })
-        parent.appendChild(labelNode)
-      } else if (parent.querySelectorAll('.img-label').length === 1 && el.getAttribute('src') === url) {
-      }
-    })
-  }
-  updateEl()
-}
+// function addImgLabel (_this, url) {
+//   let val = '请点击此处输入图片描述'
+//   isUpload = true
+//   const $ = window.$
+//   const updateEl = () => {
+//     document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
+//       const parent = el.parentNode
+//       parent.style.textAlign = 'center'
+//       if (val.trim() === '') {
+//         val = '请点击此处输入图片描述'
+//       }
+//       if (parent.querySelectorAll('.img-label').length === 0 && el.getAttribute('src') === url) {
+//         const labelNode = document.createElement('div')
+//         const style = {
+//           lineHeight: '30px',
+//           cursor: 'pointer',
+//           fontSize: '16px',
+//           letterSpacing: '0px',
+//           width: '100%',
+//           textAlign: 'center',
+//           border: 'none',
+//           color: '#BD232E',
+//           backgroundColor: 'transparent',
+//           outline: 'none',
+//           height: '30px',
+//           overflow: 'hidden'
+//         }
+//         labelNode.style = style
+//         labelNode.style.color = '#999'
+//         labelNode.style.textAlign = 'center'
+//         labelNode.innerHTML = val
+//         labelNode.className = 'img-label'
+//         labelNode.addEventListener('click', function () {
+//           labelNode.contenteditable = true
+//           if (labelNode.innerHTML === val) {
+//             labelNode.innerHTML = '&nbsp;'
+//             labelNode.focus()
+//           }
+//         })
+//         document.addEventListener('keyup', function (e) {
+//           if (e.key === 'Enter' && isUpload) {
+//             console.log('ENTER')
+//             // $('.w-e-text p').append($('.img-label')[1])
+//             $('.w-e-text').focus()
+//             var place = document.createElement('p')
+//             place.innerHTML = '&nbsp;'
+//             document.querySelector('.w-e-text').append(place)
+//             setTimeout(() => {
+//               var r = document.getSelection()
+//               var eles = document.querySelectorAll('.w-e-text p')
+//               var labels = $(parent).find('.img-label')
+//               if (labels.length > 1) {
+//                 $(labels).last().hide()
+//               }
+//               r.collapse(eles[eles.length - 1], 1)
+//             }, 100)
+//             isUpload = false
+//             return false
+//           }
+//         })
+//         parent.appendChild(labelNode)
+//       } else if (parent.querySelectorAll('.img-label').length === 1 && el.getAttribute('src') === url) {
+//       }
+//     })
+//   }
+//   updateEl()
+// }
