@@ -173,6 +173,11 @@ export default {
 }
 
 function getContent (_this) {
+  window.$('.w-e-text .img-label').each((index, el) => {
+    if (el.innerHTML.trim() === '请点击此处输入图片描述') {
+      el.innerHTML = ''
+    }
+  })
   _this.form.content_source = _this.$store.state.htmlEditor.txt.html()
 }
 
@@ -196,7 +201,6 @@ function updatePost (_this) {
 }
 
 function createPost (_this) {
-  getContent(_this)
   _this.disabled = true
   api.post('admin/posts', _this.form)
   .then((result) => {

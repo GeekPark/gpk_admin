@@ -49,7 +49,8 @@ export default {
         const url = result.image.url
         insertImg(url)
         const timer = setInterval(() => {
-          document.querySelectorAll('#editor .w-e-text img').forEach(el => {
+          console.log(result)
+          document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
             if (el.getAttribute('src') === url) {
               clearInterval(timer)
               addImgLabel(vm, url)
@@ -149,7 +150,7 @@ function addImgLabel (_this, url) {
   isUpload = true
   const $ = window.$
   const updateEl = () => {
-    document.querySelectorAll('#editor .w-e-text img').forEach(el => {
+    document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
       const parent = el.parentNode
       parent.style.textAlign = 'center'
       if (val.trim() === '') {
@@ -163,6 +164,7 @@ function addImgLabel (_this, url) {
           fontSize: '16px',
           letterSpacing: '0px',
           width: '100%',
+          textAlign: 'center',
           border: 'none',
           color: '#BD232E',
           backgroundColor: 'transparent',
@@ -172,6 +174,7 @@ function addImgLabel (_this, url) {
         }
         labelNode.style = style
         labelNode.style.color = '#999'
+        labelNode.style.textAlign = 'center'
         labelNode.innerHTML = val
         labelNode.className = 'img-label'
         labelNode.addEventListener('click', function () {
