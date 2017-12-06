@@ -48,15 +48,15 @@ export default {
       customInsert: function (insertImg, result, editor) {
         const url = result.image.url
         insertImg(url)
-        const timer = setInterval(() => {
-          console.log(result)
-          document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
-            if (el.getAttribute('src') === url) {
-              clearInterval(timer)
-              addImgLabel(vm, url)
-            }
-          })
-        }, 200)
+        // const timer = setInterval(() => {
+        //   console.log(result)
+        //   document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
+        //     if (el.getAttribute('src') === url) {
+        //       clearInterval(timer)
+        //       addImgLabel(vm, url)
+        //     }
+        //   })
+        // }, 200)
       }
     }
     editor.customConfig.withCredentials = true
