@@ -171,7 +171,7 @@ function addImgLabel (_this, url) {
           overflow: 'hidden'
         }
         labelNode.style = style
-        labelNode.style.color = '#BFBFBF'
+        labelNode.style.color = '#999'
         labelNode.innerHTML = val
         labelNode.className = 'img-label'
         labelNode.addEventListener('click', function () {
