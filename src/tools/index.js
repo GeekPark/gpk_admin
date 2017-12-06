@@ -3,7 +3,7 @@ import WangEditor from 'wangeditor'
 import config from '../config'
 
 const FORMAT = 'YYYY-MM-DD HH:mm:ss'
-
+let isUpload = false
 export default {
   moment: (obj, format = FORMAT) => {
     return moment(obj).format(format)
@@ -81,48 +81,6 @@ export default {
     const header = document.getElementById('vheader')
     const footer = document.getElementById('vfooter')
     // 给 img 元素添加点击输入框
-    function addImgLabel (_this, url) {
-      let val = '请点击此处输入图片描述'
-      const updateEl = () => {
-        document.querySelectorAll('#editor .w-e-text img').forEach(el => {
-          const parent = el.parentNode
-          if (val.trim() === '') {
-            val = '请点击此处输入图片描述'
-          }
-          if (parent.querySelectorAll('.img-label').length === 0 && el.getAttribute('src') === url) {
-            const labelNode = document.createElement('div')
-            labelNode.placeholder = val
-            labelNode.innerHTML = val
-            labelNode.style.lineHeight = '30px'
-            labelNode.style.cursor = 'pointer'
-            labelNode.style.fontSize = '16px'
-            labelNode.style.letterSpacing = '0px'
-            labelNode.style.width = '100%'
-            labelNode.style.border = 'none'
-            labelNode.style.backgroundColor = 'transparent'
-            labelNode.className = 'img-label'
-            labelNode.contenteditable = 'true'
-            labelNode.style.outline = 'none'
-            labelNode.style.height = '30px'
-            labelNode.style.overflow = 'hidden'
-            labelNode.addEventListener('click', function () {
-              if (labelNode.innerHTML === val) {
-                labelNode.innerHTML = '&nbsp;'
-                labelNode.focus()
-              }
-            })
-            labelNode.onkeyup = function (event) {
-              if (event.keyCode === 13) {
-                return false
-              }
-            }
-            parent.appendChild(labelNode)
-          } else if (parent.querySelectorAll('.img-label').length === 1 && el.getAttribute('src') === url) {
-          }
-        })
-      }
-      updateEl()
-    }
 
     // 全屏事件
     function doFullScreen () {
@@ -184,4 +142,70 @@ export default {
     }).catch(() => {
     })
   }
+}
+
+function addImgLabel (_this, url) {
+  let val = '请点击此处输入图片描述'
+  isUpload = true
+  const $ = window.$
+  const updateEl = () => {
+    document.querySelectorAll('#editor .w-e-text img').forEach(el => {
+      const parent = el.parentNode
+      parent.style.textAlign = 'center'
+      if (val.trim() === '') {
+        val = '请点击此处输入图片描述'
+      }
+      if (parent.querySelectorAll('.img-label').length === 0 && el.getAttribute('src') === url) {
+        const labelNode = document.createElement('div')
+        const style = {
+          lineHeight: '30px',
+          cursor: 'pointer',
+          fontSize: '16px',
+          letterSpacing: '0px',
+          width: '100%',
+          border: 'none',
+          color: '#BD232E',
+          backgroundColor: 'transparent',
+          outline: 'none',
+          height: '30px',
+          overflow: 'hidden'
+        }
+        labelNode.style = style
+        labelNode.style.color = '#BFBFBF'
+        labelNode.innerHTML = val
+        labelNode.className = 'img-label'
+        labelNode.addEventListener('click', function () {
+          labelNode.contenteditable = true
+          if (labelNode.innerHTML === val) {
+            labelNode.innerHTML = '&nbsp;'
+            labelNode.focus()
+          }
+        })
+        document.addEventListener('keyup', function (e) {
+          if (e.key === 'Enter' && isUpload) {
+            console.log('ENTER')
+            // $('.w-e-text p').append($('.img-label')[1])
+            $('.w-e-text').focus()
+            var place = document.createElement('p')
+            place.innerHTML = '&nbsp;'
+            document.querySelector('.w-e-text').append(place)
+            setTimeout(() => {
+              var r = document.getSelection()
+              var eles = document.querySelectorAll('.w-e-text p')
+              var labels = $(parent).find('.img-label')
+              if (labels.length > 1) {
+                $(labels).last().hide()
+              }
+              r.collapse(eles[eles.length - 1], 1)
+            }, 100)
+            isUpload = false
+            return false
+          }
+        })
+        parent.appendChild(labelNode)
+      } else if (parent.querySelectorAll('.img-label').length === 1 && el.getAttribute('src') === url) {
+      }
+    })
+  }
+  updateEl()
 }
