@@ -8,9 +8,9 @@
     el-form-item(label='摘要', prop='summary')
       el-input(type='textarea', placeholder='摘要内容请控制在200字以内', v-model='form.summary', @change='onChange')
       .count 字数 {{count}}
-    el-form-item(label='新闻来源', prop='source')
+    el-form-item(label='新闻来源')
        el-input(placeholder='请输入新闻来源, 如(新浪科技)', v-model='form.source')
-    el-form-item(label='原文链接', prop='source_link')
+    el-form-item(label='原文链接')
        el-input(placeholder='请输入原文链接', v-model='form.source_link')
     el-form-item(label='')
       el-button(type='primary', :disabled='disabled', @click='onSubmit') 发布
@@ -35,15 +35,6 @@ export default {
       rules: {
         title: [
           { required: true, message: '请输入标题', trigger: 'blur', min: 0 }
-        ],
-        summary: [
-          { required: true, message: '请输入摘要', trigger: 'blur', min: 0, max: 200 }
-        ],
-        source: [
-          { required: true, message: '请输入新闻来源', trigger: 'blur', min: 0 }
-        ],
-        source_link: [
-          { required: true, message: '请输入原文链接', trigger: 'blur', min: 0 }
         ]
       }
     }
@@ -54,10 +45,13 @@ export default {
         if (valid !== true) {
           return this.$message.error('内容信息不完整, 请完善后再提交!')
         } else {
-          if (this.form.state === 'published') {
+          console.log(this.$route.query.type)
+          if (this.$route.query.type === 'update') {
             updateNews(this)
-          } else {
+          } else if (this.$route.query.type === 'create') {
             createNews(this)
+          } else {
+            createUpdateNews()
           }
         }
       })
@@ -90,13 +84,26 @@ function updateNews (_this) {
 
 function createNews (_this) {
   _this.disabled = true
-  api.patch(`admin/news/${_this.$route.query.id}/publish`)
+  api.post(`admin/news/`, _this.form)
   .then(result => {
     _this.$message.success('success')
     _this.$router.push('/news?state=published')
   }).catch(err => {
     _this.disabled = false
     _this.$message.error(err.toString())
+  })
+}
+
+function createUpdateNews (_this) {
+  _this.disabled = true
+  api.put(`admin/news/${_this.$route.query.id}`, _this.form)
+  .then(result => {
+    console.log(result)
+    api.patch(`admin/news/${_this.$route.query.id || result.data.id}/publish`)
+    .then(result => {
+      _this.$message.success('success')
+      _this.$router.push('/news?state=published')
+    })
   })
 }
 

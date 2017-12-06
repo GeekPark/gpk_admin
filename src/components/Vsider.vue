@@ -16,16 +16,19 @@
             el-menu-item(index='/posts/new?content_type=html') 添加文章
           el-menu-item-group(title='快讯')
             el-menu-item(index='/news')  快讯列表
-            el-menu-item(index='/news/new') 添加快讯
+            el-menu-item(index='/news/new?type=create') 添加快讯
+          el-menu-item-group(title='问答')
+            el-menu-item(index='/qa') 问答列表
+            el-menu-item(index='/qa/new') 添加问答
           el-menu-item-group(title='栏目')
             el-menu-item(index='/columns') 栏目列表
             el-menu-item(index='/columns/new') 添加栏目
           el-menu-item-group(title='专题')
             el-menu-item(index='/topics') 专题列表
             el-menu-item(index='/topics/new') 添加专题
-          el-menu-item-group(title='极客推荐')
-            el-menu-item(index='/recommendations') 推荐列表
-            el-menu-item(index='/recommendations/new') 添加推荐
+          //- el-menu-item-group(title='极客推荐')
+          //-   el-menu-item(index='/recommendations') 推荐列表
+          //-   el-menu-item(index='/recommendations/new') 添加推荐
           el-menu-item-group(title='分享')
             el-menu-item(index='/share') 分享统计
          el-submenu(index='/push')
