@@ -227,6 +227,9 @@ function getQA (_this) {
       _this.single = false
       _this.multiple = true
     }
+    _this.form.options_attributes.forEach(el => {
+      el.key = Date.now() + Math.ceil(Math.random() * 10000)
+    })
   }).catch(err => {
     _this.$message.error(err.toString())
   })
