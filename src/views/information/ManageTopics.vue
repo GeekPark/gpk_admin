@@ -75,8 +75,13 @@ export default {
       api.post(`/admin/topics/${this.$route.query.id}/members`,
         {post_ids: [this.post]})
       .then(result => {
+        if (result.data.message) {
+          this.$message.error(result.data.message)
+        }
         this.fetch()
         this.post = 'deleted'
+      }).catch(err => {
+        console.log(err)
       })
     }
   },
