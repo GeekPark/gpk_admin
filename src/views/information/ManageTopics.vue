@@ -14,10 +14,10 @@
     el-table-column(prop='authors', label='作者', width='110')
       template(scope='scope')
         span(v-for='item in scope.row.authors', :key='item.nickname') {{item.nickname}}
-    el-table-column(prop='post_count', label='栏目', width="90")
+    el-table-column(prop='column.title', label='栏目', width="130")
     el-table-column(prop='', label='发布时间', width="180")
         template(scope='scope')
-          span {{topic.created_at}}
+          span {{scope.row.published_timestamp}}
     el-table-column(label='操作', width="70")
         template(scope='scope')
           el-button(type='text',
@@ -83,6 +83,9 @@ export default {
   watch: {
     'topic': function (val) {
       val.created_at = tool.moment(val.created_at)
+      val.posts.forEach(el => {
+        el.published_timestamp = tool.moment(new Date(el.published_timestamp * 1000))
+      })
     }
   },
   mounted () {
