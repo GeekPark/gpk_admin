@@ -22,6 +22,12 @@
         template(scope='scope')
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row)') 移除
+  el-pagination(@size-change='handleSizeChange',
+              @current-change='handleCurrentChange',
+              :current-page='currentPage',
+              :page-size='pageSize',
+              layout='total, prev, pager, next, jumper',
+              :total='topic.post_count')
 </template>
 
 <script>
@@ -34,12 +40,14 @@ export default {
       topic: {
         posts: []
       },
-      post: ''
+      post: '',
+      currentPage: 1,
+      pageSize: 10
     }
   },
   methods: {
     fetch () {
-      api.get(`/admin/topics/${this.$route.query.id}`).then(result => {
+      api.get(`/admin/topics/${this.$route.query.id}`, {params: {page: this.currentPage}}).then(result => {
         this.topic = result.data.topic
       })
     },
@@ -47,6 +55,7 @@ export default {
       console.log(`每页 ${index} 条`)
     },
     handleCurrentChange (index, val) {
+      this.currentPage = index
       this.fetch()
       console.log(`当前页: ${index}`)
     },
