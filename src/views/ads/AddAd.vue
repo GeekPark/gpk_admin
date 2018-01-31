@@ -36,6 +36,8 @@
                       :label='value',
                       :value='key',
                       :key='key')
+        el-form-item(label='栏目选择', v-show='form.position === "app_topic" || form.position === "专题广告"')
+          search-topic(:callback='searchTopic', :topic='form.topic_id')
         el-form-item(label='图片')
           upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
         el-form-item(label='')
@@ -83,9 +85,6 @@ export default {
         createAd(this)
       }
     },
-    handleSelect (item) {
-      console.log(item)
-    },
     uploadImage (img) {
       this.form.cover_id = img.id
       this.form.cover_url = ''
@@ -93,6 +92,9 @@ export default {
     uploadDelete () {
       this.form.cover_url = 'deleted'
       this.form.cover_id = ''
+    },
+    searchTopic (topic) {
+      this.form.topic_id = topic
     }
   },
   mounted () {
@@ -100,6 +102,8 @@ export default {
       getAd(this)
     }
     getPosition(this)
+  },
+  watch: {
   }
 }
 
