@@ -36,7 +36,7 @@
                       :label='value',
                       :value='key',
                       :key='key')
-        el-form-item(label='栏目选择', v-show='form.position === "app_topic" || form.position === "专题广告"')
+        el-form-item(label='专题选择', v-show='form.position === "app_topic" || form.position === "专题广告"')
           search-topic(:callback='searchTopic', :topic='form.topic_id')
         el-form-item(label='图片')
           upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
