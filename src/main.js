@@ -13,6 +13,7 @@ import Veditor from 'components/Veditor.vue'
 import Upload from 'components/Upload.vue'
 import SearchUser from 'components/SearchUser.vue'
 import SearchTag from 'components/SearchTag.vue'
+import SearchTopic from 'components/SearchTopic.vue'
 import SearchColumn from 'components/SearchColumn.vue'
 import SearchArticle from 'components/SearchArticle.vue'
 import ProductCategories from 'components/ProductCategories.vue'
@@ -23,6 +24,7 @@ Vue.component(Vsider.name, Vsider)
 Vue.component(Veditor.name, Veditor)
 Vue.component(Upload.name, Upload)
 Vue.component(SearchUser.name, SearchUser)
+Vue.component(SearchTopic.name, SearchTopic)
 Vue.component(SearchTag.name, SearchTag)
 Vue.component(SearchColumn.name, SearchColumn)
 Vue.component(SearchArticle.name, SearchArticle)

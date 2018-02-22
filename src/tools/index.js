@@ -1,9 +1,10 @@
 import moment from 'moment'
 import WangEditor from 'wangeditor'
 import config from '../config'
+import api from '../stores/api'
 
 const FORMAT = 'YYYY-MM-DD HH:mm:ss'
-let isUpload = false
+// let isUpload = false
 export default {
   moment: (obj, format = FORMAT) => {
     return moment(obj).format(format)
@@ -21,8 +22,6 @@ export default {
     editor.customConfig.uploadImgHooks = {
       before: function (xhr, editor, files) {
         // 图片上传之前触发
-        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，files 是选择的图片文件
-
         // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
         // return {
         //     prevent: true,
@@ -31,32 +30,19 @@ export default {
       },
       success: function (xhr, editor, result) {
         // 图片上传并返回结果，图片插入成功之后触发
-        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
       },
       fail: function (xhr, editor, result) {
         // 图片上传并返回结果，但图片插入错误时触发
-        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
       },
       error: function (xhr, editor) {
         // 图片上传出错时触发
-        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
       },
       timeout: function (xhr, editor) {
         // 图片上传超时时触发
-        // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
       },
       customInsert: function (insertImg, result, editor) {
         const url = result.image.url
         insertImg(url)
-        const timer = setInterval(() => {
-          console.log(result)
-          document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
-            if (el.getAttribute('src') === url) {
-              clearInterval(timer)
-              addImgLabel(vm, url)
-            }
-          })
-        }, 200)
       }
     }
     editor.customConfig.withCredentials = true
@@ -128,6 +114,40 @@ export default {
         doFullScreen()
       }
     }, false)
+
+    const uploadUrl = `${config.api}/api/v1/admin/images`
+    document.querySelector('#veditor #editor').addEventListener('paste', function (event) {
+      event.preventDefault()
+      let items = (event.clipboardData || event.originalEvent.clipboardData).items
+      for (let index in items) {
+        let item = items[index]
+        if (item.kind === 'file') {
+          let blob = item.getAsFile()
+          let filename = event.clipboardData.getData('text')
+          let param = new window.FormData()  // 创建form对象
+          param.append('upload_file', blob, blob.name) // 通过append向form对象添加数据
+          // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+          api.post(uploadUrl, param, {
+            headers: {'Content-Type': 'multipart/form-data'}
+          })
+          .then(response => {
+            const elid = `image-${Date.now()}`
+            editor.cmd.do('insertHTML', `<div style="margin:10px 0px;"><img class="paste-image" src="${response.data.image.url}" style="max-width:100%;"/></div><div class="${elid}"><span></br></span></div>`)
+
+            document.querySelectorAll('.paste-image').forEach(el => {
+              el.parentNode.parentNode.innerHTML = el.parentNode.parentNode.innerHTML.replace(filename, '')
+              document.getSelection().collapse(document.querySelector(`.${elid}`), 0)
+            })
+          })
+          // var reader = new window.FileReader()
+          // reader.onload = function (event) {
+          //   console.log(event.target.result)
+          // }
+          // reader.readAsDataURL(blob)
+        }
+      }
+    }, false)
+
     return editor
   },
   deleteConfirm: function (_this, handler) {
@@ -143,72 +163,4 @@ export default {
     }).catch(() => {
     })
   }
-}
-
-function addImgLabel (_this, url) {
-  let val = '请点击此处输入图片描述'
-  isUpload = true
-  const $ = window.$
-  const updateEl = () => {
-    document.querySelectorAll('.w-e-text-container .w-e-text img').forEach(el => {
-      const parent = el.parentNode
-      parent.style.textAlign = 'center'
-      if (val.trim() === '') {
-        val = '请点击此处输入图片描述'
-      }
-      if (parent.querySelectorAll('.img-label').length === 0 && el.getAttribute('src') === url) {
-        const labelNode = document.createElement('div')
-        const style = {
-          lineHeight: '30px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          letterSpacing: '0px',
-          width: '100%',
-          textAlign: 'center',
-          border: 'none',
-          color: '#BD232E',
-          backgroundColor: 'transparent',
-          outline: 'none',
-          height: '30px',
-          overflow: 'hidden'
-        }
-        labelNode.style = style
-        labelNode.style.color = '#999'
-        labelNode.style.textAlign = 'center'
-        labelNode.innerHTML = val
-        labelNode.className = 'img-label'
-        labelNode.addEventListener('click', function () {
-          labelNode.contenteditable = true
-          if (labelNode.innerHTML === val) {
-            labelNode.innerHTML = '&nbsp;'
-            labelNode.focus()
-          }
-        })
-        document.addEventListener('keyup', function (e) {
-          if (e.key === 'Enter' && isUpload) {
-            console.log('ENTER')
-            // $('.w-e-text p').append($('.img-label')[1])
-            $('.w-e-text').focus()
-            var place = document.createElement('p')
-            place.innerHTML = '&nbsp;'
-            document.querySelector('.w-e-text').append(place)
-            setTimeout(() => {
-              var r = document.getSelection()
-              var eles = document.querySelectorAll('.w-e-text p')
-              var labels = $(parent).find('.img-label')
-              if (labels.length > 1) {
-                $(labels).last().hide()
-              }
-              r.collapse(eles[eles.length - 1], 1)
-            }, 100)
-            isUpload = false
-            return false
-          }
-        })
-        parent.appendChild(labelNode)
-      } else if (parent.querySelectorAll('.img-label').length === 1 && el.getAttribute('src') === url) {
-      }
-    })
-  }
-  updateEl()
 }

@@ -14,14 +14,20 @@
     el-table-column(prop='authors', label='作者', width='110')
       template(scope='scope')
         span(v-for='item in scope.row.authors', :key='item.nickname') {{item.nickname}}
-    el-table-column(prop='post_count', label='栏目', width="90")
+    el-table-column(prop='column.title', label='栏目', width="130")
     el-table-column(prop='', label='发布时间', width="180")
         template(scope='scope')
-          span {{topic.created_at}}
+          span {{scope.row.published_timestamp}}
     el-table-column(label='操作', width="70")
         template(scope='scope')
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row)') 移除
+  el-pagination(@size-change='handleSizeChange',
+              @current-change='handleCurrentChange',
+              :current-page='currentPage',
+              :page-size='pageSize',
+              layout='total, prev, pager, next, jumper',
+              :total='topic.post_count')
 </template>
 
 <script>
@@ -34,12 +40,14 @@ export default {
       topic: {
         posts: []
       },
-      post: ''
+      post: '',
+      currentPage: 1,
+      pageSize: 10
     }
   },
   methods: {
     fetch () {
-      api.get(`/admin/topics/${this.$route.query.id}`).then(result => {
+      api.get(`/admin/topics/${this.$route.query.id}`, {params: {page: this.currentPage}}).then(result => {
         this.topic = result.data.topic
       })
     },
@@ -47,6 +55,7 @@ export default {
       console.log(`每页 ${index} 条`)
     },
     handleCurrentChange (index, val) {
+      this.currentPage = index
       this.fetch()
       console.log(`当前页: ${index}`)
     },
@@ -66,14 +75,22 @@ export default {
       api.post(`/admin/topics/${this.$route.query.id}/members`,
         {post_ids: [this.post]})
       .then(result => {
+        if (result.data.message) {
+          this.$message.error(result.data.message)
+        }
         this.fetch()
         this.post = 'deleted'
+      }).catch(err => {
+        console.log(err)
       })
     }
   },
   watch: {
     'topic': function (val) {
       val.created_at = tool.moment(val.created_at)
+      val.posts.forEach(el => {
+        el.published_timestamp = tool.moment(new Date(el.published_timestamp * 1000))
+      })
     }
   },
   mounted () {

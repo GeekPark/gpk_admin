@@ -77,6 +77,9 @@ export default {
       this.voteItem = voteItem
     },
     onSubmit () {
+      if (this.form.cover_id === '') {
+        return this.$message.error('请选择头图')
+      }
       this.$refs['add-qa-form'].validate((valid) => {
         if (valid !== true) {
           return this.$message.error('内容信息不完整, 请完善后再提交!')
@@ -224,6 +227,9 @@ function getQA (_this) {
       _this.single = false
       _this.multiple = true
     }
+    _this.form.options_attributes.forEach(el => {
+      el.key = Date.now() + Math.ceil(Math.random() * 10000)
+    })
   }).catch(err => {
     _this.$message.error(err.toString())
   })
