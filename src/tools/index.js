@@ -50,13 +50,14 @@ export default {
     vm.$store.commit('SET_ITEM', { key: 'htmlEditor', val: editor })
 
     const oTest = document.querySelector('#veditor #editor .w-e-toolbar')
-    const newNode = document.createElement('div')
-    newNode.innerHTML = '全屏'
-    newNode.style.lineHeight = '44px'
-    newNode.style.cursor = 'pointer'
-    newNode.style.color = '#999'
-    newNode.id = 'fullscreen'
-    oTest.appendChild(newNode)
+
+    const fullScreenNode = document.createElement('div')
+    fullScreenNode.innerHTML = '全屏'
+    fullScreenNode.style.lineHeight = '44px'
+    fullScreenNode.style.cursor = 'pointer'
+    fullScreenNode.style.color = '#999'
+    fullScreenNode.id = 'fullscreen'
+    oTest.appendChild(fullScreenNode)
 
     // 获取使用到的元素
     const toolbarContaner = document.querySelector('#editor .w-e-toolbar')
@@ -73,13 +74,13 @@ export default {
     function doFullScreen () {
       cover.style.display = 'block'
       editorText.style.height = '100%'
-      newNode.style.lineHeight = '26px'
+      fullScreenNode.style.lineHeight = '26px'
       header.style.opacity = '0'
       toolbarContaner.style.padding = '10px 5px'
       changeDom([sider, addPost, footer], 'none')
       cover.appendChild(toolbarContaner)
       cover.appendChild(editorText)
-      newNode.innerHTML = '取消'
+      fullScreenNode.innerHTML = '取消'
     }
 
     // 退出全屏事件
@@ -91,8 +92,8 @@ export default {
       cover.style.display = 'none'
       header.style.opacity = '1'
       toolbarContaner.style.padding = '0px 5px'
-      newNode.style.lineHeight = '44px'
-      newNode.innerHTML = '全屏'
+      fullScreenNode.style.lineHeight = '44px'
+      fullScreenNode.innerHTML = '全屏'
     }
 
     function changeDom (arr, state) {
@@ -105,7 +106,7 @@ export default {
     let isFullScreen = false
 
     // 点击事件
-    newNode.addEventListener('click', function () {
+    fullScreenNode.addEventListener('click', function () {
       if (isFullScreen) {
         isFullScreen = false
         unDoFullScreen()
@@ -116,7 +117,7 @@ export default {
     }, false)
 
     const uploadUrl = `${config.api}/api/v1/admin/images`
-    document.querySelector('#veditor #editor').addEventListener('paste', function (event) {
+    document.querySelector('#veditor #editor .w-e-text').addEventListener('paste', function (event) {
       event.preventDefault()
       let items = (event.clipboardData || event.originalEvent.clipboardData).items
       for (let index in items) {
@@ -124,16 +125,14 @@ export default {
         if (item.kind === 'file') {
           let blob = item.getAsFile()
           let filename = event.clipboardData.getData('text')
-          let param = new window.FormData()  // 创建form对象
-          param.append('upload_file', blob, blob.name) // 通过append向form对象添加数据
-          // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+          let param = new window.FormData()
+          param.append('upload_file', blob, blob.name)
           api.post(uploadUrl, param, {
             headers: {'Content-Type': 'multipart/form-data'}
           })
           .then(response => {
             const elid = `image-${Date.now()}`
             editor.cmd.do('insertHTML', `<div style="margin:10px 0px;"><img class="paste-image" src="${response.data.image.url}" style="max-width:100%;"/></div><div class="${elid}"><span></br></span></div>`)
-
             document.querySelectorAll('.paste-image').forEach(el => {
               el.parentNode.parentNode.innerHTML = el.parentNode.parentNode.innerHTML.replace(filename, '')
               document.getSelection().collapse(document.querySelector(`.${elid}`), 0)
