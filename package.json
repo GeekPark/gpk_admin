@@ -14,7 +14,7 @@
     "axios": "^0.16.2",
     "element-ui": "^1.4.0",
     "moment": "^2.18.1",
-    "smeditor": "^0.1.16",
+    "smeditor": "^0.1.18",
     "vue": "^2.3.3",
     "vue-router": "^2.6.0",
     "vuex": "^2.0.0",

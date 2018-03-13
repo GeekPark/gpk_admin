@@ -4271,9 +4271,9 @@ slice-ansi@0.0.4:
   version "0.0.4"
   resolved "http://registry.npm.taobao.org/slice-ansi/download/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
 
-smeditor@^0.1.16:
-  version "0.1.16"
-  resolved "http://registry.npm.taobao.org/smeditor/download/smeditor-0.1.16.tgz#9b8be37020710964945857614ee32742561680f6"
+smeditor@^0.1.18:
+  version "0.1.18"
+  resolved "http://registry.npm.taobao.org/smeditor/download/smeditor-0.1.18.tgz#e5d70922c399c8164a33eb8ca8bcf1d695b3f3f8"
   dependencies:
     vue "^2.5.2"
     vue-router "^3.0.1"
