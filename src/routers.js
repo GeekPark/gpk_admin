@@ -19,6 +19,8 @@ import ManageTopics from 'views/information/ManageTopics.vue'
 import Columns from 'views/information/Columns.vue'
 import AddColumn from 'views/information/AddColumn.vue'
 
+import Preview from 'views/information/Preview.vue'
+
 import Push from 'views/push/Push.vue'
 import AddPush from 'views/push/AddPush.vue'
 
@@ -73,6 +75,12 @@ const router = new VueRouter({
       name: 'posts-new',
       component: AddPost,
       meta: {title: '添加文章'}
+    },
+    {
+      path: '/preview',
+      name: 'Preview',
+      component: Preview,
+      meta: {title: '临时预览'}
     },
     { path: '/share',
       name: 'info-share',
