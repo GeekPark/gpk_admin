@@ -245,7 +245,7 @@ export default {
 
 function relativeTime (_this) {
   var nickname = window.localStorage.getItem('username')
-  var cable = ActionCable.createConsumer('ws://main_test.geekpark.net/cable')
+  var cable = ActionCable.createConsumer(config.ws)
   var c = cable.subscriptions.create({channel: 'PostChannel', id: _this.$route.query.id}, {
     connected: function () {
       this.enter()
