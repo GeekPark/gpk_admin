@@ -12,9 +12,8 @@
     el-form-item(label='正文', prop='content')
       el-radio(class="radio" v-model="editorName" label="wang") 旧编辑器
       el-radio(class="radio" v-model="editorName" label="smeditor") 新编辑器 (beta)
-      el-button.tools-bar-btn(@click='toolsBarClick', v-show='editorName !== "wang"') 工具栏吸顶
       veditor(v-show='editorName === "wang"')
-      smeditor(v-show='editorName !== "wang"')
+      smeditor(v-show='editorName !== "wang"', :config='smeditorConfig')
     el-form-item(label='添加标签（标签至少3个）', prop='tags')
       search-tag(:callback='searchTag', :tags='form.tags')
       ul.users(v-if='$route.query.id')
@@ -22,7 +21,7 @@
           h3 当前编辑:
         li(v-for='username in users') {{username}}
         li
-          h3 历史记录:
+          h3 操作日志:
         li(v-for='item in form.histories')
           span {{moment(item.created_at)}} &nbsp
           span {{item.history_record}}
@@ -94,7 +93,6 @@ export default {
       }
     }
     return {
-      isFixed: false,
       smeditorConfig: smeditorConfig,
       moment: tools.moment,
       users: [],
@@ -206,15 +204,6 @@ export default {
     },
     getSmeditor () {
       return document.querySelector('.smeditor .input-area')
-    },
-    toolsBarClick () {
-      this.isFixed = !this.isFixed
-      const el = document.querySelector('.buttons')
-      if (this.isFixed) {
-        el.className += ' isFixed'
-      } else {
-        el.className = el.className.replace('isFixed', '')
-      }
     }
   },
   watch: {
@@ -232,6 +221,11 @@ export default {
         const html = this.$store.state.htmlEditor.txt.html()
         this.form.content_source = html
         this.getSmeditor().innerHTML = html
+        const el = document.querySelector('.buttons')
+        if (el.className.indexOf('isBarFixed') < 0) {
+          el.className += ' isBarFixed'
+        }
+        document.querySelector('.preview').style.display = 'none'
       }
     }
   },
@@ -239,6 +233,10 @@ export default {
     if (this.$route.query.id) {
       getPost(this)
       relativeTime(this)
+    } else {
+      var userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+      this.form.authors_full = [userinfo]
+      this.form.authors = [userinfo]
     }
   }
 }
@@ -303,17 +301,17 @@ function updatePost (_this) {
   _this.disabled = true
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-    createHistory(_this.$route.query.id, _this)
+    createHistory(_this.$route.query.id, _this, '编辑过文章')
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())
   })
 }
 
-function createHistory (id, _this) {
+function createHistory (id, _this, other) {
   // 这个 api写的真差
   var nickname = window.localStorage.getItem('username')
-  api.post(`admin/posts/${id}/history?history_record=${nickname}`).then((res) => {
+  api.post(`admin/posts/${id}/history?history_record=${nickname}${other}`).then((res) => {
     _this.$message.success('success')
     _this.$router.push(`/posts?state=${_this.form.state}`)
   })
@@ -323,7 +321,7 @@ function createPost (_this) {
   _this.disabled = true
   api.post('admin/posts', _this.form)
   .then((result) => {
-    createHistory(result.data.id, _this)
+    createHistory(result.data.id, _this, '创建了文章')
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())
@@ -362,14 +360,22 @@ function getPost (_this) {
     right 150px
     list-style none
     font-size 15px
-    border 1px solid #BFBFBF
-    padding 7.5px
+    border 1px solid #9B9B9B
+    padding 10px
     line-height 20px
+    color #9B9B9B
+    z-index 20
+    padding-bottom 20px
+  h3
+    color #9B9B9B
   .tools-bar-btn
     margin 10px
-.isFixed
-  .buttons
-    position fixed
-    top 0
-    width 100%
+  .smeditor
+    position relative
+.isBarFixed
+  position fixed
+  top 0
+  width calc(100% + 30px) !important
+  margin-left -30px
+  height 40px
 </style>
