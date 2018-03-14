@@ -257,6 +257,9 @@ function relativeTime (_this) {
         _this.users.push(el)
       })
       _this.users = unique(_this.users)
+      _this.users.forEach(user => {
+        _this.$notify.warning(user + '正在该页面')
+      })
     },
     enter: function () {
       this.perform('enter', {
