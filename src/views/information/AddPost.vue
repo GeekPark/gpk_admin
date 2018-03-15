@@ -246,7 +246,7 @@ function relativeTime (_this) {
   var cable = ActionCable.createConsumer(config.ws)
   var c = cable.subscriptions.create({
     channel: 'PostChannel',
-    id: _this.$route.query.id
+    id: _this.$route.query.id,
     username: nickname}, {
     connected: function () {
       this.enter()
