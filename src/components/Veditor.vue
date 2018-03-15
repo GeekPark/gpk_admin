@@ -33,8 +33,15 @@ export default {
     position: relative;
 
   .w-e-text-container
-    height 450px !important
-    max-height 600px !important
+    height: initial !important;
+    min-height: 350px !important;
+    max-height: initial !important;
+    border: 1px solid #BFBFBF !important;
+  .w-e-toolbar
+    position: fixed;
+    top: 0;
+    width: calc(100% - 280px);
+    z-index 10002;
 
   .count
     text-align right

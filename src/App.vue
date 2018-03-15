@@ -79,6 +79,12 @@ html, body
   display none
   font-size 16px
 
+#smeditor
+  width 100% !important
+  .input-area
+    min-height 500px
+    font-size 16px
+    line-height initial
 
 #vheader
   height $headerHeight

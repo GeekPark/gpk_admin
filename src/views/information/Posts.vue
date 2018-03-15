@@ -51,10 +51,14 @@
 import tool from 'tools'
 import api from 'stores/api'
 import config from '../../config.js'
+import smeditor from 'smeditor'
 
 const url = 'admin/posts'
 
 export default {
+  components: {
+    'smeditor': smeditor
+  },
   data () {
     return {
       params: {

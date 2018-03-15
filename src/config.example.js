@@ -8,12 +8,14 @@ const config = {
   development: {
     api: '',
     account: '',
-    main: ''
+    main: '',
+    ws: ''
   },
   production: {
     api: '',
     account: '',
-    main: ''
+    main: '',
+    ws: ''
   }
 }
 
