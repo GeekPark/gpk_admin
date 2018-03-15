@@ -249,10 +249,8 @@ function relativeTime (_this) {
     id: _this.$route.query.id,
     username: nickname}, {
       connected: function () {
-        this.enter()
       },
       disconnected: function () {
-        this.exit()
       },
       received: function (data) {
         // console.log(data)
