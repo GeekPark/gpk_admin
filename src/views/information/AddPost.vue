@@ -244,7 +244,10 @@ export default {
 function relativeTime (_this) {
   var nickname = window.localStorage.getItem('username')
   var cable = ActionCable.createConsumer(config.ws)
-  var c = cable.subscriptions.create({channel: 'PostChannel', id: _this.$route.query.id}, {
+  var c = cable.subscriptions.create({
+    channel: 'PostChannel',
+    id: _this.$route.query.id
+    username: nickname}, {
     connected: function () {
       this.enter()
     },
@@ -259,16 +262,6 @@ function relativeTime (_this) {
       _this.users = unique(_this.users)
       _this.users.forEach(user => {
         _this.$notify.warning(user + '正在该页面')
-      })
-    },
-    enter: function () {
-      this.perform('enter', {
-        username: nickname
-      })
-    },
-    exit: function () {
-      this.perform('exit', {
-        username: nickname
       })
     }
   })
