@@ -46,8 +46,8 @@
     el-col(:span='10')
       .grid-content.ad-position
         h1 广告位尺寸说明点击图片查看大图
-        a(v-for='item in imgs', :key='item', :href='loadImg(item)', target='_blank')
-          img(:src='loadImg(item)')
+        a(v-for='item in imgs', :key='item', :href='item', target='_blank')
+          img(:src='item')
 
 </template>
 
@@ -71,13 +71,11 @@ export default {
       app_positions: {},
       ad_type: 'web',
       positions: {},
-      imgs: ['ad-pc-home.png', 'ad-pc-post.png', 'ad-app.png']
+      // 'ad-pc-home.png' , 'ad-pc-home.png', ad-app.png
+      imgs: ['https://ws2.sinaimg.cn/large/006tNc79ly1fpdhmye3zaj31hc3omu0y.jpg', 'https://ws1.sinaimg.cn/large/006tNc79ly1fpdhmq3hfrj31hc0xdkc9.jpg', 'https://ws3.sinaimg.cn/large/006tNc79ly1fpdhmbsnarj30ku112js5.jpg']
     }
   },
   methods: {
-    loadImg (img) {
-      return `https://ocpk3ohd2.qnssl.com/new/admin/ads/${img}`
-    },
     onSubmit () {
       if (this.$route.query.id) {
         updateAd(this)
