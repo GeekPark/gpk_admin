@@ -248,23 +248,23 @@ function relativeTime (_this) {
     channel: 'PostChannel',
     id: _this.$route.query.id,
     username: nickname}, {
-    connected: function () {
-      this.enter()
-    },
-    disconnected: function () {
-      this.exit()
-    },
-    received: function (data) {
-      // console.log(data)
-      data.forEach(el => {
-        _this.users.push(el)
-      })
-      _this.users = unique(_this.users)
-      _this.users.forEach(user => {
-        _this.$notify.warning(user + '正在该页面')
-      })
-    }
-  })
+      connected: function () {
+        this.enter()
+      },
+      disconnected: function () {
+        this.exit()
+      },
+      received: function (data) {
+        // console.log(data)
+        data.forEach(el => {
+          _this.users.push(el)
+        })
+        _this.users = unique(_this.users)
+        _this.users.forEach(user => {
+          _this.$notify.warning(user + '正在该页面')
+        })
+      }
+    })
   window.onbeforeunload = function () {
     c.exit()
     return 'Bye now!'
