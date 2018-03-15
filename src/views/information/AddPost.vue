@@ -10,9 +10,21 @@
     el-form-item(label='CCID')
       el-input(placeholder='视频类文章填写该项', v-model='form.video_id')
     el-form-item(label='正文', prop='content')
-      veditor
+      el-radio(class="radio" v-model="editorName" label="wang") 旧编辑器
+      el-radio(class="radio" v-model="editorName" label="smeditor") 新编辑器 (beta)
+      veditor(v-show='editorName === "wang"')
+      smeditor(v-show='editorName !== "wang"', :config='smeditorConfig')
     el-form-item(label='添加标签（标签至少3个）', prop='tags')
       search-tag(:callback='searchTag', :tags='form.tags')
+      ul.users(v-if='$route.query.id')
+        li
+          h3 当前编辑:
+        li(v-for='username in users') {{username}}
+        li
+          h3 操作日志:
+        li(v-for='item in form.histories')
+          span {{moment(item.created_at)}} &nbsp
+          span {{item.history_record}}
     el-form-item(label='栏目选择', prop='column_id')
       search-column(:callback='searchColumn', :column='form.column')
     el-form-item(label='文章头图（1400×780）', prop='cover_id')
@@ -36,8 +48,34 @@
 
 <script>
 import api from 'stores/api'
+import smeditor from 'smeditor'
+import ActionCable from 'actioncable'
+import tools from '../../tools'
+import config from '../../config.js'
+const smeditorConfig = {
+  // 接口地址
+  uploadUrl: `${config.api}/api/v1/admin/images`,
+  // form 里的 filename
+  uploadName: 'upload_file',
+  // 其他参数
+  uploadParams: {},
+  onScroll: () => {},
+  // 上传成功回调
+  uploadCallback: (data) => {
+    // console.log(data)
+    return data.image.url
+  },
+  // 上传失败回调, 可选
+  uploadFailed: (err) => {
+    // console.log('仅供测试, 并非真正上传')
+    alert('仅供测试, 并非真正上传!', err)
+  }
+}
 
 export default {
+  components: {
+    'smeditor': smeditor
+  },
   data () {
     const validateContent = (rule, value, callback) => {
       getContent(this)
@@ -55,7 +93,11 @@ export default {
       }
     }
     return {
+      smeditorConfig: smeditorConfig,
+      moment: tools.moment,
+      users: [],
       disabled: false,
+      editorName: 'wang',
       form: {
         title: '',
         abstract: '',
@@ -71,7 +113,8 @@ export default {
         auto_publish_at: '',
         state: 'unpublished',
         video_id: '',
-        post_type: 'text'
+        post_type: 'text',
+        histories: []
       },
       rules: {
         title: [
@@ -158,6 +201,9 @@ export default {
     },
     close () {
       this.$router.push('/posts')
+    },
+    getSmeditor () {
+      return document.querySelector('.smeditor .input-area')
     }
   },
   watch: {
@@ -165,20 +211,86 @@ export default {
       const id = this.$route.query.id ? `&id=${this.$route.query.id}` : ''
       this.$router.push(`${this.$route.path}?content_type=${val}${id}`)
       addContent(this, val)
+    },
+    'editorName': function () {
+      if (this.editorName === 'wang') {
+        const html = this.getSmeditor().innerHTML
+        this.$store.state.htmlEditor.txt.html(html)
+        this.form.content_source = html
+      } else {
+        const html = this.$store.state.htmlEditor.txt.html()
+        this.form.content_source = html
+        this.getSmeditor().innerHTML = html
+        const el = document.querySelector('.buttons')
+        if (el.className.indexOf('isBarFixed') < 0) {
+          el.className += ' isBarFixed'
+        }
+        document.querySelector('.preview').style.display = 'none'
+      }
     }
   },
   mounted () {
-    if (this.$route.query.id) { getPost(this) }
+    if (this.$route.query.id) {
+      getPost(this)
+      relativeTime(this)
+    } else {
+      var userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+      this.form.authors_full = [userinfo]
+      this.form.authors = [userinfo]
+    }
   }
 }
 
-function getContent (_this) {
-  window.$('.w-e-text .img-label').each((index, el) => {
-    if (el.innerHTML.trim() === '请点击此处输入图片描述') {
-      el.innerHTML = ''
+function relativeTime (_this) {
+  var nickname = window.localStorage.getItem('username')
+  var cable = ActionCable.createConsumer(config.ws)
+  var c = cable.subscriptions.create({channel: 'PostChannel', id: _this.$route.query.id}, {
+    connected: function () {
+      this.enter()
+    },
+    disconnected: function () {
+      this.exit()
+    },
+    received: function (data) {
+      // console.log(data)
+      data.forEach(el => {
+        _this.users.push(el)
+      })
+      _this.users = unique(_this.users)
+      _this.users.forEach(user => {
+        _this.$notify.warning(user + '正在该页面')
+      })
+    },
+    enter: function () {
+      this.perform('enter', {
+        username: nickname
+      })
+    },
+    exit: function () {
+      this.perform('exit', {
+        username: nickname
+      })
     }
   })
-  _this.form.content_source = _this.$store.state.htmlEditor.txt.html()
+  window.onbeforeunload = function () {
+    c.exit()
+    return 'Bye now!'
+  }
+}
+
+function unique (arr) {
+  const seen = new Map()
+  return arr.filter((a) => !seen.has(a) && seen.set(a, 1))
+}
+
+function getContent (_this) {
+  let html = ''
+  if (_this.editorName === 'wang') {
+    html = _this.$store.state.htmlEditor.txt.html()
+  } else {
+    html = _this.getSmeditor().innerHTML
+  }
+  _this.form.content_source = html
 }
 
 function addContent (_this, val) {
@@ -192,11 +304,19 @@ function updatePost (_this) {
   _this.disabled = true
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
-    _this.$message.success('success')
-    _this.$router.push(`/posts?state=${_this.form.state}`)
+    createHistory(_this.$route.query.id, _this, '编辑过文章')
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())
+  })
+}
+
+function createHistory (id, _this, other) {
+  // 这个 api写的真差
+  var nickname = window.localStorage.getItem('username')
+  api.post(`admin/posts/${id}/history?history_record=${nickname}${other}`).then((res) => {
+    _this.$message.success('success')
+    _this.$router.push(`/posts?state=${_this.form.state}`)
   })
 }
 
@@ -204,9 +324,7 @@ function createPost (_this) {
   _this.disabled = true
   api.post('admin/posts', _this.form)
   .then((result) => {
-    console.log(result)
-    _this.$message.success('success')
-    _this.$router.push(`/posts?state=${_this.form.state}`)
+    createHistory(result.data.id, _this, '创建了文章')
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())
@@ -230,14 +348,37 @@ function getPost (_this) {
     _this.$message.error(err.toString())
   })
 }
+
 </script>
 
-<style lang="stylus" scoped>
-.el-input, .el-textarea
-  width 50%
-.el-select-dropdown
-  z-index 99999 !important
-
+<style lang="stylus">
 #add-post
   hegiht auto !important
+  .el-input, .el-textarea
+    width 50%
+  .el-textarea textarea
+    height 150px !important
+  .users
+    position absolute
+    right 150px
+    list-style none
+    font-size 15px
+    border 1px solid #9B9B9B
+    padding 10px
+    line-height 20px
+    color #9B9B9B
+    z-index 20
+    padding-bottom 20px
+  h3
+    color #9B9B9B
+  .tools-bar-btn
+    margin 10px
+  .smeditor
+    position relative
+.isBarFixed
+  position fixed
+  top 0
+  width calc(100% + 30px) !important
+  margin-left -30px
+  height 40px
 </style>

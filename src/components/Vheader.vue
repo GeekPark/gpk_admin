@@ -43,6 +43,8 @@ export default {
       api.get(url).then(result => {
         if (result.data != null) {
           this.info = result.data
+          window.localStorage.setItem('username', this.info.nickname)
+          window.localStorage.setItem('userinfo', JSON.stringify(this.info))
           if (result.data.roles.includes('admin') === false) {
             location.href = config.main
           }
