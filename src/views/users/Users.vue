@@ -4,11 +4,14 @@
     .title
       h1 {{$route.meta.title}}
     .filter
-      el-select(v-model="params.role",placeholder="请选择", @change='rolesChange')
+      el-select(v-model="params.role",placeholder="请选择角色", @change='rolesChange')
         el-option(v-for="item in possible_roles", :label="item", :value="item", :key="item")
+      el-select(v-model="searchType",placeholder="请选择")
+        el-option(v-for="item in  searchParams", :label="item.key", :value="item.val", :key='item.key')
       el-input(placeholder="搜索",
                icon="search",
                v-model="params.searchText",
+               @keyup.enter.native='rolesChange',
                :on-icon-click="rolesChange")
   el-table(:data='listData.json' border)
     el-table-column(prop='nickname', label='昵称', width="120")
@@ -51,6 +54,17 @@ export default {
         key: 'banned',
         value: '已禁言'
       }],
+      searchParams: [{
+        key: '昵称',
+        val: 'nickname'
+      }, {
+        key: '手机号',
+        val: 'mobile'
+      }, {
+        key: '邮箱',
+        val: 'email'
+      }],
+      searchType: 'email',
       params: {
         role: 'user',
         page: 1,
@@ -109,12 +123,13 @@ export default {
 }
 
 function fetchUsers (_this) {
-  api.account.get(url, {params: {
-    nickname: _this.params.searchText,
+  const params = {
     page: _this.params.page,
     role: _this.params.role,
     mode: 'filter'
-  }}).then(result => {
+  }
+  params[_this.searchType] = _this.params.searchText
+  api.account.get(url, {params: params}).then(result => {
     _this.listData = result.data
   }).catch(err => {
     console.log(err)
