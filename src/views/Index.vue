@@ -45,12 +45,9 @@ import api from 'stores/api'
 export default {
   data () {
     return {
-      quickly: [ {
-        title: 'Teambition',
-        url: 'https://www.teambition.com/projects'
-      }, {
+      quickly: [{
         title: '活动站后台',
-        url: ''
+        url: 'http://events.geekpark.net/admin'
       }, {
         title: '极光推送',
         url: 'https://www.jiguang.cn/dev/#/app/list#dev'
