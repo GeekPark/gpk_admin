@@ -7,6 +7,22 @@
       el-input(placeholder='', v-model='form.title')
     el-form-item(label='描述', prop='description')
       el-input(type='textarea',  v-model='form.description')
+    el-form-item(label='栏目模板')
+      el-select(v-model='form.template', placeholder='请选择')
+        el-option(v-for='item in column_style',
+                  :label='item.title',
+                  :value='item.val',
+                  :key='item.val')
+    el-form-item(label='banner1')
+      el-input(placeholder='在此输入文章ID', v-model.trim.number='form.banners[0]' clearable)
+    el-form-item(label='banner2')
+      el-input(placeholder='在此输入文章ID', v-model.trim.number='form.banners[1]' clearable)
+    el-form-item(label='banner3')
+      el-input(placeholder='在此输入文章ID', v-model.trim.number='form.banners[2]' clearable)
+    el-form-item(label='banner4')
+      el-input(placeholder='在此输入文章ID', v-model.trim.number='form.banners[3]' clearable)
+    el-form-item(label='banner5')
+      el-input(placeholder='在此输入文章ID', v-model.trim.number='form.banners[4]' clearable)
     el-form-item(label='背景封面（1920×300）')
       upload(:callback='uploadImage', :url='form.banner_url', :uploadDelete="uploadDelete")
     el-form-item.column_visible(label='文章是否显示在首页')
@@ -27,8 +43,9 @@ export default {
       form: {
         title: '',
         description: '',
+        template: 'template_one',
+        banners: new Array(5),
         banner_url: '',
-        banner_id: '',
         column_visible: false
       },
       rules: {
@@ -38,7 +55,14 @@ export default {
         description: [
           { required: true, message: '请输入描述', trigger: 'blur', min: 0 }
         ]
-      }
+      },
+      column_style: [{
+        title: '正常样式',
+        val: 'template_one'
+      }, {
+        title: '轮播样式',
+        val: 'template_two'
+      }]
     }
   },
   methods: {
@@ -47,6 +71,7 @@ export default {
         if (valid !== true) {
           return this.$message.error('内容信息不完整, 请完善后再提交!')
         } else {
+          this.form.banner_ids = this.form.banners.filter(item => item)
           if (this.$route.query.id) {
             updateColumn(this)
           } else {
@@ -104,7 +129,15 @@ function createColumn (_this) {
 function getColumn (_this) {
   api.get(`admin/columns/${_this.$route.query.id}`)
   .then((result) => {
-    _this.form = result.data.column
+    const {column} = result.data
+    Object.keys(_this.form).forEach(key => {
+      _this.form[key] = column[key] || _this.form[key]
+    })
+    if (column.column_banner) {
+      let arr = new Array(5)
+      column.column_banner.banners.forEach((item, index) => { arr[index] = item.id })
+      _this.form.banners = arr
+    }
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
