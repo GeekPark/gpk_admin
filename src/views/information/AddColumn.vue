@@ -137,6 +137,7 @@ function getColumn (_this) {
       let arr = new Array(5)
       column.column_banner.banners.forEach((item, index) => { arr[index] = item.id })
       _this.form.banners = arr
+      _this.form.template = column.column_banner.template
     }
   }).catch((err) => {
     _this.$message.error(err.toString())
