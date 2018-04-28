@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #app(element-loading-text="拼命加载中")
   #loading-bar
   #editor-cover

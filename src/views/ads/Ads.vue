@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-ads.admin
   .admin-header
     .title
@@ -6,20 +6,19 @@
       el-button(type='text', @click="addColumn") 添加广告
     .filter
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.title",
-               @keyup.enter.native='fetch',
-               :on-icon-click="search")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
   el-table(:data='listData.ads', :row-class-name="tableRowClassName", border)
     el-table-column(prop='title', label='标题', width="200")
-      template(scope='scope')
+      template(slot-scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='position', label='位置')
     el-table-column(prop='active_at', label='开始时间', width="180")
     el-table-column(prop='active_through', label='结束时间', width="180")
     el-table-column(prop='views', label='点击量')
     el-table-column(label='操作', width="170")
-        template(scope='scope')
+        template(slot-scope='scope')
           el-button(type='text',
                     @click='handleEdit(scope.$index, scope.row)') 编辑
           el-button(type='text',
@@ -45,7 +44,7 @@ const vm = Base({
     }
   },
   methods: {
-    tableRowClassName (row) {
+    tableRowClassName ({row, rowIndex}) {
       const through = new Date(row.active_through)
       const now = new Date()
       if (through > now) {

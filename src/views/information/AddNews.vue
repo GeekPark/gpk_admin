@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #add-news.admin
   .title
     h1 {{$route.meta.title}}

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-columns.admin
   .admin-header
     .title
@@ -6,16 +6,15 @@
       el-button(type='text', @click="addQA") 添加问答
     .filter
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.title",
-               @keyup.enter.native='fetch',
-               :on-icon-click="fetch")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="fetch")
   el-table(:data='listData.questions' border)
     el-table-column(prop='title', label='标题')
     el-table-column(prop='created_at', label='添加时间', width='170')
     el-table-column(prop='count', label='回答数量', width='170')
     el-table-column(label='操作', width="120")
-      template(scope='scope')
+      template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.row)') 编辑
         el-button(type='text',

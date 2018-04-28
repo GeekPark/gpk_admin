@@ -1,33 +1,32 @@
 <template lang="pug">
-#admin-posts.admin
+#admin-if_talks.admin
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addPost") 添加文章
+      el-button(type='text', @click="addNew") 添加 IF Talk
     .filter
       el-button(type='text',
-                @click='params.state = "published"',
-                v-bind:class='{active: params.state === "published"}') 已发布
+                @click='params.state = "publish"',
+                v-bind:class='{active: params.state === "publish"}') 已发布
       | /
       el-button(type='text',
-                @click='params.state = "unpublished"',
-                v-bind:class='{active: params.state === "unpublished"}') 草稿
+                @click='params.state = "unpublish"',
+                v-bind:class='{active: params.state === "unpublish"}') 未发布
       el-input(placeholder="搜索",
                v-model="params.title",
                @keyup.enter.native='fetch')
         i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
-  el-table(:data='listData.posts' border)
+  el-table(:data='listData.if_talks' border)
+    el-table-column(prop='id', label='ID')
     el-table-column(prop='title', label='标题')
       template(slot-scope='scope')
         a(@click='clickArticle(scope.row)') {{scope.row.title}}
-    el-table-column(props='authors', label='作者', width="100")
-      template(slot-scope='scope')
-        span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
-    el-table-column(prop='column_title', label='栏目', width="110")
-    el-table-column(prop='published_at', label='发布时间', width="180", v-if='params.state === "published"')
     el-table-column(prop='state', label=' 状态', width="80")
       template(slot-scope='scope')
-        span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
+        span(v-bind:class='{unpublish: scope.row.state === "未发布"}') {{scope.row.state}}
+    el-table-column(props='listen_count', label='收听次数', width="100")
+    el-table-column(prop='price', label='价格', width="110")
+    el-table-column(prop='publish_at', label='发布时间', width="180", v-if='params.state === "publish"')
     el-table-column(prop='click_count', label=' PV', width="90")
     el-table-column(label='操作', width="170")
       template(slot-scope='scope')
@@ -35,9 +34,6 @@
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
-        el-button(type='text',
-                  v-if='scope.row.state !== "草稿"',
-                  @click='recommendPost(scope.row)') {{scope.row.recommended === false ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 background,
@@ -51,23 +47,19 @@
 import tool from 'tools'
 import api from 'stores/api'
 import config from '../../config.js'
-import smeditor from 'smeditor'
 
-const url = 'admin/posts'
+const url = 'admin/if_talks'
 
 export default {
-  components: {
-    'smeditor': smeditor
-  },
   data () {
     return {
       params: {
-        title: '',
-        state: this.$route.query.state || 'published'
+        name: '',
+        state: this.$route.query.state || 'publish'
       },
       currentPage: 1,
       listData: {
-        posts: [],
+        if_talks: [],
         meta: {
           total_count: 0,
           limit_value: 0
@@ -115,13 +107,13 @@ export default {
       tool.deleteConfirm(this, destroy)
     },
     handleEdit (index, row) {
-      this.$router.push(`posts/new?id=${row.id}`)
+      this.$router.push(`iftalk/new?id=${row.id}`)
     },
     clickArticle (row) {
       if (row.state === '已发布') {
         window.open(`${config.main}/news/${row.id}`)
       } else {
-        api.get(`posts/${row.id}/preview`).then(result => {
+        api.get(`if_talks/${row.id}/preview`).then(result => {
           window.open(result.data.url)
         })
       }
@@ -132,16 +124,16 @@ export default {
         console.log(result)
       })
     },
-    addPost () {
-      this.$router.push('/posts/new?content_type=html')
+    addNew () {
+      this.$router.push('/iftalk/new')
     }
   },
   watch: {
-    'listData.posts': function (val) {
+    'listData.if_talks': function (val) {
       val.forEach(el => {
-        el.published_at = tool.moment(el.published_at)
-        if (el.state === 'published') { el.state = '已发布' }
-        if (el.state === 'unpublished') { el.state = '草稿'; el.published_at = '' }
+        el.publish_at = tool.moment(el.publish_at)
+        if (el.state === 'publish') { el.state = '已发布' }
+        if (el.state === 'unpublish') { el.state = '未发布' }
         if (el.state === 'closed') { el.state = '已删除' }
       })
     },
@@ -158,7 +150,7 @@ export default {
 <style lang="stylus" scoped>
 .active
   color #7F7F7F
-.unpublished
+.unpublish
   color #FF0000
 
 

@@ -1,23 +1,22 @@
-<template lang="jade">
+<template lang="pug">
 #admin-comments.admin
   .admin-header
     .title
       h1 {{$route.meta.title}}
     .filter
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.content",
-               @keyup.enter.native='fetch',
-               :on-icon-click="fetch")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="fetch")
   el-table(:data='listData.comments',border)
     el-table-column(prop='commenter_info.nickname', label='用户名', width="100")
     el-table-column(prop='content', label='内容')
     el-table-column(label='来源')
-      template(scope='scope')
+      template(slot-scope='scope')
         a(@click='clickCommentable(scope.row)') {{scope.row.commentable_title}}
     el-table-column(prop='created_at', label='创建时间', width="170")
     el-table-column(label='操作', width="140")
-      template(scope='scope')
+      template(slot-scope='scope')
         el-button(type='text',
                   @click='handleDestroy(scope.row)') 删除
         el-button(type='text',
@@ -71,7 +70,7 @@ export default {
       api.get(url, {params: params}).then((result) => {
         console.log(result)
         result.data.comments.forEach(el => {
-          el.commenter_info = el.commenter_info[0]
+          el.commenter_info = el.commenter_info && el.commenter_info[0]
         })
         this.listData = result.data
       }).catch((err) => {

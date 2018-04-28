@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #add-post.admin
   .title
     h1 {{$route.meta.title}}

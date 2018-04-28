@@ -1,43 +1,26 @@
 <template lang="pug">
-#admin-posts.admin
+#admin-guests.admin
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addPost") 添加文章
+      el-button(type='text', @click="addNew") 添加嘉宾
     .filter
-      el-button(type='text',
-                @click='params.state = "published"',
-                v-bind:class='{active: params.state === "published"}') 已发布
-      | /
-      el-button(type='text',
-                @click='params.state = "unpublished"',
-                v-bind:class='{active: params.state === "unpublished"}') 草稿
       el-input(placeholder="搜索",
-               v-model="params.title",
+               v-model="params.name",
                @keyup.enter.native='fetch')
         i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
-  el-table(:data='listData.posts' border)
-    el-table-column(prop='title', label='标题')
+  el-table(:data='listData.guests' border)
+    el-table-column(prop='name', label='姓名', width="100")
+    el-table-column(props='tags', label='标签')
       template(slot-scope='scope')
-        a(@click='clickArticle(scope.row)') {{scope.row.title}}
-    el-table-column(props='authors', label='作者', width="100")
-      template(slot-scope='scope')
-        span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
-    el-table-column(prop='column_title', label='栏目', width="110")
-    el-table-column(prop='published_at', label='发布时间', width="180", v-if='params.state === "published"')
-    el-table-column(prop='state', label=' 状态', width="80")
-      template(slot-scope='scope')
-        span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
-    el-table-column(prop='click_count', label=' PV', width="90")
+        | {{scope.row.tags.join(', ')}}
+    el-table-column(prop='description', label='介绍')
     el-table-column(label='操作', width="170")
       template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
-        el-button(type='text',
-                  v-if='scope.row.state !== "草稿"',
-                  @click='recommendPost(scope.row)') {{scope.row.recommended === false ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 background,
@@ -50,24 +33,19 @@
 <script>
 import tool from 'tools'
 import api from 'stores/api'
-import config from '../../config.js'
-import smeditor from 'smeditor'
 
-const url = 'admin/posts'
+const url = 'admin/guests'
 
 export default {
-  components: {
-    'smeditor': smeditor
-  },
   data () {
     return {
       params: {
-        title: '',
+        name: '',
         state: this.$route.query.state || 'published'
       },
       currentPage: 1,
       listData: {
-        posts: [],
+        guests: [],
         meta: {
           total_count: 0,
           limit_value: 0
@@ -115,36 +93,13 @@ export default {
       tool.deleteConfirm(this, destroy)
     },
     handleEdit (index, row) {
-      this.$router.push(`posts/new?id=${row.id}`)
+      this.$router.push(`guests/new?id=${row.id}`)
     },
-    clickArticle (row) {
-      if (row.state === '已发布') {
-        window.open(`${config.main}/news/${row.id}`)
-      } else {
-        api.get(`posts/${row.id}/preview`).then(result => {
-          window.open(result.data.url)
-        })
-      }
-    },
-    recommendPost (row) {
-      api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
-        this.fetch()
-        console.log(result)
-      })
-    },
-    addPost () {
-      this.$router.push('/posts/new?content_type=html')
+    addNew () {
+      this.$router.push('/guests/new')
     }
   },
   watch: {
-    'listData.posts': function (val) {
-      val.forEach(el => {
-        el.published_at = tool.moment(el.published_at)
-        if (el.state === 'published') { el.state = '已发布' }
-        if (el.state === 'unpublished') { el.state = '草稿'; el.published_at = '' }
-        if (el.state === 'closed') { el.state = '已删除' }
-      })
-    },
     'params.state': function () {
       this.search()
     }

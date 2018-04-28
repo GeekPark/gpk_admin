@@ -37,6 +37,13 @@ import UsersInfo from 'views/users/UsersInfo.vue'
 import Users from 'views/users/Users.vue'
 import AddUser from 'views/users/AddUser.vue'
 
+import Iftalk from 'views/app/Iftalk.vue'
+import AddIftalk from 'views/app/AddIftalk.vue'
+import Guests from 'views/app/Guests.vue'
+import AddGuest from 'views/app/AddGuest.vue'
+import Audios from 'views/app/Audios.vue'
+import AddAudio from 'views/app/AddAudio.vue'
+
 import Comments from 'views/comments/Comments.vue'
 
 Vue.use(VueRouter)
@@ -171,6 +178,43 @@ const router = new VueRouter({
       component: Comments,
       meta: {title: '评论列表'}
     },
+
+    { path: '/app',
+      name: 'app',
+      component: Iftalk,
+      meta: {title: '用户列表'}
+    },
+    { path: '/iftalk',
+      name: 'iftalk',
+      component: Iftalk,
+      meta: {title: 'IF Talk 列表'}
+    },
+    { path: '/iftalk/new',
+      name: 'iftalk-new',
+      component: AddIftalk,
+      meta: {title: '添加 IF Talk'}
+    },
+    { path: '/guests',
+      name: 'guests',
+      component: Guests,
+      meta: {title: '嘉宾列表'}
+    },
+    { path: '/guests/new',
+      name: 'guests-new',
+      component: AddGuest,
+      meta: {title: '添加嘉宾'}
+    },
+    { path: '/audios',
+      name: 'audios',
+      component: Audios,
+      meta: {title: '音频列表'}
+    },
+    { path: '/audios/new',
+      name: 'audios-new',
+      component: AddAudio,
+      meta: {title: '添加音频'}
+    },
+
     { path: '*',
       component: Errors,
       meta: {title: 'Error'}

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-users.admin
   .admin-header
     .title
@@ -9,10 +9,9 @@
       el-select(v-model="searchType",placeholder="请选择")
         el-option(v-for="item in  searchParams", :label="item.key", :value="item.val", :key='item.key')
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.searchText",
-               @keyup.enter.native='rolesChange',
-               :on-icon-click="rolesChange")
+               @keyup.enter.native='rolesChange')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="rolesChange")
   el-table(:data='listData.json' border)
     el-table-column(prop='nickname', label='昵称', width="120")
     el-table-column(prop='realname', label='真实姓名', width="100")
@@ -20,7 +19,7 @@
     el-table-column(prop='mobile', label='手机号')
     el-table-column(prop='created_at', label='加入时间', width="180")
     el-table-column(label='操作', width="110")
-      template(scope='scope')
+      template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.row)') 编辑
         el-button(type='text',

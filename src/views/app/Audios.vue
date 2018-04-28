@@ -1,30 +1,28 @@
 <template lang="pug">
-#admin-columns.admin
+#admin-guests.admin
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addRecommend") 添加推荐
+      el-button(type='text', @click="addNew") 添加音频
     .filter
       el-input(placeholder="搜索",
-               v-model="params.title",
+               v-model="params.id",
                @keyup.enter.native='fetch')
-        i(slot="suffix" class="el-input__icon el-icon-search" @click="fetch")
-  el-table(:data='listData.recommendations' border)
-    el-table-column(prop='product_name', label='产品名称')
-    el-table-column(prop='author', label='作者', width="140")
-      template(slot-scope='scope')
-        span(v-for='item in scope.row.author') {{item.nickname}}
-    el-table-column(prop='product_category', label='类别', width="100")
-    el-table-column(prop='created_at', label='发布时间', width="170")
-    el-table-column(prop='', label='分享数量', width="100")
-    el-table-column(label='操作', width="120")
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
+  el-table(:data='listData.audios' border)
+    el-table-column(prop='id', label='文件ID', width="100")
+    el-table-column(prop='original_filename', label='文件名')
+    el-table-column(prop='price', label='价格')
+    el-table-column(prop='download_count', label='下载次数')
+    el-table-column(label='操作', width="170")
       template(slot-scope='scope')
         el-button(type='text',
-                  @click='handleEdit(scope.row)') 编辑
+                  @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
-                  @click='handleDestroy(scope.row)') 删除
-  el-pagination(@size-change='handleSizeChange',
+                  @click='handleDestroy(scope.$index, scope.row)') 删除
+  // el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
+                background,
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
                 layout='total, prev, pager, next, jumper',
@@ -32,20 +30,19 @@
 </template>
 
 <script>
-import api from 'stores/api'
 import tool from 'tools'
+import api from 'stores/api'
 
-const url = 'admin/recommendations'
+const url = 'admin/audios'
 
 export default {
   data () {
     return {
       params: {
-        title: ''
       },
       currentPage: 1,
       listData: {
-        recommendations: [],
+        audios: [],
         meta: {
           total_count: 0,
           limit_value: 0
@@ -54,6 +51,14 @@ export default {
     }
   },
   methods: {
+    search () {
+      api.get(url, {params: this.params}).then(result => {
+        console.log(result)
+        this.listData = result.data
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
     },
@@ -63,49 +68,50 @@ export default {
       console.log(`当前页: ${index}`)
     },
     fetch () {
-      api.get(url).then(result => {
+      const params = Object.assign({page: this.currentPage}, this.params)
+      api.get(url, {params: params}).then((result) => {
         console.log(result)
         this.listData = result.data
-      }).catch(err => {
+      }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
       })
     },
-    handleDestroy (val) {
+    handleDestroy (index, val, list) {
       const destroy = () => {
-        api.delete(`${url}/${val.id}`).then(result => {
+        api.delete(`${url}/${val.id}`).then((result) => {
           this.$message.success('success')
           this.fetch()
-        }).catch(err => {
+        }).catch((err) => {
           console.log(err)
           this.$message.error(err.toString())
         })
       }
       tool.deleteConfirm(this, destroy)
     },
-    handleEdit (row) {
-      this.$router.push(`recommendations/new?id=${row.id}`)
+    handleEdit (index, row) {
+      this.$router.push(`audios/new?id=${row.id}`)
     },
-    addRecommend () {
-      this.$router.push('/recommendations/new')
+    addNew () {
+      this.$router.push('/audios/new')
     }
   },
   watch: {
-    'listData.recommendations': function (val) {
-      val.forEach(el => {
-        el.created_at = tool.moment(el.created_at)
-      })
-    },
     'params.state': function () {
       this.search()
     }
   },
-  mounted () {
+  beforeMount () {
     this.fetch()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+.active
+  color #7F7F7F
+.unpublished
+  color #FF0000
+
 
 </style>

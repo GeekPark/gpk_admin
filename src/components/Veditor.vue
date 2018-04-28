@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #veditor
   #editor
   p.count 字数: {{this.count}}

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #search-tag
   el-select(v-model='select', multiple, filterable, allow-create, remote,placeholder='请选择文章标签', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in allTags', :key='item', :label='item', :value='item')
