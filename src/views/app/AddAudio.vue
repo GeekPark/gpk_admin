@@ -2,7 +2,7 @@
 .admin#add-audio
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='add-audio-form', :model='form', label-position='top', :rules="rules")
+  el-form(ref='add-audio-form', :model='form', label-position='top')
     el-form-item(label='音频文件', prop='file')
       input(type="file" @change="getFile($event)")
     el-form-item(label='价格', prop='price')
@@ -24,8 +24,8 @@ export default {
         price: 0
       },
       rules: {
-        price: [
-          { required: true, message: '请输入价格', trigger: 'blur', min: 0 }
+        file: [
+          { required: true, message: '请选择音频文件', trigger: 'blur' }
         ]
       }
     }
@@ -83,7 +83,7 @@ let headersConfig = {
 
 function updateAudio (_this, formData) {
   _this.disabled = true
-  api.put(`admin/audios/${_this.$route.query.id}`, formData, headersConfig)
+  api.put(`admin/audios/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
     _this.$router.push(`/audios?state=${_this.form.state}`)

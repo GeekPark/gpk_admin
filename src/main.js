@@ -19,6 +19,7 @@ import SearchTopic from 'components/SearchTopic.vue'
 import SearchColumn from 'components/SearchColumn.vue'
 import SearchArticle from 'components/SearchArticle.vue'
 import ProductCategories from 'components/ProductCategories.vue'
+
 Vue.use(Element, { size: 'mini' })
 Vue.component(Vheader.name, Vheader)
 Vue.component(Vfooter.name, Vfooter)

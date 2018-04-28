@@ -10,6 +10,7 @@
                @keyup.enter.native='fetch')
         i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
   el-table(:data='listData.ads', :row-class-name="tableRowClassName", border)
+    el-table-column(prop='id', label='ID', width="50")
     el-table-column(prop='title', label='标题', width="200")
       template(slot-scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}

@@ -9,6 +9,8 @@
       el-input(type='textarea',v-model='form.abstract')
     el-form-item(label='CCID')
       el-input(placeholder='视频类文章填写该项', v-model='form.video_id')
+    el-form-item(label='音频ID')
+      el-input(placeholder='早知道音频ID', v-model='form.audio_id')
     el-form-item(label='正文', prop='content')
       el-radio(class="radio" v-model="editorName" label="wang") 旧编辑器
       el-radio(class="radio" v-model="editorName" label="smeditor") 新编辑器 (beta)
@@ -113,6 +115,7 @@ export default {
         auto_publish_at: '',
         state: 'unpublished',
         video_id: '',
+        audio_id: '',
         post_type: 'text',
         histories: []
       },
@@ -164,6 +167,11 @@ export default {
         if (valid) {
           if (this.form.video_id !== '') {
             this.form.post_type = 'video'
+          }
+          if (this.form.audio_id === '') {
+            delete this.form.audio_id
+          } else if (this.form.audio_id === 'null') {
+            this.form.audio_id = null
           }
           if (this.form.auto_publish_at === '') {
             delete this.form.auto_publish_at
@@ -344,7 +352,7 @@ function getPost (_this) {
 
 <style lang="stylus">
 #add-post
-  hegiht auto !important
+  height auto !important
   .el-input, .el-textarea
     width 50%
   .el-textarea textarea

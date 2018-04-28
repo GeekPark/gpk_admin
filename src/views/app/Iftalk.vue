@@ -17,22 +17,22 @@
                @keyup.enter.native='fetch')
         i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
   el-table(:data='listData.if_talks' border)
-    el-table-column(prop='id', label='ID')
+    el-table-column(prop='id', label='ID', width="50")
     el-table-column(prop='title', label='标题')
       template(slot-scope='scope')
         a(@click='clickArticle(scope.row)') {{scope.row.title}}
     el-table-column(prop='state', label=' 状态', width="80")
       template(slot-scope='scope')
         span(v-bind:class='{unpublish: scope.row.state === "未发布"}') {{scope.row.state}}
-    el-table-column(props='listen_count', label='收听次数', width="100")
+    el-table-column(props='listen_count', label='收听次数', width="80")
     el-table-column(prop='price', label='价格', width="110")
-    el-table-column(prop='publish_at', label='发布时间', width="180", v-if='params.state === "publish"')
+    el-table-column(prop='publish_at', label='发布时间', width="140", v-if='params.state === "publish"')
     el-table-column(prop='click_count', label=' PV', width="90")
-    el-table-column(label='操作', width="170")
+    el-table-column(label='操作', width="100")
       template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
-        el-button(type='text',
+        //- el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
@@ -46,7 +46,8 @@
 <script>
 import tool from 'tools'
 import api from 'stores/api'
-import config from '../../config.js'
+// import config from '../../config.js'
+import Sortable from 'sortablejs'
 
 const url = 'admin/if_talks'
 
@@ -58,6 +59,7 @@ export default {
         state: this.$route.query.state || 'publish'
       },
       currentPage: 1,
+      newData: [],
       listData: {
         if_talks: [],
         meta: {
@@ -69,12 +71,8 @@ export default {
   },
   methods: {
     search () {
-      api.get(url, {params: this.params}).then(result => {
-        console.log(result)
-        this.listData = result.data
-      }).catch((err) => {
-        console.log(err)
-      })
+      this.currentPage = 1
+      this.fetch()
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
@@ -89,6 +87,17 @@ export default {
       api.get(url, {params: params}).then((result) => {
         console.log(result)
         this.listData = result.data
+        this.newData = [].concat(result.data.if_talks)
+        const table = document.querySelector('.el-table__body-wrapper tbody')
+        const _this = this
+        Sortable.create(table, {
+          onEnd ({ newIndex, oldIndex }) {
+            if (newIndex === oldIndex) return
+            let targetRow = _this.newData.splice(oldIndex, 1)[0]
+            _this.newData.splice(newIndex, 0, targetRow)
+            _this.updateRow(targetRow.id, newIndex)
+          }
+        })
       }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
@@ -111,12 +120,13 @@ export default {
     },
     clickArticle (row) {
       if (row.state === '已发布') {
-        window.open(`${config.main}/news/${row.id}`)
-      } else {
-        api.get(`if_talks/${row.id}/preview`).then(result => {
-          window.open(result.data.url)
-        })
+        window.open(`http://iftalk.geekpark.net/${row.id}`)
       }
+      // else {
+      //   api.get(`if_talks/${row.id}/preview`).then(result => {
+      //     window.open(result.data.url)
+      //   })
+      // }
     },
     recommendPost (row) {
       api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
@@ -126,6 +136,14 @@ export default {
     },
     addNew () {
       this.$router.push('/iftalk/new')
+    },
+    updateRow (id, newIndex) {
+      api.patch(`${url}/${id}/update_row_order`, {row_order_position: newIndex}).then(result => {
+        this.$message.success('success')
+      }).catch(err => {
+        console.log(err)
+        this.$message.error(err.toString())
+      })
     }
   },
   watch: {

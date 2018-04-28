@@ -58,9 +58,12 @@
           template(slot='title')
             img(src='../assets/imgs/sider_app.svg')
             span APP
+          el-menu-item-group(title='Banner')
+            el-menu-item(index='/appbanner') 管理Banner
+            //- el-menu-item(index='/appbanner/new') 添加Banner
           el-menu-item-group(title='每日推荐')
-            el-menu-item(index='/app') 每日推荐列表
-            el-menu-item(index='/app') 添加每日推荐
+            el-menu-item(index='/daily') 每日推荐列表
+            el-menu-item(index='/daily/new') 添加每日推荐
           el-menu-item-group(title='IF Talk')
             el-menu-item(index='/iftalk') IF Talk 列表
             el-menu-item(index='/iftalk/new') 添加 IF Talk
@@ -69,8 +72,8 @@
             el-menu-item(index='/guests') 嘉宾列表
             el-menu-item(index='/guests/new') 添加嘉宾
           el-menu-item-group(title='订单')
-            el-menu-item(index='/app') 内容订单
-            el-menu-item(index='/app') 会员订单
+            el-menu-item(index='/orders') 内容订单
+            el-menu-item(index='/orders/member_order') 会员订单
         //- el-submenu(index='/wechat')
         //-   template(slot='title')
         //-     img(src='../assets/imgs/sider_wechat.svg')
@@ -107,7 +110,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
 #vsider
   texta-align left
   &

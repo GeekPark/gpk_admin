@@ -37,12 +37,18 @@ import UsersInfo from 'views/users/UsersInfo.vue'
 import Users from 'views/users/Users.vue'
 import AddUser from 'views/users/AddUser.vue'
 
+import AppBanner from 'views/app/Banner.vue'
+import AppBannerNew from 'views/app/AddBanner.vue'
+import Daily from 'views/app/Daily.vue'
+import AddDaily from 'views/app/AddDaily.vue'
 import Iftalk from 'views/app/Iftalk.vue'
 import AddIftalk from 'views/app/AddIftalk.vue'
 import Guests from 'views/app/Guests.vue'
 import AddGuest from 'views/app/AddGuest.vue'
 import Audios from 'views/app/Audios.vue'
 import AddAudio from 'views/app/AddAudio.vue'
+import Orders from 'views/app/Orders.vue'
+import MemberOrders from 'views/app/MemberOrders.vue'
 
 import Comments from 'views/comments/Comments.vue'
 
@@ -179,10 +185,25 @@ const router = new VueRouter({
       meta: {title: '评论列表'}
     },
 
-    { path: '/app',
-      name: 'app',
-      component: Iftalk,
-      meta: {title: '用户列表'}
+    { path: '/appbanner',
+      name: 'appbanner',
+      component: AppBanner,
+      meta: {title: 'App Banner'}
+    },
+    { path: '/appbanner/new',
+      name: 'appbanner-new',
+      component: AppBannerNew,
+      meta: {title: 'App Banner'}
+    },
+    { path: '/daily',
+      name: 'daily',
+      component: Daily,
+      meta: {title: '每日推荐'}
+    },
+    { path: '/daily/new',
+      name: 'daily-new',
+      component: AddDaily,
+      meta: {title: '添加每日推荐'}
     },
     { path: '/iftalk',
       name: 'iftalk',
@@ -213,6 +234,16 @@ const router = new VueRouter({
       name: 'audios-new',
       component: AddAudio,
       meta: {title: '添加音频'}
+    },
+    { path: '/orders',
+      name: 'orders',
+      component: Orders,
+      meta: {title: '内容订单'}
+    },
+    { path: '/orders/member_order',
+      name: 'member_order',
+      component: MemberOrders,
+      meta: {title: '会员订单'}
     },
 
     { path: '*',
