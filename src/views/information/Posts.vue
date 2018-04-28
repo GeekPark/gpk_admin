@@ -17,19 +17,20 @@
                @keyup.enter.native='fetch')
         i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
   el-table(:data='listData.posts' border)
+    el-table-column(prop='id', label='ID', width="70")
     el-table-column(prop='title', label='标题')
       template(slot-scope='scope')
         a(@click='clickArticle(scope.row)') {{scope.row.title}}
-    el-table-column(props='authors', label='作者', width="100")
+    el-table-column(props='authors', label='作者', width="130")
       template(slot-scope='scope')
         span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
     el-table-column(prop='column_title', label='栏目', width="110")
-    el-table-column(prop='published_at', label='发布时间', width="180", v-if='params.state === "published"')
-    el-table-column(prop='state', label=' 状态', width="80")
+    el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state === "published"')
+    el-table-column(prop='state', label=' 状态', width="70")
       template(slot-scope='scope')
         span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
-    el-table-column(prop='click_count', label=' PV', width="90")
-    el-table-column(label='操作', width="170")
+    el-table-column(prop='click_count', label=' PV', width="70")
+    el-table-column(label='操作', width="130")
       template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑

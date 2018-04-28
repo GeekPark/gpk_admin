@@ -7,7 +7,7 @@ const baseReq = create()
 function create (url = baseUrl) {
   return axios.create({
     baseURL: url,
-    timeout: 100000,
+    timeout: 600000,
     withCredentials: true, // 允许跨域 cookie
     headers: { 'X-Requested-With': 'XMLHttpRequest' },
     transformResponse: [function (data) {

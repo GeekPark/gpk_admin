@@ -110,7 +110,7 @@ html, body
 .el-form
   clear both
 .el-date-editor, .el-select
-  width 300px !important
+  width 300px
 
 //  public css
 

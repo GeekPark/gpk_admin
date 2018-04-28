@@ -22,16 +22,16 @@
       search-guest(:callback='searchGuest', :guests='form.guest')
     el-form-item(label='话题内容', prop='topic_abstract')
       #topic_abstract
-        smeditor(:config='smeditorConfig')
     el-form-item(label='封面图', prop='cover_id')
       upload(:callback='uploadCover', :url='form.cover_url', :uploadDelete="deleteCover")
     el-form-item(label='限免分享图', prop='share_id')
       upload(:callback='uploadShare', :url='form.share_url', :uploadDelete="deleteShare")
     el-form-item(label='文稿标题', prop='manuscript_title')
       el-input(v-model='form.manuscript_title')
+    //- el-form-item(label='文稿正文', prop='abstract')
+    //-   el-input(type='textarea',v-model='form.content_source')
     el-form-item(label='文稿正文', prop='content_source')
       #content_source
-        smeditor(:config='smeditorConfig')
     el-form-item(label='状态')
       el-select(v-model='form.state', placeholder='请选择')
         el-option(v-for='item in post_states',
@@ -49,54 +49,15 @@
 
 <script>
 import api from 'stores/api'
-import smeditor from 'smeditor'
-import tools from '../../tools'
+import WangEditor from 'wangeditor'
 import config from '../../config.js'
-const smeditorConfig = {
-  // 接口地址
-  uploadUrl: `${config.api}/api/v1/admin/images`,
-  // form 里的 filename
-  uploadName: 'upload_file',
-  // 其他参数
-  uploadParams: {},
-  onScroll: () => {},
-  // 上传成功回调
-  uploadCallback: (data) => {
-    // console.log(data)
-    return data.image.url
-  },
-  // 上传失败回调, 可选
-  uploadFailed: (err) => {
-    // console.log('仅供测试, 并非真正上传')
-    alert('仅供测试, 并非真正上传!', err)
-  }
-}
+
+var editor1, editor2
 
 export default {
-  components: {
-    'smeditor': smeditor
-  },
   data () {
-    // const validateContent = (rule, value, callback) => {
-    //   getContent(this)
-    //   if (this.form.content_source === '') {
-    //     callback(new Error('请输入内容'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    // const validateArray = (rule, value, callback) => {
-    //   if (value === undefined || value.length && value.length === 0) {
-    //     callback(new Error('请输入内容'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     return {
-      smeditorConfig: smeditorConfig,
-      moment: tools.moment,
       disabled: false,
-      editorName: 'wang',
       form: {
         title: '',
         abstract: '',
@@ -140,8 +101,6 @@ export default {
     submitForm () {
       this.$refs['add-iftalk-form'].validate((valid) => {
         if (valid) {
-          this.get_topic_abstract()
-          this.get_content_source()
           if (this.$route.query.id) {
             updateIftalk(this)
           } else {
@@ -176,27 +135,56 @@ export default {
       this.form.guests = guests
     },
     close () {
-      this.$router.push('/if_talks')
+      this.$router.push(`/iftalk?state=${this.form.state}`)
     },
-    getSmeditor () {
-      return document.querySelector('.smeditor .input-area')
-    },
-    get_topic_abstract () {
-      this.form.topic_abstract = document.querySelector('#topic_abstract .input-area').innerHTML
-    },
-    get_content_source () {
-      this.form.content_source = document.querySelector('#content_source .input-area').innerHTML
+    createEditor (el) {
+      let editor = new WangEditor(`#${el}`)
+      editor.customConfig.onchange = (html) => {
+        this.form[el] = html
+      }
+      editor.customConfig.pasteIgnoreImg = true
+      editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        // 'fontSize',  // 字号
+        // 'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'link',  // 插入链接
+        'list',  // 列表
+        'justify',  // 对齐方式
+        'quote',  // 引用
+        // 'emoticon',  // 表情
+        'image',  // 插入图片
+        'table',  // 表格
+        'video',  // 插入视频
+        'code',  // 插入代码
+        'undo',  // 撤销
+        'redo'  // 重复
+      ]
+      editor.customConfig.uploadImgServer = `${config.api}/api/v1/admin/images`
+      editor.customConfig.showLinkImg = false
+      editor.customConfig.uploadFileName = 'upload_file'
+      editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+          editor.cmd.do('insertHTML', `
+            <br><div class="image-desc" style="text-align: center;">
+                <img class="uploaded-img" src=${result.image.url}>
+              </div>
+            <br>`)
+        }
+      }
+      editor.create()
+      return editor
     }
   },
-  // watch: {
-  //   'editorName': function () {
-  //     const html = this.$store.state.htmlEditor.txt.html()
-  //     this.form.content_source = html
-  //     this.getSmeditor().innerHTML = html
-  //     document.querySelector('.preview').style.display = 'none'
-  //   }
-  // },
   mounted () {
+    editor1 = this.createEditor('topic_abstract')
+    editor2 = this.createEditor('content_source')
+
     if (this.$route.query.id) {
       getIftalk(this)
     }
@@ -234,18 +222,23 @@ function getIftalk (_this) {
     Object.keys(_this.form).forEach(key => {
       _this.form[key] = if_talk[key] || _this.form[key]
     })
-    // _this.form.guests = if_talk.guest || []
-    document.querySelector('#topic_abstract .input-area').innerHTML = _this.form.topic_abstract || ''
-    document.querySelector('#content_source .input-area').innerHTML = _this.form.content_source || ''
+    _this.form.audio_id = if_talk.audio && if_talk.audio.id || ''
+    if (if_talk.manuscript) {
+      _this.form.manuscript_title = if_talk.manuscript.title
+      _this.form.content_source = if_talk.manuscript.content_source
+    }
+    editor1.txt.html(_this.form.topic_abstract || '')
+    editor2.txt.html(_this.form.content_source || '')
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
 }
-
 </script>
 
 <style lang="stylus">
 #add-iftalk
+  .el-form-item__content
+    z-index 1
   .el-input, .el-textarea
     width 50%
   .el-textarea textarea
@@ -263,10 +256,4 @@ function getIftalk (_this) {
     padding-bottom 20px
   h3
     color #9B9B9B
-  .tools-bar-btn
-    margin 10px
-  .smeditor
-    position relative
-    .preview
-      display none
 </style>

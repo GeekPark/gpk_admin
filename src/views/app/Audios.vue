@@ -20,7 +20,7 @@
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
-  // el-pagination(@size-change='handleSizeChange',
+  el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 background,
                 :current-page='currentPage',
