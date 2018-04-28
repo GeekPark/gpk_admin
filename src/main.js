@@ -6,6 +6,7 @@ import App from './App'
 import router from './routers.js'
 import store from 'stores'
 import Element from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 import Vsider from 'components/Vsider.vue'
 import Vheader from 'components/Vheader.vue'
 import Vfooter from 'components/Vfooter.vue'
@@ -17,7 +18,7 @@ import SearchTopic from 'components/SearchTopic.vue'
 import SearchColumn from 'components/SearchColumn.vue'
 import SearchArticle from 'components/SearchArticle.vue'
 import ProductCategories from 'components/ProductCategories.vue'
-Vue.use(Element)
+Vue.use(Element, { size: 'mini' })
 Vue.component(Vheader.name, Vheader)
 Vue.component(Vfooter.name, Vfooter)
 Vue.component(Vsider.name, Vsider)

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-columns.admin
   .admin-header
     .title
@@ -6,20 +6,19 @@
       el-button(type='text', @click="addRecommend") 添加推荐
     .filter
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.title",
-               @keyup.enter.native='fetch',
-               :on-icon-click="fetch")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="fetch")
   el-table(:data='listData.recommendations' border)
     el-table-column(prop='product_name', label='产品名称')
     el-table-column(prop='author', label='作者', width="140")
-      template(scope='scope')
+      template(slot-scope='scope')
         span(v-for='item in scope.row.author') {{item.nickname}}
     el-table-column(prop='product_category', label='类别', width="100")
     el-table-column(prop='created_at', label='发布时间', width="170")
     el-table-column(prop='', label='分享数量', width="100")
     el-table-column(label='操作', width="120")
-      template(scope='scope')
+      template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.row)') 编辑
         el-button(type='text',

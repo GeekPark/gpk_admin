@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #vsider
   el-row.tac
     router-link(to="/")
@@ -6,7 +6,7 @@
         img(src="https://ocpk3ohd2.qnssl.com/assets/v2/icons/geekpark-icon-196-03ac430f5643fc17aba3b3f5429a287d.png")
         span 极客公园管理后台
     el-col(:span='8')
-      el-menu.el-menu-vertical-demo(router=true, @open='handleOpen', @close='handleClose', theme="dark")
+      el-menu(router=true, @open='handleOpen', @close='handleClose', background-color="#324157", text-color="#fff")
         el-submenu(index='/info')
           template(slot='title')
             img(src='../assets/imgs/sider_info.svg')
@@ -31,7 +31,7 @@
           //-   el-menu-item(index='/recommendations/new') 添加推荐
           el-menu-item-group(title='分享')
             el-menu-item(index='/share') 分享统计
-         el-submenu(index='/push')
+        el-submenu(index='/push')
           template(slot='title')
             img(src='../assets/imgs/sider_push.svg')
             span 推送

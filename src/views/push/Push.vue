@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-posts.admin
   .title
     h1 {{$route.meta.title}}
@@ -8,12 +8,12 @@
     el-table-column(prop='created_at', label='创建时间', width="180")
     el-table-column(prop='time_send_at', label='推送时间', width="180")
     el-table-column(prop='redirect', label='内容ID', width="100")
-      template(scope='scope')
+      template(slot-scope='scope')
         span.preview(@click='preview(scope.row)') {{scope.row.redirect}}
     //- el-table-column(prop='', label='iOS点击', width="150")
     //- el-table-column(prop='', label='Android点击', width="150")
     //- el-table-column(label='操作', width="100")
-      //- template(scope='scope')
+      //- template(slot-scope='scope')
       //-   el-button(type='text',
       //-             @click='handleDestroy(scope.$index, scope.row, listData.posts)') 删除
   el-pagination(@size-change='handleSizeChange',

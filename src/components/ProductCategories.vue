@@ -1,8 +1,7 @@
-<template lang="jade">
+<template lang="pug">
 #product-categories
   el-select(v-model='select', placeholder='请输入关键词', :loading='loading')
     el-option(v-for='(value, key) in searchData', :key='key', :label='value', :value='key')
-
 </template>
 
 <script>

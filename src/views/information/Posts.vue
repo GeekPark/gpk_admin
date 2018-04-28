@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-posts.admin
   .admin-header
     .title
@@ -13,25 +13,24 @@
                 @click='params.state = "unpublished"',
                 v-bind:class='{active: params.state === "unpublished"}') 草稿
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.title",
-               @keyup.enter.native='fetch',
-               :on-icon-click="search")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
   el-table(:data='listData.posts' border)
     el-table-column(prop='title', label='标题')
-      template(scope='scope')
+      template(slot-scope='scope')
         a(@click='clickArticle(scope.row)') {{scope.row.title}}
     el-table-column(props='authors', label='作者', width="100")
-      template(scope='scope')
+      template(slot-scope='scope')
         span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
     el-table-column(prop='column_title', label='栏目', width="110")
     el-table-column(prop='published_at', label='发布时间', width="180", v-if='params.state === "published"')
     el-table-column(prop='state', label=' 状态', width="80")
-      template(scope='scope')
+      template(slot-scope='scope')
         span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
     el-table-column(prop='click_count', label=' PV', width="90")
     el-table-column(label='操作', width="170")
-      template(scope='scope')
+      template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
         el-button(type='text',
@@ -41,6 +40,7 @@
                   @click='recommendPost(scope.row)') {{scope.row.recommended === false ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
+                background,
                 :current-page='currentPage',
                 :page-size='listData.meta.limit_value',
                 layout='total, prev, pager, next, jumper',

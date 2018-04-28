@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #index.admin
   el-row.index-header(:gutter='20')
     el-col(:span='6')

@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #users-info.admin
   .title
     h1 {{$route.meta.title}}
@@ -26,7 +26,7 @@
       el-select(v-model="user.roles",placeholder="请选择", multiple)
         el-option(v-for="item in roles", :label="item", :value="item", :key='item')
     el-form-item(label='是否禁言:')
-      el-switch(v-model="user.banned", on-text="", off-text="", @change='blockChange')
+      el-switch(v-model="user.banned", active-text="", inactive-text="", @change='blockChange')
     el-form-item(label='')
       el-button(type='primary', :disabled='disabled', @click='onSubmit') 保存
 </template>

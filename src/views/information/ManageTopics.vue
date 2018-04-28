@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-topics.admin
   .admin-header
     .title
@@ -9,17 +9,17 @@
       el-button(type="primary", @click='addToTopic') 添加
   el-table(:data='topic.posts' border)
     el-table-column(prop='title', label='标题')
-      template(scope='scope')
+      template(slot-scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='authors', label='作者', width='110')
-      template(scope='scope')
+      template(slot-scope='scope')
         span(v-for='item in scope.row.authors', :key='item.nickname') {{item.nickname}}
     el-table-column(prop='column.title', label='栏目', width="130")
     el-table-column(prop='', label='发布时间', width="180")
-        template(scope='scope')
+        template(slot-scope='scope')
           span {{scope.row.published_timestamp}}
     el-table-column(label='操作', width="70")
-        template(scope='scope')
+        template(slot-scope='scope')
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row)') 移除
   el-pagination(@size-change='handleSizeChange',

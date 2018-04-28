@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #upload
   el-upload.avatar-uploader(
                    :action='uploadHost',

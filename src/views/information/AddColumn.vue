@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #add-column.admin
   .title
     h1 {{$route.meta.title}}

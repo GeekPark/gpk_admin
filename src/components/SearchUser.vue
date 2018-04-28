@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #search-user
   el-select(v-if='multiple', v-model='select', multiple, filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in data', :key='item.id', :label='item.nickname', :value='item.id', v-bind:class='{isAdmin: isAdmin(item.roles)}')
@@ -6,7 +6,6 @@
 
   el-select(v-else, v-model='select', filterable, remote, placeholder='请输入关键词', :remote-method='remoteMethod', :loading='loading')
     el-option(v-for='item in searchData', :key='item.id', :label='item.nickname', :value='item.id')
-
 </template>
 
 <script>

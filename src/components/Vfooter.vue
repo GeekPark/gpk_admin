@@ -1,6 +1,6 @@
-<template lang="jade">
+<template lang="pug">
 #vfooter
-  p © 2017 GeekPark
+  p © 2018 GeekPark
 </template>
 
 <script>

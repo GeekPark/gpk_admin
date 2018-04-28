@@ -1,13 +1,12 @@
-<template lang="jade">
+<template lang="pug">
 #admin-posts.admin
   .admin-header
     .title
       h1 {{$route.meta.title}}
     .filter
       el-input(placeholder="搜索",
-               icon="search",
-               v-model="input2",
-               :on-icon-click="handleIconClick")
+               v-model="input2")
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="handleIconClick")
   el-table(:data='listData.posts' border)
     el-table-column(prop='title', label='标题')
     el-table-column(prop='author', label='作者', width="100")

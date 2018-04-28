@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-topics.admin
   .admin-header
     .title
@@ -6,19 +6,18 @@
       el-button(type='text', @click="addTopic") 添加专题
     .filter
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.title",
-               @keyup.enter.native='fetch',
-               :on-icon-click="search")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
   el-table(:data='listData.topics' border)
     el-table-column(prop='title', label='专题名称', width="150")
-      template(scope='scope')
+      template(slot-scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='description', label='专题描述')
     el-table-column(prop='post_count', label='文章数量', width="110")
     el-table-column(prop='published_at', label='发布时间', width="170")
     el-table-column(label='操作', width="150")
-        template(scope='scope')
+        template(slot-scope='scope')
           el-button(type='text',
                     @click='handleManagement(scope.$index, scope.row)') 管理
           el-button(type='text',

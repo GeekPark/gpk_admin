@@ -1,4 +1,4 @@
-<template lang="jade">
+<template lang="pug">
 #admin-columns.admin
   .admin-header
     .title
@@ -13,19 +13,18 @@
                 @click='params.state = "published"',
                 v-bind:class='{active: params.state === "published"}') 已发布
       el-input(placeholder="搜索",
-               icon="search",
                v-model="params.title",
-               @keyup.enter.native='fetch',
-               :on-icon-click="fetch")
+               @keyup.enter.native='fetch')
+        i(slot="suffix" class="el-input__icon el-icon-search" @click="fetch")
   el-table(:data='listData.news' border)
     el-table-column(prop='title', label='标题')
-      template(scope='scope')
+      template(slot-scope='scope')
         a(:href='scope.row.source_link', target='_blank') {{scope.row.title}}
     el-table-column(prop='date', label='发布时间', width="170", v-if='params.state === "unpublished"')
     el-table-column(prop='published_at', label='发布时间', width="170", v-else)
     el-table-column(prop='news_count', label='新闻源数量', width='110', v-if='params.state === "unpublished"')
     el-table-column(label='操作', width="120")
-      template(scope='scope')
+      template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.row)') 编辑
         el-button(type='text',
