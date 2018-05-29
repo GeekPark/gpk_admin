@@ -83,7 +83,7 @@ let headersConfig = {
 
 function updateAudio (_this, formData) {
   _this.disabled = true
-  api.put(`admin/audios/${_this.$route.query.id}`, _this.form)
+  api.put(`admin/audios/${_this.$route.query.id}`, formData, headersConfig)
   .then((result) => {
     _this.$message.success('success')
     _this.$router.push(`/audios?state=${_this.form.state}`)
