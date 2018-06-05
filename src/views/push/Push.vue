@@ -6,7 +6,7 @@
   el-table(:data='listData.json' border)
     el-table-column(prop='content', label='内容')
     el-table-column(prop='created_at', label='创建时间', width="180")
-    el-table-column(prop='time_send_at', label='推送时间', width="180")
+    el-table-column(prop='send_at', label='推送时间', width="180")
     el-table-column(prop='redirect', label='内容ID', width="100")
       template(slot-scope='scope')
         span.preview(@click='preview(scope.row)') {{scope.row.redirect}}
@@ -97,6 +97,7 @@ export default {
       }
       val.forEach(el => {
         el.created_at = tool.moment(new Date(el.created_at))
+        el.send_at = tool.moment(new Date(el.send_at))
         if (el.time_send_at) {
           el.time_send_at = timetrans(el.time_send_at)
         }
