@@ -12,7 +12,7 @@
                      type='datetime',
                      placeholder='选择日期时间')
     el-form-item(label='')
-      el-button(type='primary', @click='onSubmit') 提交
+      el-button(type='primary', @click='onSubmit', :loading="disabled") 提交
       //- el-button(type='danger', @click='onSubmit') 关闭
 </template>
 
@@ -22,6 +22,7 @@ import api from 'stores/api'
 export default {
   data () {
     return {
+      disabled: false,
       form: {
         redirect: '',
         content_type: 'topic_type',
@@ -41,15 +42,18 @@ export default {
 
 function createAd (_this) {
   console.log(_this.form)
+  if (_this.disabled) return
   if (_this.form.send_at === '') {
     delete _this.form.send_at
   }
+  _this.disabled = true
   api.account.post('api/v1/broadcasts', _this.form)
   .then((result) => {
     _this.$message.success('success')
     _this.$router.push('/push')
   }).catch((err) => {
     _this.$message.error(err.toString())
+    _this.disabled = false
   })
 }
 </script>
