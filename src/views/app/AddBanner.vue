@@ -5,20 +5,24 @@
   el-row(:gutter='10')
     el-col(:span='14')
       el-form.grid-content(ref='form', :model='form', label-width='80px', label-position='top')
-        el-form-item(label='跳转链接')
-          el-input(v-model='form.link', placeholder="http://xxx.xxx")
         el-form-item(label='跳转类型')
           el-select(v-model='form.banner_type', placeholder='请选择')
             el-option(v-for='(value, key) in banner_types',
                       :label='value',
                       :value='key',
                       :key='key')
-        el-form-item(label='选择模块', v-show='form.banner_type === "internal"')
-          el-select(v-model='form.model', placeholder='请选择')
-            el-option(v-for='(value, key) in models',
-                      :label='value',
-                      :value='key',
-                      :key='key')
+        template(v-if='form.banner_type === "internal"')
+          el-form-item(label='选择模块', v-show='form.banner_type === "internal"')
+            el-select(v-model='form.model', placeholder='请选择')
+              el-option(v-for='(value, key) in models',
+                        :label='value',
+                        :value='key',
+                        :key='key')
+          el-form-item(label='跳转ID')
+            el-input(v-model='form.link')
+        template(v-else)
+          el-form-item(label='跳转链接')
+            el-input(v-model='form.link', placeholder="http://xxx.xxx")
         el-form-item(label='位置')
           el-select(v-model='form.position', placeholder='请选择')
             el-option(v-for='(value, key) in positions',
@@ -32,7 +36,7 @@
           p &nbsp;
         el-form-item(label='')
           el-button(type='primary', @click='onSubmit') 提交
-          el-button(type='danger', @click='onSubmit') 关闭
+          el-button(type='danger', @click='close') 关闭
 </template>
 
 <script>
@@ -72,8 +76,8 @@ export default {
       this.form.cover_url = 'deleted'
       this.form.cover_id = ''
     },
-    searchTopic (topic) {
-      this.form.topic_id = topic
+    close () {
+      this.$router.push('/appbanner')
     }
   },
   mounted () {

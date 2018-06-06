@@ -40,8 +40,9 @@
                   :key='item.val')
     el-form-item(label='限免时间', prop='date')
       el-date-picker(v-model='form.free_date',
-                     type='datetime',
-                     placeholder='选择日期时间')
+                     type='date',
+                     value-format="yyyy-MM-dd 23:59:00",
+                     placeholder='选择日期')
     el-form-item(label='')
       el-button(type='primary', :disabled='disabled', @click='submitForm') 提交
       el-button(type='danger', @click='close') 关闭
