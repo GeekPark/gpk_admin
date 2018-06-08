@@ -93,6 +93,7 @@ export default {
       this.$router.push('/daily/new')
     },
     updateRow (id, newIndex) {
+      newIndex += (this.currentPage - 1) * 10
       api.patch(`${url}/${id}/update_row_order`, {row_order_position: newIndex}).then(result => {
         this.$message.success('success')
       }).catch(err => {

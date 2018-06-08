@@ -9,26 +9,19 @@
                   :label='key',
                   :value='val',
                   :key='val')
-      el-select(v-model='params.buy_type', clearable, placeholder='购买方式')
-        el-option(v-for='key, val in buyType',
-                  :label='key',
-                  :value='val',
-                  :key='val')
       el-input(placeholder="手机号",
                clearable,
                v-model="params.mobile")
       el-button(icon="el-icon-search" size="mini" @click="search")
   el-table(:data='listData.orders' border)
-    el-table-column(prop='id', label='订单号')
-    el-table-column(prop='content', label='购买内容')
-    el-table-column(prop='buy_type', label='购买方式')
+    el-table-column(prop='trade_no', label='订单号')
+    el-table-column(prop='name', label='用户名')
+    el-table-column(prop='mobile', label='手机号')
     el-table-column(prop='price', label='购买价格')
     el-table-column(prop='state', label='订单状态')
       template(slot-scope='scope')
         | {{state[scope.row.state]}}
     el-table-column(prop='created_at', label='购买时间')
-    el-table-column(prop='name', label='用户名')
-    el-table-column(prop='mobile', label='手机号')
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -41,18 +34,7 @@
 import api from 'stores/api'
 import tool from 'tools'
 
-const url = 'admin/orders'
-const buyType = {
-  first_time: '初次购买',
-  renew: '续费',
-  overdue: '过期续费',
-  discount: '折扣购买',
-  exchange: '会员兑换',
-  member: '会员购买音频',
-  audio_exchange: '兑换音频',
-  audio: '音频购买',
-  coins_use: '极客币购买'
-}
+const url = 'admin/orders/coins_order'
 
 export default {
   data () {
@@ -70,7 +52,6 @@ export default {
           limit_value: 0
         }
       },
-      buyType: buyType,
       state: {
         pending: '未支付',
         paid: '已付款',
@@ -111,7 +92,6 @@ export default {
   watch: {
     'listData.orders': function (val) {
       val.forEach(el => {
-        el.buy_type = buyType[el.buy_type]
         el.created_at = tool.moment(el.created_at)
       })
     }

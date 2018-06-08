@@ -74,6 +74,7 @@
           el-menu-item-group(title='订单')
             el-menu-item(index='/orders') 内容订单
             el-menu-item(index='/orders/member_order') 会员订单
+            el-menu-item(index='/orders/coins_order') 极客币订单
         //- el-submenu(index='/wechat')
         //-   template(slot='title')
         //-     img(src='../assets/imgs/sider_wechat.svg')

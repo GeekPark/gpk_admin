@@ -2,7 +2,7 @@
 .admin#add-post
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='add-post-form', :model='form', label-position='top', :rules="rules")
+  el-form(ref='add-post-form', :model='form', label-position='top', :rules="rule")
     el-form-item(label='标题', prop='title')
       el-input(v-model='form.title')
     el-form-item(label='摘要', prop='abstract')
@@ -39,7 +39,7 @@
                   :label='item.title',
                   :value='item.val',
                   :key='item.val')
-    el-form-item(label='发布时间', prop='date', v-if='form.state === "published"')
+    el-form-item(label='发布时间', prop='date', v-if='form.state === "unpublished"')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
@@ -79,14 +79,14 @@ export default {
     'smeditor': smeditor
   },
   data () {
-    const validateContent = (rule, value, callback) => {
-      getContent(this)
-      if (this.form.content_source === '') {
-        callback(new Error('请输入内容'))
-      } else {
-        callback()
-      }
-    }
+    // const validateContent = (rule, value, callback) => {
+    //   getContent(this)
+    //   if (this.form.content_source === '') {
+    //     callback(new Error('请输入内容'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     const validateArray = (rule, value, callback) => {
       if (value === undefined || value.length && value.length === 0) {
         callback(new Error('请输入内容'))
@@ -119,6 +119,14 @@ export default {
         post_type: 'text',
         histories: []
       },
+      rulesOmit: {
+        title: [
+          { required: true, message: '请输入文章标题', trigger: 'blur', min: 0 }
+        ],
+        column_id: [
+          { required: true, validator: validateArray, message: '请至少选择一个专栏', trigger: 'change' }
+        ]
+      },
       rules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur', min: 0 }
@@ -126,9 +134,9 @@ export default {
         abstract: [
           { required: true, message: '请输入文章摘要', trigger: 'blur', min: 0 }
         ],
-        content: [
-          { required: true, validator: validateContent, trigger: 'blur' }
-        ],
+        // content: [
+        //   { required: true, validator: validateContent, trigger: 'blur' }
+        // ],
         date: [
           { type: 'date', message: '请选择日期', trigger: 'change' }
         ],
@@ -161,6 +169,11 @@ export default {
       }]
     }
   },
+  computed: {
+    rule: function () {
+      return (this.form.state === 'published' || this.form.auto_publish_at) ? this.rules : this.rulesOmit
+    }
+  },
   methods: {
     submitForm () {
       this.$refs['add-post-form'].validate((valid) => {
@@ -173,9 +186,10 @@ export default {
           } else if (this.form.audio_id === 'null') {
             this.form.audio_id = null
           }
-          if (this.form.auto_publish_at === '') {
+          if (this.form.state === 'published' || this.form.auto_publish_at === '') {
             delete this.form.auto_publish_at
           }
+          getContent(this)
           if (this.$route.query.id) {
             updatePost(this)
           } else {
@@ -299,7 +313,6 @@ function addContent (_this, val) {
 }
 
 function updatePost (_this) {
-  getContent(_this)
   _this.disabled = true
   api.put(`admin/posts/${_this.$route.query.id}`, _this.form)
   .then((result) => {
@@ -338,7 +351,7 @@ function getPost (_this) {
     Object.keys(_this.form).forEach(key => {
       _this.form[key] = post[key]
     })
-    _this.form.auto_publish_at = post.published_at
+    // _this.form.auto_publish_at = post.published_at
     _this.form.authors_full = post.authors
     _this.form.authors = _this.form.authors_full ? _this.form.authors_full.map(el => el.id) : []
     _this.form.video_id = post.extra.video_id
@@ -374,6 +387,9 @@ function getPost (_this) {
     margin 10px
   .smeditor
     position relative
+  .el-form-item__content
+    img
+      max-width 100%
 .isBarFixed
   position fixed
   top 0

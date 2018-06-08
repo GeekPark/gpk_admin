@@ -24,9 +24,9 @@
     el-table-column(prop='state', label=' 状态', width="80")
       template(slot-scope='scope')
         span(v-bind:class='{unpublish: scope.row.state === "未发布"}') {{scope.row.state}}
-    el-table-column(props='listen_count', label='收听次数', width="80")
+    el-table-column(prop='listen_count', label='收听次数', width="80")
     el-table-column(prop='price', label='价格', width="110")
-    el-table-column(prop='publish_at', label='发布时间', width="140", v-if='params.state === "publish"')
+    el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state === "publish"')
     el-table-column(prop='click_count', label=' PV', width="90")
     el-table-column(label='操作', width="100")
       template(slot-scope='scope')
@@ -138,6 +138,7 @@ export default {
       this.$router.push('/iftalk/new')
     },
     updateRow (id, newIndex) {
+      newIndex += (this.currentPage - 1) * 10
       api.patch(`${url}/${id}/update_row_order`, {row_order_position: newIndex}).then(result => {
         this.$message.success('success')
       }).catch(err => {
@@ -149,7 +150,7 @@ export default {
   watch: {
     'listData.if_talks': function (val) {
       val.forEach(el => {
-        el.publish_at = tool.moment(el.publish_at)
+        el.published_at = tool.moment(el.published_at)
         if (el.state === 'publish') { el.state = '已发布' }
         if (el.state === 'unpublish') { el.state = '未发布' }
         if (el.state === 'closed') { el.state = '已删除' }

@@ -49,6 +49,7 @@ import Audios from 'views/app/Audios.vue'
 import AddAudio from 'views/app/AddAudio.vue'
 import Orders from 'views/app/Orders.vue'
 import MemberOrders from 'views/app/MemberOrders.vue'
+import CoinsOrders from 'views/app/CoinsOrders.vue'
 
 import Comments from 'views/comments/Comments.vue'
 
@@ -244,6 +245,11 @@ const router = new VueRouter({
       name: 'member_order',
       component: MemberOrders,
       meta: {title: '会员订单'}
+    },
+    { path: '/orders/coins_order',
+      name: 'coins_order',
+      component: CoinsOrders,
+      meta: {title: '极客币订单'}
     },
 
     { path: '*',

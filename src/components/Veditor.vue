@@ -15,7 +15,8 @@ export default {
     }
   },
   mounted () {
-    tools.editor(this, () => {
+    tools.editor(this, (html) => {
+      window.localStorage.setItem('wangeditor', html)
       this.count = this.$store.state.htmlEditor.txt.text().length
     })
   }
@@ -37,6 +38,9 @@ export default {
     min-height: 350px !important;
     max-height: initial !important;
     border: 1px solid #BFBFBF !important;
+    .w-e-panel-container
+      position: fixed;
+      top: 50px;
   .w-e-toolbar
     position: fixed;
     top: 0;

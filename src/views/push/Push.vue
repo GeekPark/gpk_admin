@@ -97,9 +97,8 @@ export default {
       }
       val.forEach(el => {
         el.created_at = tool.moment(new Date(el.created_at))
-        el.send_at = tool.moment(new Date(el.send_at))
-        if (el.time_send_at) {
-          el.time_send_at = timetrans(el.time_send_at)
+        if (el.send_at) {
+          el.send_at = tool.moment(el.send_at)
         }
       })
     },
@@ -111,7 +110,7 @@ export default {
     this.fetch()
   }
 }
-function timetrans (date) {
+function timetrans (date) { // eslint-disable-line no-unused-vars
   date = new Date(date * 1000)
   let Y = date.getFullYear() + '-'
   let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
