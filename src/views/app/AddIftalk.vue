@@ -59,6 +59,7 @@ export default {
   data () {
     return {
       disabled: false,
+      currentPage: this.$route.query.page || 1,
       form: {
         title: '',
         abstract: '',
@@ -136,7 +137,7 @@ export default {
       this.form.guests = guests
     },
     close () {
-      this.$router.push(`/iftalk?state=${this.form.state}`)
+      this.$router.push(`/iftalk?state=${this.form.state}&page=${this.currentPage}`)
     },
     createEditor (el) {
       let editor = new WangEditor(`#${el}`)
@@ -197,7 +198,7 @@ function updateIftalk (_this) {
   api.put(`admin/if_talks/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$message.success('success')
-    _this.$router.push(`/iftalk?state=${_this.form.state}`)
+    _this.$router.push(`/iftalk?state=${_this.form.state}&page=${_this.currentPage}`)
   }).catch((err) => {
     _this.disabled = false
     _this.$message.error(err.toString())

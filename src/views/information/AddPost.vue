@@ -87,13 +87,7 @@ export default {
     //     callback()
     //   }
     // }
-    const validateArray = (rule, value, callback) => {
-      if (value === undefined || value.length && value.length === 0) {
-        callback(new Error('请输入内容'))
-      } else {
-        callback()
-      }
-    }
+
     return {
       smeditorConfig: smeditorConfig,
       moment: tools.moment,
@@ -124,7 +118,7 @@ export default {
           { required: true, message: '请输入文章标题', trigger: 'blur', min: 0 }
         ],
         column_id: [
-          { required: true, validator: validateArray, message: '请至少选择一个专栏', trigger: 'change' }
+          { required: true, message: '请至少选择一个专栏', trigger: 'change' }
         ]
       },
       rules: {
@@ -141,16 +135,16 @@ export default {
           { type: 'date', message: '请选择日期', trigger: 'change' }
         ],
         column_id: [
-          { required: true, validator: validateArray, message: '请至少选择一个专栏', trigger: 'change' }
+          { required: true, message: '请至少选择一个专栏', trigger: 'change' }
         ],
         tags: [
-          { required: true, validator: validateArray, message: '请至少选择一个标签', trigger: 'change' }
+          { required: true, type: 'array', message: '请至少选择一个标签', trigger: 'change' }
         ],
         cover_id: [
           { type: 'number', required: true, message: '请上传文章头图', trigger: 'change' }
         ],
         authors: [
-          { required: true, validator: validateArray, message: '请至少选择一个作者', trigger: 'change' }
+          { required: true, type: 'array', message: '请至少选择一个作者', trigger: 'change' }
         ]
       },
       post_states: [{

@@ -6,16 +6,26 @@
       el-button(type='text', @click="addPost") 添加文章
     .filter
       el-button(type='text',
-                @click='params.state = "published"',
-                v-bind:class='{active: params.state === "published"}') 已发布
+                @click='params.state_eq = "published"',
+                v-bind:class='{active: params.state_eq === "published"}') 已发布
       | /
       el-button(type='text',
-                @click='params.state = "unpublished"',
-                v-bind:class='{active: params.state === "unpublished"}') 草稿
-      el-input(placeholder="搜索",
-               v-model="params.title",
-               @keyup.enter.native='fetch')
-        i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
+                @click='params.state_eq = "unpublished"',
+                v-bind:class='{active: params.state_eq === "unpublished"}') 草稿
+      el-date-picker(v-model="daterange"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions")
+      el-input(placeholder="按文章标题或栏目搜索",
+               v-model="params.title_or_column_title_cont",
+               clearable,
+               @keyup.enter.native='search')
+        // i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
+      el-button(type='primary', @click='search') 搜索
   el-table(:data='listData.posts' border)
     el-table-column(prop='id', label='ID', width="70")
     el-table-column(prop='title', label='标题')
@@ -62,9 +72,10 @@ export default {
   },
   data () {
     return {
+      daterange: [],
       params: {
-        title: '',
-        state: this.$route.query.state || 'published'
+        title_or_column_title_cont: '',
+        state_eq: this.$route.query.state || 'published'
       },
       currentPage: 1,
       listData: {
@@ -73,17 +84,40 @@ export default {
           total_count: 0,
           limit_value: 0
         }
+      },
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
       }
     }
   },
   methods: {
     search () {
-      api.get(url, {params: this.params}).then(result => {
-        console.log(result)
-        this.listData = result.data
-      }).catch((err) => {
-        console.log(err)
-      })
+      this.currentPage = 1
+      this.fetch()
     },
     handleSizeChange (index, val) {
       console.log(`每页 ${index} 条`)
@@ -130,7 +164,6 @@ export default {
     recommendPost (row) {
       api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
         this.fetch()
-        console.log(result)
       })
     },
     addPost () {
@@ -146,7 +179,16 @@ export default {
         if (el.state === 'closed') { el.state = '已删除' }
       })
     },
-    'params.state': function () {
+    'daterange': function (val) {
+      if (val) {
+        this.params.start_date = val[0]
+        this.params.end_date = val[1]
+      } else {
+        delete this.params.start_date
+        delete this.params.end_date
+      }
+    },
+    'params.state_eq': function () {
       this.search()
     }
   },
@@ -161,6 +203,7 @@ export default {
   color #7F7F7F
 .unpublished
   color #FF0000
-
-
+.filter .el-date-editor--daterange.el-input__inner
+  width 240px
+  margin-left 20px
 </style>

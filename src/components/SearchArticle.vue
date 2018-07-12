@@ -20,7 +20,7 @@ export default {
     remoteMethod (query) {
       if (query !== '') {
         this.loading = true
-        api.get('admin/posts', { params: {title: query, state: 'published'} })
+        api.get('admin/posts', { params: {title_or_column_title_cont: query, state_eq: 'published'} })
         .then(result => {
           this.loading = false
           this.searchData = result.data.posts.filter(item => {

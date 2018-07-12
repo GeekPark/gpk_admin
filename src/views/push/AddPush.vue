@@ -7,6 +7,9 @@
       el-input(placeholder='', v-model='form.redirect')
     el-form-item(label='内容标题')
       el-input(placeholder='', v-model='form.content')
+    el-form-item(label='内容类型')
+      el-radio(v-model="form.content_type" label="topic_type") 文章
+      el-radio(v-model="form.content_type" label="if_talk_type") IF TALK
     el-form-item(label='定时发送')
       el-date-picker(v-model='form.send_at',
                      type='datetime',
@@ -48,7 +51,7 @@ function createAd (_this) {
   if (_this.form.send_at === '') {
     delete _this.form.send_at
   }
-  api.account.post('api/v1/broadcasts', _this.form)
+  api.post('admin/broadcasts', _this.form)
   .then((result) => {
     _this.$message.success('success')
     _this.$router.push('/push')

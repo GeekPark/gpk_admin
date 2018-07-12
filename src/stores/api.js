@@ -43,7 +43,7 @@ baseReq.account = create(`${config.account}/`)
 // Add a request interceptor
 baseReq.interceptors.request.use(function (config) {
   beginLoading()
-  config.params = Object.assign({roles: 'dev'}, config.params)
+  config.params = Object.assign({roles: 'dev', access_key: sessionStorage.getItem('access_key')}, config.params)
   return config
 }, function (error) {
   finishLoading()

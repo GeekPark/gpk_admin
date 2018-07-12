@@ -68,7 +68,7 @@ export default {
 
   methods: {
     fetch () {
-      api.get('admin/posts?state=published').then(result => {
+      api.get('admin/posts?state_eq=published').then(result => {
         this.posts = result.data.posts.splice(0, 7)
       })
       api.get('admin/posts/yesterday').then(result => {

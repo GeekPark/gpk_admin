@@ -72,7 +72,7 @@ export default {
       ad_type: 'web',
       positions: {},
       // 'ad-pc-home.png' , 'ad-pc-home.png', ad-app.png
-      imgs: ['https://ws2.sinaimg.cn/large/006tNc79ly1fpdhmye3zaj31hc3omu0y.jpg', 'https://ws1.sinaimg.cn/large/006tNc79ly1fpdhmq3hfrj31hc0xdkc9.jpg', 'https://ws3.sinaimg.cn/large/006tNc79ly1fpdhmbsnarj30ku112js5.jpg']
+      imgs: ['http://imgslim.geekpark.net/006tNc79ly1fpdhmye3zaj31hc3omu0y.jpg', 'http://imgslim.geekpark.net/006tNc79ly1fpdhmq3hfrj31hc0xdkc8.jpg', 'http://imgslim.geekpark.net/006tNc79ly1fpdhmbsnarj30ku112js5.jpg']
     }
   },
   methods: {

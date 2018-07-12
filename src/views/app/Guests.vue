@@ -15,6 +15,7 @@
       template(slot-scope='scope')
         | {{scope.row.tags.join(', ')}}
     el-table-column(prop='description', label='介绍')
+    el-table-column(prop='operator.name', label='创建者', width="90")
     el-table-column(label='操作', width="170")
       template(slot-scope='scope')
         el-button(type='text',

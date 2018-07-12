@@ -145,7 +145,7 @@ html, body
   .el-button
     margin-left 0px
   .el-input
-    margin-left 20px
+    margin-left 10px
     width 200px
 
 .bg-purple-dark

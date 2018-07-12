@@ -27,11 +27,15 @@
     el-table-column(prop='listen_count', label='收听次数', width="80")
     el-table-column(prop='price', label='价格', width="110")
     el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state === "publish"')
-    el-table-column(prop='click_count', label=' PV', width="90")
-    el-table-column(label='操作', width="100")
+    el-table-column(prop='click_count', label='PV', width="90")
+    el-table-column(prop='operator.name', label='创建者', width="90")
+    el-table-column(label='操作', width="120")
       template(slot-scope='scope')
         el-button(type='text',
                   @click='handleEdit(scope.$index, scope.row)') 编辑
+        el-button(type='text',
+            v-if='scope.row.state === "已发布"',
+            @click='recommend(scope.row)') {{scope.row.is_recommend ? "取消推荐": "⾸页推荐"}}
         //- el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row)') 删除
   el-pagination(@size-change='handleSizeChange',
@@ -58,7 +62,7 @@ export default {
         name: '',
         state: this.$route.query.state || 'publish'
       },
-      currentPage: 1,
+      currentPage: this.$route.query.page ? parseInt(this.$route.query.page) : 1,
       newData: [],
       listData: {
         if_talks: [],
@@ -116,7 +120,7 @@ export default {
       tool.deleteConfirm(this, destroy)
     },
     handleEdit (index, row) {
-      this.$router.push(`iftalk/new?id=${row.id}`)
+      this.$router.push(`iftalk/new?id=${row.id}&page=${this.currentPage}`)
     },
     clickArticle (row) {
       if (row.state === '已发布') {
@@ -128,10 +132,10 @@ export default {
       //   })
       // }
     },
-    recommendPost (row) {
-      api.post(`${url}/${row.id}/toggle_recommended`).then(result => {
+    recommend (row) {
+      const path = row.is_recommend ? 'cancel_recommend' : 'recommend'
+      api.patch(`${url}/${row.id}/${path}`).then(result => {
         this.fetch()
-        console.log(result)
       })
     },
     addNew () {

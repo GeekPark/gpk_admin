@@ -43,6 +43,7 @@ import Daily from 'views/app/Daily.vue'
 import AddDaily from 'views/app/AddDaily.vue'
 import Iftalk from 'views/app/Iftalk.vue'
 import AddIftalk from 'views/app/AddIftalk.vue'
+import IftalkComments from 'views/app/Comments.vue'
 import Guests from 'views/app/Guests.vue'
 import AddGuest from 'views/app/AddGuest.vue'
 import Audios from 'views/app/Audios.vue'
@@ -215,6 +216,11 @@ const router = new VueRouter({
       name: 'iftalk-new',
       component: AddIftalk,
       meta: {title: '添加 IF Talk'}
+    },
+    { path: '/iftalk/comments',
+      name: 'iftalk-comments',
+      component: IftalkComments,
+      meta: {title: 'IF Talk 评论'}
     },
     { path: '/guests',
       name: 'guests',

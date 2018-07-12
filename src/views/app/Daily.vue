@@ -15,6 +15,7 @@
     el-table-column(prop='content.column_title', label='栏目', width="100")
     el-table-column(prop='created_at', label='发布时间', width="150")
     el-table-column(prop='click_count', label='PV', width="50")
+    el-table-column(prop='operator.name', label='创建者', width="90")
     el-table-column(label='操作', width="120")
       template(slot-scope='scope')
         el-button(type='text',

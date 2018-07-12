@@ -4,14 +4,14 @@
     .title
       h1 {{$route.meta.title}}
     .filter
-      el-select(v-model='params.state', clearable, placeholder='订单状态')
+      el-select(v-model='params.state_eq', clearable, placeholder='订单状态')
         el-option(v-for='key, val in state',
                   :label='key',
                   :value='val',
                   :key='val')
-      el-input(placeholder="手机号",
-               clearable,
-               v-model="params.mobile")
+      el-input(clearable,
+               v-model="params.mobile_or_content_cont",
+               @keyup.enter.native='search')
       el-button(icon="el-icon-search" size="mini" @click="search")
   el-table(:data='listData.orders' border)
     el-table-column(prop='trade_no', label='订单号')
@@ -40,9 +40,9 @@ export default {
   data () {
     return {
       params: {
-        state: '',
-        buy_type: '',
-        mobile: ''
+        state_eq: '',
+        buy_type_eq: '',
+        mobile_or_content_cont: ''
       },
       currentPage: 1,
       listData: {

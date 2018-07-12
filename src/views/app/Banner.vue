@@ -22,6 +22,7 @@
       template(slot-scope='scope')
         span {{scope.row.banner_type === 'internal' ? scope.row.model : '外部链接'}}
     el-table-column(prop='state', label='状态')
+    el-table-column(prop='operator.name', label='创建者', width="90")
     el-table-column(label='操作')
         template(slot-scope='scope')
           el-button(type='text',

@@ -39,6 +39,7 @@ export default {
         location.href = `${config.account}/login/?callback_url=${location.href}`
         return
       }
+      sessionStorage.setItem('access_key', result.data.access_key)
       const url = `admin/info?access_key=${result.data.access_key}`
       api.get(url).then(result => {
         if (result.data != null) {

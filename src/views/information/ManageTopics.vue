@@ -18,10 +18,12 @@
     el-table-column(prop='', label='发布时间', width="180")
         template(slot-scope='scope')
           span {{scope.row.published_timestamp}}
-    el-table-column(label='操作', width="70")
+    el-table-column(label='操作', width="100")
         template(slot-scope='scope')
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row)') 移除
+          el-button(type='text',
+                    @click='stickTop(scope.$index, scope.row)') 置顶
   el-pagination(@size-change='handleSizeChange',
               @current-change='handleCurrentChange',
               :current-page='currentPage',
@@ -61,6 +63,14 @@ export default {
     },
     handleDestroy (index, val) {
       api.delete(`/admin/topics/${this.$route.query.id}/${val.id}`)
+      .then(result => {
+        this.fetch()
+      })
+    },
+    stickTop (index, val) {
+      api.patch(`/admin/posts/${val.id}/stick_to_top`, {
+        stick_at: new Date()
+      })
       .then(result => {
         this.fetch()
       })
