@@ -35,7 +35,7 @@
       template(slot-scope='scope')
         span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
     el-table-column(prop='column_title', label='栏目', width="110")
-    el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state === "published"')
+    el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state_eq === "published"')
     el-table-column(prop='state', label=' 状态', width="70")
       template(slot-scope='scope')
         span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}

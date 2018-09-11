@@ -19,16 +19,16 @@
                @keyup.enter.native='search')
       el-button(icon="el-icon-search" size="mini" @click="search")
   el-table(:data='listData.orders' border)
-    el-table-column(prop='id', label='订单号')
+    el-table-column(prop='id', label='订单号', width="60")
     el-table-column(prop='content', label='购买内容')
-    el-table-column(prop='buy_type', label='购买方式')
-    el-table-column(prop='price', label='购买价格')
-    el-table-column(prop='state', label='订单状态')
+    el-table-column(prop='buy_type', label='购买方式', width="120")
+    el-table-column(prop='price', label='购买价格', width="70")
+    el-table-column(prop='state', label='订单状态', width="70")
       template(slot-scope='scope')
         | {{state[scope.row.state]}}
-    el-table-column(prop='created_at', label='购买时间')
-    el-table-column(prop='name', label='用户名')
-    el-table-column(prop='mobile', label='手机号')
+    el-table-column(prop='created_at', label='购买时间', width="140")
+    el-table-column(prop='name', label='用户名', width="120")
+    el-table-column(prop='mobile', label='手机号', width="110")
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',

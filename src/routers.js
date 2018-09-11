@@ -51,6 +51,8 @@ import AddAudio from 'views/app/AddAudio.vue'
 import Orders from 'views/app/Orders.vue'
 import MemberOrders from 'views/app/MemberOrders.vue'
 import CoinsOrders from 'views/app/CoinsOrders.vue'
+import Periodicals from 'views/app/Periodicals.vue'
+import Feedback from 'views/app/Feedback.vue'
 
 import Comments from 'views/comments/Comments.vue'
 
@@ -256,6 +258,16 @@ const router = new VueRouter({
       name: 'coins_order',
       component: CoinsOrders,
       meta: {title: '极客币订单'}
+    },
+    { path: '/orders/periodicals',
+      name: 'periodicals',
+      component: Periodicals,
+      meta: {title: '年刊领取订单'}
+    },
+    { path: '/feedback',
+      name: 'feedback',
+      component: Feedback,
+      meta: {title: '意见反馈'}
     },
 
     { path: '*',

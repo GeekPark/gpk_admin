@@ -3,7 +3,7 @@
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addColumn") 添加广告
+      el-button(type='text', @click="addAd") 添加广告
     .filter
       el-input(placeholder="搜索",
                v-model="params.title",
@@ -13,7 +13,7 @@
     el-table-column(prop='id', label='ID', width="50")
     el-table-column(prop='title', label='标题', width="200")
       template(slot-scope='scope')
-        a(@click='clickColumn(scope.row)') {{scope.row.title}}
+        a(@click='clickAd(scope.row)') {{scope.row.title}}
     el-table-column(prop='position', label='位置')
     el-table-column(prop='active_at', label='开始时间', width="180")
     el-table-column(prop='active_through', label='结束时间', width="180")
@@ -35,7 +35,6 @@
 <script>
 import Base from '../base'
 import tool from 'tools'
-import config from '../../config.js'
 
 const vm = Base({
   url: 'admin/ads',
@@ -53,7 +52,7 @@ const vm = Base({
       }
       return ''
     },
-    addColumn () {
+    addAd () {
       this.$router.push('/ads/new')
     },
     handleEdit (index, row) {
@@ -62,8 +61,8 @@ const vm = Base({
     search () {
       this.fetch()
     },
-    clickColumn (row) {
-      window.open(`${config.main}/column/${row.id}`)
+    clickAd (row) {
+      window.open(`${row.link}`)
     }
   },
   watch: {

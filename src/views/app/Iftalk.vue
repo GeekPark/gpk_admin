@@ -4,6 +4,7 @@
     .title
       h1 {{$route.meta.title}}
       el-button(type='text', @click="addNew") 添加 IF Talk
+      el-button(type='text', @click="exportCsv") 导出
     .filter
       el-button(type='text',
                 @click='params.state = "publish"',
@@ -140,6 +141,10 @@ export default {
     },
     addNew () {
       this.$router.push('/iftalk/new')
+    },
+    exportCsv () {
+      let link = api.defaults.baseURL + '/' + url + '/export_csv'
+      window.open(link, '_blank')
     },
     updateRow (id, newIndex) {
       newIndex += (this.currentPage - 1) * 10

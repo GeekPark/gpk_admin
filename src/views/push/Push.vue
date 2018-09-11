@@ -4,19 +4,20 @@
     h1 {{$route.meta.title}}
     el-button(type='text', @click="$router.push('/push/new')") 添加推送
   el-table(:data='listData.broadcasts' border)
-    el-table-column(prop='content_type', label='类型', width="90")
+    el-table-column(prop='content_type', label='类型', width="63")
       template(slot-scope='scope')
         span {{scope.row.content_type === 'topic_type' ? '文章' : 'IF TALK'}}
-    el-table-column(prop='content', label='内容标题')
-    el-table-column(prop='redirect', label='内容ID', width="100")
+    el-table-column(prop='redirect', label='内容ID', width="70")
       template(slot-scope='scope')
         span.preview(@click='preview(scope.row)') {{scope.row.redirect}}
-    el-table-column(prop='created_at', label='创建时间', width="180")
-    el-table-column(prop='send_at', label='推送时间', width="180")
-    el-table-column(prop='operator.name', label='创建者', width="90")
+    el-table-column(prop='content', label='内容标题')
+    el-table-column(prop='abstract', label='内容摘要')
+    el-table-column(prop='created_at', label='创建时间', width="140")
+    el-table-column(prop='send_at', label='推送时间', width="140")
+    el-table-column(prop='operator.name', label='创建者', width="64")
     //- el-table-column(prop='', label='iOS点击', width="150")
     //- el-table-column(prop='', label='Android点击', width="150")
-    el-table-column(label='操作', width="100")
+    el-table-column(label='操作', width="50")
       template(slot-scope='scope', v-if="scope.row.is_destory")
         el-button(type='text',
                   @click='handleDestroy(scope.$index, scope.row, listData.broadcasts)') 删除

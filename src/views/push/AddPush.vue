@@ -7,6 +7,8 @@
       el-input(placeholder='', v-model='form.redirect')
     el-form-item(label='内容标题')
       el-input(placeholder='', v-model='form.content')
+    el-form-item(label='内容摘要')
+      el-input(type='textarea', v-model='form.abstract')
     el-form-item(label='内容类型')
       el-radio(v-model="form.content_type" label="topic_type") 文章
       el-radio(v-model="form.content_type" label="if_talk_type") IF TALK
@@ -30,6 +32,7 @@ export default {
         redirect: '',
         content_type: 'topic_type',
         content: '',
+        abstract: '',
         send_at: ''
       }
     }

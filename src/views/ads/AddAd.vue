@@ -96,51 +96,31 @@ export default {
     }
   },
   mounted () {
+    getPosition(this)
     if (this.$route.query.id) {
       getAd(this)
     }
-    getPosition(this)
   },
   watch: {
   }
 }
 
 function getPosition (_this) {
-  const setPosition = () => {
-    if (Object.keys(_this.positions).indexOf(_this.form.position) > -1) {
-      _this.ad_type = 'web'
-    } else {
-      _this.ad_type = 'app'
-    }
-  }
   api.get(`admin/ads/positions`)
   .then((result) => {
     _this.positions = result.data
-    setPosition()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
   api.get(`admin/ads/app_positions`)
   .then((result) => {
     _this.app_positions = result.data
-    setPosition()
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
 }
 
 function updateAd (_this) {
-  Object.keys(_this.positions).forEach(key => {
-    if (_this.form.position === _this.positions[key]) {
-      _this.form.position = key
-    }
-  })
-  Object.keys(_this.app_positions).forEach(key => {
-    if (_this.form.position === _this.app_positions[key]) {
-      _this.form.position = key
-    }
-  })
-  console.log(_this.form)
   api.put(`admin/ads/${_this.$route.query.id}`, _this.form)
   .then((result) => {
     _this.$router.push('/ads')
@@ -163,6 +143,17 @@ function createAd (_this) {
 function getAd (_this) {
   api.get(`admin/ads/${_this.$route.query.id}`)
   .then((result) => {
+    Object.keys(_this.positions).forEach(key => {
+      if (result.data.ad.position === _this.positions[key]) {
+        result.data.ad.position = key
+      }
+    })
+    Object.keys(_this.app_positions).forEach(key => {
+      if (result.data.ad.position === _this.app_positions[key]) {
+        result.data.ad.position = key
+        _this.ad_type = 'app'
+      }
+    })
     Object.keys(_this.form).forEach(key => {
       _this.form[key] = result.data.ad[key]
     })

@@ -76,6 +76,9 @@
             el-menu-item(index='/orders') 内容订单
             el-menu-item(index='/orders/member_order') 会员订单
             el-menu-item(index='/orders/coins_order') 极客币订单
+            el-menu-item(index='/orders/periodicals') 年刊领取订单
+          el-menu-item-group(title='反馈')
+            el-menu-item(index='/feedback') 意见反馈
         //- el-submenu(index='/wechat')
         //-   template(slot='title')
         //-     img(src='../assets/imgs/sider_wechat.svg')
