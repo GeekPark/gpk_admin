@@ -80,7 +80,7 @@ export default {
       api.account.get('admin/users/yesterday').then(result => {
         this.userCount = result.data.meta.total_count
       })
-      api.get('posts//hot_in_week').then(result => {
+      api.get('posts/hot_in_week').then(result => {
         this.hotWeek = result.data.posts
       })
     },

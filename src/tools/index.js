@@ -29,6 +29,16 @@ export default {
     addSaveBack(vm, editor)
     return editor
   },
+  autoConfirm: function (_this, handler) {
+    setTimeout(() => {
+      document.querySelector('.el-message-box__headerbtn').style.display = 'none'
+    }, 100)
+    _this.$confirm('确定要修改吗', '', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => { handler() }).catch(() => {})
+  },
   deleteConfirm: function (_this, handler) {
     setTimeout(() => {
       document.querySelector('.el-message-box__headerbtn').style.display = 'none'

@@ -77,6 +77,10 @@
             el-menu-item(index='/orders/member_order') 会员订单
             el-menu-item(index='/orders/coins_order') 极客币订单
             el-menu-item(index='/orders/periodicals') 年刊领取订单
+            el-menu-item(index='/orders/consume') 积分兑换订单
+          el-menu-item-group(title='积分商品')
+            el-menu-item(index='/products') 商品列表
+            el-menu-item(index='/products/new') 添加商品
           el-menu-item-group(title='反馈')
             el-menu-item(index='/feedback') 意见反馈
         //- el-submenu(index='/wechat')

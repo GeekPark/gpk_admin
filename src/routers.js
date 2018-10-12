@@ -52,6 +52,9 @@ import Orders from 'views/app/Orders.vue'
 import MemberOrders from 'views/app/MemberOrders.vue'
 import CoinsOrders from 'views/app/CoinsOrders.vue'
 import Periodicals from 'views/app/Periodicals.vue'
+import Products from 'views/app/Products.vue'
+import AddProducts from 'views/app/AddProducts.vue'
+import Consume from 'views/app/Consume.vue'
 import Feedback from 'views/app/Feedback.vue'
 
 import Comments from 'views/comments/Comments.vue'
@@ -264,12 +267,26 @@ const router = new VueRouter({
       component: Periodicals,
       meta: {title: '年刊领取订单'}
     },
+    { path: '/orders/consume',
+      name: 'consume',
+      component: Consume,
+      meta: {title: '积分兑换订单'}
+    },
+    { path: '/products',
+      name: 'products',
+      component: Products,
+      meta: {title: '商品列表'}
+    },
+    { path: '/products/new',
+      name: 'products-new',
+      component: AddProducts,
+      meta: {title: '添加商品'}
+    },
     { path: '/feedback',
       name: 'feedback',
       component: Feedback,
       meta: {title: '意见反馈'}
     },
-
     { path: '*',
       component: Errors,
       meta: {title: 'Error'}
