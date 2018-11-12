@@ -17,7 +17,7 @@ export default {
 
 <style lang="stylus">
 
-$siderrWidth = 200px
+$siderrWidth = 13%
 $headerHeight = 60px
 
 html, body
@@ -39,13 +39,12 @@ html, body
   height auto
   min-height calc(100% - 120px)
   background rgb(250, 250, 250)
-  padding 30px
+  padding 20px
   padding-top 30px
 
   .form-inline
     top 12px
     position relative
-
 #vsider .el-row
   position absolute
   bottom 0

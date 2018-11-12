@@ -4,7 +4,7 @@
     router-link(to="/")
       .sider-logo
         img(src="http://imgslim.geekpark.net/geekpark-icon-196-03ac430f5643fc17aba3b3f5429a287d.png")
-        span 极客公园管理后台
+        span 管理后台
     el-col(:span='8')
       el-menu(unique-opened=true, router=true, @open='handleOpen', @close='handleClose', background-color="#324157", text-color="#fff")
         el-submenu(index='/info')
@@ -120,7 +120,7 @@ export default {
 
 <style lang="stylus" scoped>
 #vsider
-  texta-align left
+  text-align left
   &
     text-align left
   .sider-logo
