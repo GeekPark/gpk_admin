@@ -9,6 +9,11 @@ const uploadUrl = `${config.api}/api/v1/admin/images`
 const createEditor = (onchange) => {
   let editor = new WangEditor('#editor')
   editor.customConfig.onchange = onchange
+  editor.customConfig.pasteTextHandle = function (content) {
+    // const inlineReg = /style\s*?=\s*?(['"])[\s\S]*?\1/g
+    const invalidXmlCharactersReg = /[\x00-\x1F\x7F-\x9F]/g
+    return content.replace(invalidXmlCharactersReg, '')
+  }
   editor.create()
   return editor
 }
