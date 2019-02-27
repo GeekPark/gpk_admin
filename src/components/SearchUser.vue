@@ -38,7 +38,7 @@ export default {
     remoteMethod (query) {
       if (query !== '') {
         this.loading = true
-        api.account.get('admin/users', { params: {nickname: query} })
+        api.account.get('admin/users?mode=filter&role=admin', { params: {nickname: query} })
         .then(result => {
           this.loading = false
           console.log(result.data)

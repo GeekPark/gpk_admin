@@ -129,6 +129,13 @@ export default {
     },
     fetch () {
       const params = Object.assign({page: this.currentPage}, this.params)
+      if (this.$route.query.q === 'markting') {
+        // 如果是 markting，只显示业界资讯
+        params.title_or_column_title_cont = '业界资讯'
+      } else {
+        // 如果不是 markting，过滤掉业界资讯
+        params.column_title_not_cont = '业界资讯'
+      }
       api.get(url, {params: params}).then((result) => {
         console.log(result)
         this.listData = result.data
@@ -171,6 +178,11 @@ export default {
     }
   },
   watch: {
+    $route: function (from, to) {
+      if (from.query.q !== to.query.q) {
+        this.search()
+      }
+    },
     'listData.posts': function (val) {
       val.forEach(el => {
         el.published_at = tool.moment(el.published_at)

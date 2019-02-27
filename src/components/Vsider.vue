@@ -12,10 +12,11 @@
             img(src='../assets/imgs/sider_info.svg')
             span 资讯
           el-menu-item-group(title='文章')
-            el-menu-item(index='/posts')  文章列表
+            el-menu-item(index='/posts') 作者文章
             el-menu-item(index='/posts/new?content_type=html') 添加文章
+            el-menu-item(index='/posts?q=markting') 业界资讯
           el-menu-item-group(title='快讯')
-            el-menu-item(index='/news')  快讯列表
+            el-menu-item(index='/news') 快讯列表
             el-menu-item(index='/news/new?type=create') 添加快讯
           el-menu-item-group(title='问答')
             el-menu-item(index='/qa') 问答列表
