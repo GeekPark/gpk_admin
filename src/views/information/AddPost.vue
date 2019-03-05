@@ -322,7 +322,7 @@ function createHistory (id, _this, other) {
   var nickname = window.localStorage.getItem('username')
   api.post(`admin/posts/${id}/history?history_record=${nickname}${other}`).then((res) => {
     _this.$message.success('success')
-    _this.$router.push(`/posts?state=${_this.form.state}`)
+    _this.$router.push(`/posts?state=${_this.form.state}&q=${_this.form.column_id === 248 ? 'markting' : ''}`)
   })
 }
 
