@@ -18,6 +18,8 @@
     el-table-column(label='操作', width="140")
       template(slot-scope='scope')
         el-button(type='text',
+                  @click='handleCheck(scope.row)') {{scope.row.comment_state === 'unchecked' ? "未审核" : "已审核"}}
+        el-button(type='text',
                   @click='handleDestroy(scope.row)') 删除
         el-button(type='text',
                   @click='handleBlock(scope.row)',
@@ -76,6 +78,13 @@ export default {
       }).catch((err) => {
         console.log(err)
         this.$message.error(err.toString())
+      })
+    },
+    handleCheck (row) {
+      api.patch(`${url}/${row.id}/check`)
+      .then(result => {
+        console.log(result)
+        this.fetch()
       })
     },
     handleDestroy (row) {
