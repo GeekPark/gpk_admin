@@ -9,6 +9,8 @@
           el-input(v-model='form.title')
         el-form-item(label='跳转链接')
           el-input(v-model='form.link')
+        el-form-item(label='曝光监测链接')
+          el-input(placeholder='没有请留空', v-model='form.exposure_link')
         el-form-item(label='视频地址')
           el-input(placeholder='APP 视频广告专用', v-model='form.video_link')
         el-form-item(label='开始时间')
@@ -63,6 +65,7 @@ export default {
         cover_id: '',
         cover_url: '',
         link: '',
+        exposure_link: '',
         video_link: '',
         position: '',
         title: ''
