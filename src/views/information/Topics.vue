@@ -14,9 +14,9 @@
       template(slot-scope='scope')
         a(@click='clickColumn(scope.row)') {{scope.row.title}}
     el-table-column(prop='description', label='专题描述')
-    el-table-column(prop='post_count', label='文章数量', width="110")
-    el-table-column(prop='published_at', label='发布时间', width="170")
-    el-table-column(label='操作', width="150")
+    el-table-column(prop='post_count', label='文章数量', width="100")
+    el-table-column(prop='published_at', label='发布时间', width="150")
+    el-table-column(label='操作', width="190")
         template(slot-scope='scope')
           el-button(type='text',
                     @click='handleManagement(scope.$index, scope.row)') 管理
@@ -24,6 +24,8 @@
                     @click='handleEdit(scope.$index, scope.row)') 编辑
           el-button(type='text',
                     @click='handleDestroy(scope.$index, scope.row, listData.topics)') 删除
+          el-button(type='text',
+                    @click='recommendTopic(scope.row)') {{scope.row.is_recommended === false ? "推荐": "取消推荐"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -36,6 +38,8 @@
 import Base from '../base'
 import tool from 'tools'
 import config from '../../config.js'
+import api from 'stores/api'
+
 const max = 40
 const vm = Base({
   url: 'admin/topics',
@@ -59,6 +63,11 @@ const vm = Base({
     },
     clickColumn (row) {
       window.open(`${config.main}/topic/${row.id}`)
+    },
+    recommendTopic (row) {
+      api.post(`admin/topics/${row.id}/${row.is_recommended ? 'undorecommend' : 'recommend'}`).then(result => {
+        this.fetch()
+      })
     }
   },
   watch: {
