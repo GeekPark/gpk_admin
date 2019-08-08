@@ -16,7 +16,7 @@
     el-table-column(prop='description', label='专题描述')
     el-table-column(prop='post_count', label='文章数量', width="100")
     el-table-column(prop='published_at', label='发布时间', width="150")
-    el-table-column(label='操作', width="190")
+    el-table-column(label='操作', width="240")
         template(slot-scope='scope')
           el-button(type='text',
                     @click='handleManagement(scope.$index, scope.row)') 管理
@@ -26,6 +26,8 @@
                     @click='handleDestroy(scope.$index, scope.row, listData.topics)') 删除
           el-button(type='text',
                     @click='recommendTopic(scope.row)') {{scope.row.is_recommended === false ? "推荐": "取消推荐"}}
+          el-button(type='text',
+                    @click='hiddenTopic(scope.row)') {{scope.row.is_hidden === false ? "隐藏": "取消隐藏"}}
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 :current-page='currentPage',
@@ -66,6 +68,11 @@ const vm = Base({
     },
     recommendTopic (row) {
       api.post(`admin/topics/${row.id}/${row.is_recommended ? 'undorecommend' : 'recommend'}`).then(result => {
+        this.fetch()
+      })
+    },
+    hiddenTopic (row) {
+      api.post(`admin/topics/${row.id}/${row.is_hidden ? 'undohidden' : 'hidden'}`).then(result => {
         this.fetch()
       })
     }
