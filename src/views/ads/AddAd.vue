@@ -105,6 +105,9 @@ export default {
     }
   },
   watch: {
+    'ad_type': function (val) {
+      this.form.position = ''
+    }
   }
 }
 
