@@ -7,6 +7,8 @@ import Errors from 'views/Errors.vue'
 
 import Posts from 'views/information/Posts.vue'
 import AddPost from 'views/information/AddPost.vue'
+import Soft from 'views/information/Soft.vue'
+import AddSoft from 'views/information/AddSoft.vue'
 import Share from 'views/information/Share.vue'
 
 import Recommendations from 'views/information/Recommendations.vue'
@@ -95,6 +97,16 @@ const router = new VueRouter({
       name: 'posts-new',
       component: AddPost,
       meta: {title: '添加文章'}
+    },
+    { path: '/soft',
+      name: 'soft',
+      component: Soft,
+      meta: {title: '快讯列表'}
+    },
+    { path: '/soft/new',
+      name: 'soft-new',
+      component: AddSoft,
+      meta: {title: '添加快讯'}
     },
     {
       path: '/preview',

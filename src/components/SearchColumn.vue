@@ -34,7 +34,7 @@ export default {
       api.get('admin/columns?per=10000')
       .then(result => {
         this.loading = false
-        this.searchData = result.data.columns
+        this.searchData = result.data.columns.filter(item => item.title !== '业界快讯')
         this.select = this.column.id || ''
       })
     }

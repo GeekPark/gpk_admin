@@ -35,20 +35,31 @@ export default {
   },
   mounted () {
     api.account.get('my/access_key').then(result => {
-      if (Object.keys(result.data) <= 0) {
+      if (!result.data || !result.data.access_key) {
         location.href = `${config.account}/login/?callback_url=${location.href}`
         return
       }
       sessionStorage.setItem('access_key', result.data.access_key)
-      const url = `admin/info?access_key=${result.data.access_key}`
+      sessionStorage.setItem('roles', 'dev')
+      const url = `admin/info`
+      // const url = `admin/info?access_key=${result.data.access_key}`
       api.get(url).then(result => {
-        if (result.data != null) {
-          this.info = result.data
-          window.localStorage.setItem('username', this.info.nickname)
-          window.localStorage.setItem('userinfo', JSON.stringify(this.info))
-          if (result.data.roles.includes('admin') === false) {
-            location.href = config.main
-          }
+        if (!result.data) {
+          location.href = config.main
+          return
+        }
+        this.info = result.data
+        window.localStorage.setItem('username', this.info.nickname)
+        window.localStorage.setItem('userinfo', JSON.stringify(this.info))
+        if (result.data.roles.includes('admin')) {
+          this.$store.state.roles = 'admin'
+          sessionStorage.setItem('roles', 'dev')
+        } else if (result.data.roles.includes('partner')) {
+          this.$store.state.roles = 'partner'
+          sessionStorage.setItem('roles', 'partner')
+        } else {
+          this.$store.state.roles = 'user'
+          location.href = config.main
         }
       })
     }).catch(e => {

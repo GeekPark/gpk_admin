@@ -3,7 +3,7 @@
   .admin-header
     .title
       h1 {{$route.meta.title}}
-      el-button(type='text', @click="addPost") 添加文章
+      el-button(type='text', @click="addPost") 添加
     .filter
       el-button(type='text',
                 @click='params.state_eq = "published"',
@@ -20,8 +20,8 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions")
-      el-input(placeholder="按文章标题或栏目搜索",
-               v-model="params.title_or_column_title_cont",
+      el-input(placeholder="按文章标题搜索",
+               v-model="params.title_cont",
                clearable,
                @keyup.enter.native='search')
         // i(slot="suffix" class="el-input__icon el-icon-search" @click="search")
@@ -35,23 +35,20 @@
       template(slot-scope='scope')
         span(v-for='author in scope.row.authors') {{author.nickname + ' '}}
     el-table-column(prop='column_title', label='栏目', width="110")
-    el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state_eq === "published"')
     el-table-column(prop='state', label=' 状态', width="70")
       template(slot-scope='scope')
         span(v-bind:class='{unpublished: scope.row.state === "草稿"}') {{scope.row.state}}
-    el-table-column(prop='click_count', label=' PV', width="70")
-    el-table-column(label='操作', width="150")
+    //- el-table-column(prop='published_at', label='发布时间', width="140", v-if='params.state_eq === "published"')
+    //- el-table-column(prop='click_count', label=' PV', width="70")
+    el-table-column(:label="params.state_eq === 'published' ? '发布时间' : '操作'", width="140")
       template(slot-scope='scope')
-        el-button(type='text',
-                  @click='handleEdit(scope.$index, scope.row)') 编辑
-        el-button(type='text',
-                  @click='handleDestroy(scope.$index, scope.row)') 删除
-        el-button(type='text',
-                  v-if='scope.row.state !== "草稿"',
-                  @click='recommendPost(scope.row)') {{scope.row.recommended === false ? "推荐": "取消推荐"}}
-        el-button(type='text',
-                  v-if='scope.row.state === "草稿" && scope.row.column_title === "业界快讯"',
-                  @click='publishPost(scope.row)') 发布
+        template(v-if='params.state_eq === "published"')
+          span {{scope.row.published_at}}
+        template(v-else)
+          el-button(type='text',
+                    @click='handleEdit(scope.$index, scope.row)') 编辑
+          el-button(type='text',
+                    @click='handleDestroy(scope.$index, scope.row)') 删除
   el-pagination(@size-change='handleSizeChange',
                 @current-change='handleCurrentChange',
                 background,
@@ -65,20 +62,16 @@
 import tool from 'tools'
 import api from 'stores/api'
 import config from '../../config.js'
-import smeditor from 'smeditor'
 
 const url = 'admin/posts'
 
 export default {
-  components: {
-    'smeditor': smeditor
-  },
   data () {
     return {
       daterange: [],
       params: {
-        title_or_column_title_cont: '',
-        state_eq: this.$route.query.state || 'published'
+        title_cont: '',
+        state_eq: this.$route.query.state || 'unpublished'
       },
       currentPage: 1,
       listData: {
@@ -132,17 +125,8 @@ export default {
     },
     fetch () {
       const params = Object.assign({page: this.currentPage}, this.params)
-      if (this.$route.query.q === 'markting') {
-        // 如果是 markting，只显示业界快讯
-        params.title_cont = params.title_or_column_title_cont
-        params.column_title_cont = '业界快讯'
-        delete params.title_or_column_title_cont
-      } else {
-        // 如果不是 markting，过滤掉业界快讯
-        params.column_title_not_cont = '业界快讯'
-        delete params.title_cont
-        delete params.column_title_cont
-      }
+      // 如果是 markting，只显示业界快讯
+      params.column_title_cont = '业界快讯'
       api.get(url, {params: params}).then((result) => {
         console.log(result)
         this.listData = result.data
@@ -164,7 +148,7 @@ export default {
       tool.deleteConfirm(this, destroy)
     },
     handleEdit (index, row) {
-      this.$router.push(`posts/new?id=${row.id}&q=${this.$route.query.q}`)
+      this.$router.push(`soft/new?id=${row.id}`)
     },
     clickArticle (row) {
       if (row.state === '已发布') {
@@ -180,13 +164,8 @@ export default {
         this.fetch()
       })
     },
-    publishPost (row) {
-      api.patch(`${url}/${row.id}/publish`).then(result => {
-        this.fetch()
-      })
-    },
     addPost () {
-      this.$router.push('/posts/new?content_type=html&q=' + this.$route.query.q)
+      this.$router.push('/soft/new')
     }
   },
   watch: {

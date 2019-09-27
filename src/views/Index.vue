@@ -1,42 +1,47 @@
 <template lang="pug">
 #index.admin
-  el-row.index-header(:gutter='20')
-    el-col(:span='6')
-      .item.bg-purple
-        img.icon(src='../assets/imgs/index_article.png')
-        .count
-          h1 {{postCount}}
-          span 昨日新增文章
-    el-col(:span='6')
-      .item.bg-purple
-        img.icon(src='../assets/imgs/index_comment.png')
-        .count
-          h1 {{commentCount}}
-          span 昨日新增评论
-    el-col(:span='6')
-      .item.bg-purple
-        img.icon(src='../assets/imgs/index_user.png')
-        .count
-          h1 {{userCount}}
-          span 昨日新增用户
-  el-row.index-articles(:gutter='40')
-    el-col(:span='12')
-      h1 最新文章
-      .item.pointer(v-for='item in posts', @click='handleEdit(item)')
-        p {{item.title}}
-    el-col(:span='12')
-        h1 7日热门排行
-        .item(v-for='item in hotWeek')
+  template(v-if="$store.state.roles === 'admin'")
+    el-row.index-header(:gutter='20')
+      el-col(:span='6')
+        .item.bg-purple
+          img.icon(src='../assets/imgs/index_article.png')
+          .count
+            h1 {{postCount}}
+            span 昨日新增文章
+      el-col(:span='6')
+        .item.bg-purple
+          img.icon(src='../assets/imgs/index_comment.png')
+          .count
+            h1 {{commentCount}}
+            span 昨日新增评论
+      el-col(:span='6')
+        .item.bg-purple
+          img.icon(src='../assets/imgs/index_user.png')
+          .count
+            h1 {{userCount}}
+            span 昨日新增用户
+    el-row.index-articles(:gutter='40')
+      el-col(:span='12')
+        h1 最新文章
+        .item.pointer(v-for='item in posts', @click='handleEdit(item)')
           p {{item.title}}
-          span {{item.views}}
-  el-row.index-quickly(:gutter="20")
-    el-col
-      h1 快速访问
-    el-col(v-for='item in quickly',
-           :key='item.id',
-           :span='Math.floor((24 / quickly.length))')
-      .item.bg-purple
-        a(:href='item.url', target='_blank').a-title-text {{item.title}}
+      el-col(:span='12')
+          h1 7日热门排行
+          .item(v-for='item in hotWeek')
+            p {{item.title}}
+            span {{item.views}}
+    el-row.index-quickly(:gutter="20")
+      el-col
+        h1 快速访问
+      el-col(v-for='item in quickly',
+            :key='item.id',
+            :span='Math.floor((24 / quickly.length))')
+        .item.bg-purple
+          a(:href='item.url', target='_blank').a-title-text {{item.title}}
+  template(v-else-if="$store.state.roles === 'partner'")
+    h1 欢迎登录
+  template(v-else)
+    h1 权限错误
 </template>
 
 <script>

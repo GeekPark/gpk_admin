@@ -1,6 +1,6 @@
 <template lang="pug">
 #vfooter
-  p © 2018 GeekPark
+  p © 2019 GeekPark
 </template>
 
 <script>

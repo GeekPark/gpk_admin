@@ -2,23 +2,20 @@
 .admin#add-post
   .title
     h1 {{$route.meta.title}}
-  el-form(ref='add-post-form', :model='form', label-position='top', :rules="rule")
+  el-form(ref='add-post-form', :model='form', label-position='top', :rules="rules")
     el-form-item(label='标题', prop='title')
       el-input(v-model='form.title')
     el-form-item(label='摘要', prop='abstract')
       el-input(type='textarea',v-model='form.abstract')
-    el-form-item(label='CCID')
+    //- el-form-item(label='CCID')
       el-input(placeholder='视频类文章填写该项', v-model='form.video_id')
-    el-form-item(label='音频ID')
+    //- el-form-item(label='音频ID')
       el-input(placeholder='早知道音频ID', v-model='form.audio_id')
     el-form-item(label='正文', prop='content')
-      el-radio(class="radio" v-model="editorName" label="wang") 旧编辑器
-      el-radio(class="radio" v-model="editorName" label="smeditor") 新编辑器 (beta)
-      veditor(v-show='editorName === "wang"')
-      smeditor(v-show='editorName !== "wang"', :config='smeditorConfig')
+      veditor
     el-form-item(label='添加标签（标签至少3个）', prop='tags')
       search-tag(:callback='searchTag', :tags='form.tags')
-      ul.users(v-if='$route.query.id')
+      //- ul.users(v-if='$route.query.id')
         li
           h3 当前编辑:
         li(v-for='username in users') {{username}}
@@ -27,19 +24,19 @@
         li(v-for='item in form.histories')
           span {{moment(item.created_at)}} &nbsp
           span {{item.history_record}}
-    el-form-item(label='栏目选择', prop='column_id')
+    //- el-form-item(label='栏目选择', prop='column_id')
       search-column(:callback='searchColumn', :column='form.column')
     el-form-item(label='文章头图（1400×780）', prop='cover_id')
       upload(:callback='uploadImage', :url='form.cover_url', :uploadDelete="uploadDelete")
-    el-form-item(label='作者', prop='authors')
+    //- el-form-item(label='作者', prop='authors')
       search-user(:callback='searchUser', :authors='form.authors_full',:multiple='true')
-    el-form-item(label='状态')
+    //- el-form-item(label='状态')
       el-select(v-model='form.state', placeholder='请选择')
         el-option(v-for='item in post_states',
                   :label='item.title',
                   :value='item.val',
                   :key='item.val')
-    el-form-item(label='发布时间', prop='date', v-if='form.state === "unpublished"')
+    //- el-form-item(label='发布时间', prop='date', v-if='form.state === "unpublished"')
       el-date-picker(v-model='form.auto_publish_at',
                      type='datetime',
                      placeholder='选择日期时间')
@@ -50,46 +47,20 @@
 
 <script>
 import api from 'stores/api'
-import smeditor from 'smeditor'
-import ActionCable from 'actioncable'
 import tools from '../../tools'
-import config from '../../config.js'
-const smeditorConfig = {
-  // 接口地址
-  uploadUrl: `${config.api}/api/v1/admin/images`,
-  // form 里的 filename
-  uploadName: 'upload_file',
-  // 其他参数
-  uploadParams: {},
-  onScroll: () => {},
-  // 上传成功回调
-  uploadCallback: (data) => {
-    // console.log(data)
-    return data.image.url
-  },
-  // 上传失败回调, 可选
-  uploadFailed: (err) => {
-    // console.log('仅供测试, 并非真正上传')
-    alert('仅供测试, 并非真正上传!', err)
-  }
-}
 
 export default {
-  components: {
-    'smeditor': smeditor
-  },
   data () {
-    // const validateContent = (rule, value, callback) => {
-    //   getContent(this)
-    //   if (this.form.content_source === '') {
-    //     callback(new Error('请输入内容'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
+    const validateContent = (rule, value, callback) => {
+      getContent(this)
+      if (this.form.content_source === '') {
+        callback(new Error('请输入内容'))
+      } else {
+        callback()
+      }
+    }
 
     return {
-      smeditorConfig: smeditorConfig,
       moment: tools.moment,
       users: [],
       disabled: false,
@@ -113,14 +84,6 @@ export default {
         post_type: 'text',
         histories: []
       },
-      rulesOmit: {
-        title: [
-          { required: true, message: '请输入文章标题', trigger: 'blur', min: 0 }
-        ],
-        column_id: [
-          { required: true, message: '请至少选择一个专栏', trigger: 'change' }
-        ]
-      },
       rules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur', min: 0 }
@@ -128,24 +91,21 @@ export default {
         abstract: [
           { required: true, message: '请输入文章摘要', trigger: 'blur', min: 0 }
         ],
-        // content: [
-        //   { required: true, validator: validateContent, trigger: 'blur' }
+        content: [
+          { required: true, validator: validateContent, trigger: 'blur' }
+        ],
+        // column_id: [
+        //   { required: true, message: '请至少选择一个专栏', trigger: 'change' }
         // ],
-        date: [
-          { type: 'date', message: '请选择日期', trigger: 'change' }
-        ],
-        column_id: [
-          { required: true, message: '请至少选择一个专栏', trigger: 'change' }
-        ],
         tags: [
           { required: true, type: 'array', message: '请至少选择一个标签', trigger: 'change' }
         ],
         cover_id: [
           { type: 'number', required: true, message: '请上传文章头图', trigger: 'change' }
-        ],
-        authors: [
-          { required: true, type: 'array', message: '请至少选择一个作者', trigger: 'change' }
         ]
+        // authors: [
+        //   { required: true, type: 'array', message: '请至少选择一个作者', trigger: 'change' }
+        // ]
       },
       post_states: [{
         title: '草稿',
@@ -153,19 +113,7 @@ export default {
       }, {
         title: '已发布',
         val: 'published'
-      }],
-      content_types: [{
-        title: '富文本',
-        val: 'html'
-      }, {
-        title: 'markdown',
-        val: 'markdown'
       }]
-    }
-  },
-  computed: {
-    rule: function () {
-      return (this.form.state === 'published' || this.form.auto_publish_at) ? this.rules : this.rulesOmit
     }
   },
   methods: {
@@ -216,91 +164,23 @@ export default {
       this.form.column_id = column
     },
     close () {
-      this.$router.push('/posts?q=' + this.$route.query.q)
-    },
-    getSmeditor () {
-      return document.querySelector('.smeditor .input-area')
-    }
-  },
-  watch: {
-    'form.content_type': function (val) {
-      const id = this.$route.query.id ? `&id=${this.$route.query.id}` : ''
-      this.$router.push(`${this.$route.path}?content_type=${val}${id}`)
-      addContent(this, val)
-    },
-    'editorName': function () {
-      if (this.editorName === 'wang') {
-        const html = this.getSmeditor().innerHTML
-        this.$store.state.htmlEditor.txt.html(html)
-        this.form.content_source = html
-      } else {
-        const html = this.$store.state.htmlEditor.txt.html()
-        this.form.content_source = html
-        this.getSmeditor().innerHTML = html
-        const el = document.querySelector('.buttons')
-        if (el.className.indexOf('isBarFixed') < 0) {
-          el.className += ' isBarFixed'
-        }
-        document.querySelector('.preview').style.display = 'none'
-      }
+      this.$router.push('/soft')
     }
   },
   mounted () {
     if (this.$route.query.id) {
       getPost(this)
-      relativeTime(this)
-    } else {
-      var userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
-      this.form.authors_full = [userinfo]
-      this.form.authors = [userinfo]
     }
   }
 }
 
-function relativeTime (_this) {
-  var nickname = window.localStorage.getItem('username')
-  var cable = ActionCable.createConsumer(config.ws)
-  var c = cable.subscriptions.create({
-    channel: 'PostChannel',
-    id: _this.$route.query.id,
-    username: nickname}, {
-      connected: function () {
-      },
-      disconnected: function () {
-      },
-      received: function (data) {
-        // console.log(data)
-        data.forEach(el => {
-          _this.users.push(el)
-        })
-        _this.users = unique(_this.users)
-        _this.users.forEach(user => {
-          _this.$notify.warning(user + '正在该页面')
-        })
-      }
-    })
-  window.onbeforeunload = function () {
-    c.exit()
-    return 'Bye now!'
-  }
-}
-
-function unique (arr) {
-  const seen = new Map()
-  return arr.filter((a) => !seen.has(a) && seen.set(a, 1))
-}
-
 function getContent (_this) {
   let html = ''
-  if (_this.editorName === 'wang') {
-    html = _this.$store.state.htmlEditor.txt.html()
-  } else {
-    html = _this.getSmeditor().innerHTML
-  }
+  html = _this.$store.state.htmlEditor.txt.html()
   _this.form.content_source = html
 }
 
-function addContent (_this, val) {
+function addContent (_this) {
   setTimeout(() => {
     _this.$store.state.htmlEditor.txt.html(_this.form.content_source)
   }, 100)
@@ -322,7 +202,7 @@ function createHistory (id, _this, other) {
   var nickname = window.localStorage.getItem('username')
   api.post(`admin/posts/${id}/history?history_record=${nickname}${other}`).then((res) => {
     _this.$message.success('success')
-    _this.$router.push(`/posts?state=${_this.form.state}&q=${_this.form.column.title === '业界快讯' ? 'markting' : ''}`)
+    _this.$router.push(`/soft?state=${_this.form.state}&q=${_this.form.column_id === 248 ? 'markting' : ''}`)
   })
 }
 
@@ -349,7 +229,7 @@ function getPost (_this) {
     _this.form.authors_full = post.authors
     _this.form.authors = _this.form.authors_full ? _this.form.authors_full.map(el => el.id) : []
     _this.form.video_id = post.extra.video_id
-    addContent(_this, _this.form.content_type)
+    addContent(_this)
   }).catch((err) => {
     _this.$message.error(err.toString())
   })
@@ -379,8 +259,6 @@ function getPost (_this) {
     color #9B9B9B
   .tools-bar-btn
     margin 10px
-  .smeditor
-    position relative
   .el-form-item__content
     img
       max-width 100%
