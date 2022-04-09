@@ -13,7 +13,7 @@
     "actioncable": "^5.1.5",
     "axios": "^0.16.2",
     "element-ui": "^1.4.0",
-    "moment": "^2.18.1",
+    "moment": "^2.29.2",
     "smeditor": "^0.1.18",
     "vue": "^2.3.3",
     "vue-router": "^2.6.0",
